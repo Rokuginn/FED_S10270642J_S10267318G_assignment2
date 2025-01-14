@@ -1,0 +1,55 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: white; /* Changed to white */
+    color: black; /* Changed to black */
+    border-bottom: 1px solid #ccc; /* Added border-bottom */
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    background: #00F260;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #0575E6, #00F260);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #0575E6, #00F260); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 50px;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links a {
+    color: black; /* Changed to black */
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.search-bar input {
+    padding: 5px;
+    font-size: 16px;
+}
+
+
+.icons a {
+    margin-left: 15px;
+    color: black; /* Ensure the icons are black */
+}
+
+.icons i {
+    font-size: 24px; /* Adjust the size of the icons */
+}

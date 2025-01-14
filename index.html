@@ -4,8 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    TestPage
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">MokeSell</div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">PC Parts</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#" id="signUpBtn">SignUp</a></li> <!-- Added id to the SignUp link -->
+        </ul>
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+        </div>
+        <div class="icons">
+            <a href="#"><i class="fas fa-heart"></i></a>
+            <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            <a href="#"><i class="fas fa-comment-dots"></i></a>
+        </div>
+    </nav>
+    <!-- Navbar End-->
+     <!-- Login Popup -->
+<div id="loginPopup" class="login-popup">
+    <div class="login-popup-content">
+        <span class="close-btn">&times;</span>
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>
+
+    <!-- Hero Section -->
+     
+<!-- PC Parts Hero Section -->
+<section class="upcoming-pc-parts-hero">
+    <div class="hero-slider">
+        <div class="hero-slide">
+            <div class="hero-image">
+                <img src="PC Parts Images/Nvidia RTX 4090 Hero.jpg" alt="Nvidia RTX 4090">
+            </div>
+            <div class="hero-content">
+                <span class="release-date">Arriving in Early 2025</span>
+                <h2>Nvidia RTX 5090</h2>
+                <p>Experience unparalleled gaming performance with the Nvidia RTX 4090. Featuring the latest Ampere architecture, this GPU delivers stunning visuals and incredible frame rates.</p>
+                <a href="#" class="hero-cta">Buy Now</a>
+            </div>
+        </div>
+        <div class="hero-slide">
+            <div class="hero-image">
+                <img src="PC Parts Images/Intel Core i9-13900K Hero.jpg" alt="Intel Core i9-13900K">
+            </div>
+            <div class="hero-content">
+                <span class="release-date">Available Now</span>
+                <h2>Intel Core i9-13900K</h2>
+                <p>Unleash the power of the Intel Core i9-13900K. With 24 cores and 32 threads, this CPU is designed for gamers and creators who demand the best performance.</p>
+                <a href="#" class="hero-cta">Buy Now</a>
+            </div>
+        </div>
+        <div class="hero-slide">
+            <div class="hero-image">
+                <img src="PC Parts Images/AMD Ryzen 9 7950X Hero.jpg" alt="AMD Ryzen 9 7950X">
+            </div>
+            <div class="hero-content">
+                <span class="release-date">Available Now</span>
+                <h2>AMD Ryzen 9 7950X</h2>
+                <p>Experience the ultimate performance with the AMD Ryzen 9 7950X. Built on the latest Zen 4 architecture, this CPU offers exceptional multi-threaded performance for gaming and productivity.</p>
+                <a href="#" class="hero-cta">Buy Now</a>
+            </div>
+        </div>
+    </div>
+    <div class="hero-nav">
+        <button class="prev-slide">&lt;</button>
+        <div class="slide-dots"></div>
+        <button class="next-slide">&gt;</button>
+    </div>
+</section>
+</section>
+<!-- PC Parts Hero Section End -->
+ <!-- Trending Section -->
 </body>
+<script src="js/home.js"></script>
+<script src="js/login.js"></script>
+<script src="js/server.js"></script>
 </html>
