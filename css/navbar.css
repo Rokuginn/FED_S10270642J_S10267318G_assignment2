@@ -1,5 +1,9 @@
 body {
     font-family: Arial, sans-serif;
+    background: #000000;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 .navbar {
@@ -7,9 +11,10 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
-    background-color: white; /* Changed to white */
-    color: black; /* Changed to black */
-    border-bottom: 1px solid #ccc; /* Added border-bottom */
+    background: #000000;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 .logo {
@@ -22,7 +27,6 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-
 .nav-links {
     list-style: none;
     display: flex;
@@ -34,7 +38,7 @@ body {
 }
 
 .nav-links a {
-    color: black; /* Changed to black */
+    color: rgb(255, 255, 255); /* Changed to black */
     text-decoration: none;
     font-size: 18px;
 }
@@ -44,10 +48,27 @@ body {
     font-size: 16px;
 }
 
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-info #welcomeMessage {
+    font-size: 18px;
+    color: rgb(255, 255, 255);
+}
+
+.profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
 
 .icons a {
     margin-left: 15px;
-    color: black; /* Ensure the icons are black */
+    color: rgb(233, 233, 233); /* Ensure the icons are black */
 }
 
 .icons i {
