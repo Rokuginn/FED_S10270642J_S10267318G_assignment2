@@ -2,10 +2,17 @@
 const signUpBtn = document.getElementById('signUpBtn'); // Updated selector
 const loginPopup = document.getElementById('loginPopup');
 const closeBtn = document.querySelector('.close-btn');
+const sellBtn = document.getElementById('sellBtn'); // Added selector for Sell button
 
 signUpBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    loginPopup.style.display = 'block';
+    if (signUpBtn.textContent === 'Log out') {
+        if (confirm('Are you sure you want to log out?')) {
+            logoutUser();
+        }
+    } else {
+        loginPopup.style.display = 'block';
+    }
 });
 
 closeBtn.addEventListener('click', () => {
@@ -38,6 +45,9 @@ loginForm.addEventListener('submit', async (e) => {
         alert('Login successful!');
         loginPopup.style.display = 'none';
         displayUserInfo(result.username, result.profilePicture); // Use the response data
+        signUpBtn.textContent = 'Log out'; // Change button text to 'Log out'
+        sellBtn.style.display = 'inline-block'; // Show the Sell button
+        localStorage.setItem('user', JSON.stringify({ username: result.username, profilePicture: result.profilePicture })); // Store user info in localStorage
     } else {
         alert('Login failed!');
     }
@@ -64,6 +74,9 @@ registerForm.addEventListener('submit', async (e) => {
         alert('Registration successful!');
         loginPopup.style.display = 'none';
         displayUserInfo(result.username, result.profilePicture); // Use the response data
+        signUpBtn.textContent = 'Log out'; // Change button text to 'Log out'
+        sellBtn.style.display = 'inline-block'; // Show the Sell button
+        localStorage.setItem('user', JSON.stringify({ username: result.username, profilePicture: result.profilePicture })); // Store user info in localStorage
     } else {
         alert('Registration failed: ' + result.message);
     }
@@ -97,3 +110,35 @@ function displayUserInfo(username, profilePicturePath) {
 
     userInfo.style.display = 'flex';
 }
+
+// Function to handle user logout
+function logoutUser() {
+    // Clear user information
+    const userInfo = document.getElementById('userInfo');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    const profilePicture = document.getElementById('profilePicture');
+
+    welcomeMessage.textContent = '';
+    profilePicture.src = '';
+
+    userInfo.style.display = 'none';
+    signUpBtn.textContent = 'SignUp'; // Change button text back to 'SignUp'
+    sellBtn.style.display = 'none'; // Hide the Sell button
+    localStorage.removeItem('user'); // Remove user info from localStorage
+    alert('Logged out successfully!');
+}
+
+// Add event listener to the Sell button
+sellBtn.addEventListener('click', () => {
+    window.location.href = 'listing.html';
+});
+
+// Check if user is logged in on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+        displayUserInfo(user.username, user.profilePicture);
+        signUpBtn.textContent = 'Log out';
+        sellBtn.style.display = 'inline-block';
+    }
+});

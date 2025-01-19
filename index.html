@@ -19,24 +19,61 @@
         <ul class="nav-links">
             <li><a href="#">Home</a></li>
             <li><a href="#">PC Parts</a></li>
-            <li><a href="#">About</a></li>
+            <li><a href="#">Peripheral</a></li>
             <li><a href="#" id="signUpBtn">SignUp</a></li> <!-- Added id to the SignUp link -->
         </ul>
-        <div class="search-bar">
-            <input type="text" placeholder="Search...">
-        </div>
         <div class="user-info" id="userInfo" style="display: none;">
-            <img id="profilePicture" src="" alt="Profile Picture" class="profile-picture">
+            <img id="profilePicture" src="Images/avatar-default.svg" alt="" class="profile-picture">
             <span id="welcomeMessage"></span>
+            <button id="sellBtn" style="display: none;">Sell</button> <!-- Added Sell button -->
         </div>
         <div class="icons">
             <a href="#"><i class="fas fa-heart"></i></a>
             <a href="#"><i class="fas fa-shopping-cart"></i></a>
             <a href="#"><i class="fas fa-comment-dots"></i></a>
+            <button id="searchBtn"><i class="fas fa-search"></i></button>
         </div>
     </nav>
     <!-- Navbar End-->
     
+    <!-- Search Bar -->
+    <div class="search-bar" id="searchBar">
+        <input type="text" id="searchInput" placeholder="Search...">
+    </div>
+    
+    <!-- Login/Registration Popup -->
+    <div id="loginPopup" class="login-popup">
+        <div class="login-popup-content">
+            <span class="close-btn">&times;</span>
+            <div class="tab">
+                <button class="tablinks" onclick="openTab(event, 'Login')" id="defaultOpen">Login</button>
+                <button class="tablinks" onclick="openTab(event, 'Register')">Register</button>
+            </div>
+            <div id="Login" class="tabcontent">
+                <h2>Login</h2>
+                <form id="loginForm">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+            <div id="Register" class="tabcontent">
+                <h2>Register</h2>
+                <form id="registerForm">
+                    <label for="regUsername">Username:</label>
+                    <input type="text" id="regUsername" name="username" required>
+                    <label for="regEmail">Email:</label>
+                    <input type="email" id="regEmail" name="email" required>
+                    <label for="regPassword">Password:</label>
+                    <input type="password" id="regPassword" name="password" required>
+                    <button type="submit">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="main-content">
         <!-- Filter Column -->
         <aside class="filter-column">
@@ -57,7 +94,7 @@
             <div class="hero-slider">
                 <div class="hero-slide" data-category="gpu">
                     <div class="hero-image">
-                        <img src="PC Parts Images/Nvidia RTX 4090 Hero.jpg" alt="Nvidia RTX 4090">
+                        <img src="Images\geforce-ada-4090-web-og-1200x630.jpg" alt="Nvidia RTX 4090">
                     </div>
                     <div class="hero-content">
                         <span class="release-date">Arriving in Early 2025</span>
@@ -77,17 +114,6 @@
                         <a href="#" class="hero-cta">Buy Now</a>
                     </div>
                 </div>
-                <div class="hero-slide" data-category="cpu">
-                    <div class="hero-image">
-                        <img src="PC Parts Images/AMD Ryzen 9 7950X Hero.jpg" alt="AMD Ryzen 9 7950X">
-                    </div>
-                    <div class="hero-content">
-                        <span class="release-date">Available Now</span>
-                        <h2>AMD Ryzen 9 7950X</h2>
-                        <p>Experience the ultimate performance with the AMD Ryzen 9 7950X. Built on the latest Zen 4 architecture, this CPU offers exceptional multi-threaded performance for gaming and productivity.</p>
-                        <a href="#" class="hero-cta">Buy Now</a>
-                    </div>
-                </div>
                 <div class="hero-slide" data-category="gpu">
                     <div class="hero-image">
                         <img src="PC Parts Images/AMD Radeon RX 7900 XT Hero.jpg" alt="AMD Radeon RX 7900 XT">
@@ -99,106 +125,7 @@
                         <a href="#" class="hero-cta">Buy Now</a>
                     </div>
                 </div>
-                <div class="hero-slide" data-category="motherboard">
-                    <div class="hero-image">
-                        <img src="PC Parts Images/ASUS ROG Strix Z690-E Hero.jpg" alt="ASUS ROG Strix Z690-E">
-                    </div>
-                    <div class="hero-content">
-                        <span class="release-date">Available Now</span>
-                        <h2>ASUS ROG Strix Z690-E</h2>
-                        <p>Unlock the full potential of your CPU with the ASUS ROG Strix Z690-E motherboard. Featuring advanced cooling solutions and robust power delivery, this motherboard is built for overclocking.</p>
-                        <a href="#" class="hero-cta">Buy Now</a>
-                    </div>
                 </div>
-                <div class="hero-slide" data-category="ram">
-                    <div class="hero-image">
-                        <img src="PC Parts Images/Corsair Vengeance RGB Pro Hero.jpg" alt="Corsair Vengeance RGB Pro">
-                    </div>
-                    <div class="hero-content">
-                        <span class="release-date">Available Now</span>
-                        <h2>Corsair Vengeance RGB Pro</h2>
-                        <p>Enhance your system's performance with Corsair Vengeance RGB Pro DDR4 memory. Featuring dynamic RGB lighting and high-speed performance, this RAM is perfect for gaming and multitasking.</p>
-                        <a href="#" class="hero-cta">Buy Now</a>
-                    </div>
-                </div>
-                <div class="hero-slide" data-category="storage">
-                    <div class="hero-image">
-                        <img src="PC Parts Images/Samsung 980 Pro NVMe SSD Hero.jpg" alt="Samsung 980 Pro NVMe SSD">
-                    </div>
-                    <div class="hero-content">
-                        <span class="release-date">Available Now</span>
-                        <h2>Samsung 980 Pro NVMe SSD</h2>
-                        <p>Experience lightning-fast load times with the Samsung 980 Pro NVMe SSD. With read speeds up to 7000 MB/s, this SSD is perfect for gamers and content creators.</p>
-                        <a href="#" class="hero-cta">Buy Now</a>
-                    </div>
-                </div>
-                <div class="hero-slide" data-category="psu">
-                    <div class="hero-image">
-                        <img src="PC Parts Images/EVGA SuperNOVA 850 G5 Hero.jpg" alt="EVGA SuperNOVA 850 G5">
-                    </div>
-                    <div class="hero-content">
-                        <span class="release-date">Available Now</span>
-                        <h2>EVGA SuperNOVA 850 G5</h2>
-                        <p>Power your system with the EVGA SuperNOVA 850 G5. This fully modular power supply offers 850 watts of continuous power and 80 PLUS Gold efficiency.</p>
-                        <a href="#" class="hero-cta">Buy Now</a>
-                    </div>
-                </div>
-                <div class="hero-slide" data-category="case">
-                    <div class="hero-image">
-                        <img src="PC Parts Images/NZXT H510 Elite Hero.jpg" alt="NZXT H510 Elite">
-                    </div>
-                    <div class="hero-content">
-                        <span class="release-date">Available Now</span>
-                        <h2>NZXT H510 Elite</h2>
-                        <p>Build your dream PC with the NZXT H510 Elite. This mid-tower case features a sleek design, tempered glass panels, and excellent airflow for optimal cooling.</p>
-                        <a href="#" class="hero-cta">Buy Now</a>
-                    </div>
-                </div>
-                <div class="hero-slide" data-category="cooling">
-                    <div class="hero-image">
-                        <img src="PC Parts Images/Cooler Master MasterLiquid ML360R Hero.jpg" alt="Cooler Master MasterLiquid ML360R">
-                    </div>
-                    <div class="hero-content">
-                        <span class="release-date">Available Now</span>
-                        <h2>Cooler Master MasterLiquid ML360R</h2>
-                        <p>Keep your CPU cool with the Cooler Master MasterLiquid ML360R. This all-in-one liquid cooler features a 360mm radiator and customizable RGB lighting.</p>
-                        <a href="#" class="hero-cta">Buy Now</a>
-                    </div>
-                </div>
-                <div class="hero-slide" data-category="monitor">
-                    <div class="hero-image">
-                        <img src="PC Parts Images/ASUS ROG Swift PG259QN Hero.jpg" alt="ASUS ROG Swift PG259QN">
-                    </div>
-                    <div class="hero-content">
-                        <span class="release-date">Available Now</span>
-                        <h2>ASUS ROG Swift PG259QN</h2>
-                        <p>Experience ultra-smooth gameplay with the ASUS ROG Swift PG259QN. This 360Hz gaming monitor offers a 1ms response time and G-SYNC compatibility for the ultimate competitive edge.</p>
-                        <a href="#" class="hero-cta">Buy Now</a>
-                    </div>
-                </div>
-                <div class="hero-slide" data-category="keyboard">
-                    <div class="hero-image">
-                        <img src="PC Parts Images/Logitech G915 TKL Hero.jpg" alt="Logitech G915 TKL">
-                    </div>
-                    <div class="hero-content">
-                        <span class="release-date">Available Now</span>
-                        <h2>Logitech G915 TKL</h2>
-                        <p>Game in style with the Logitech G915 TKL. This wireless mechanical keyboard features low-profile GL switches and customizable RGB lighting.</p>
-                        <a href="#" class="hero-cta">Buy Now</a>
-                    </div>
-                </div>
-                <div class="hero-slide" data-category="mouse">
-                    <div class="hero-image">
-                        <img src="PC Parts Images/Razer DeathAdder V2 Hero.jpg" alt="Razer DeathAdder V2">
-                    </div>
-                    <div class="hero-content">
-                        <span class="release-date">Available Now</span>
-                        <h2>Razer DeathAdder V2</h2>
-                        <p>Dominate your opponents with the Razer DeathAdder V2. This ergonomic gaming mouse features a 20,000 DPI optical sensor and Razer Speedflex cable for ultimate precision.</p>
-                        <a href="#" class="hero-cta">Buy Now</a>
-                    </div>
-                </div>
-            </div>
             <div class="hero-nav">
                 <button class="prev-slide">&lt;</button>
                 <div class="slide-dots"></div>
@@ -216,5 +143,6 @@
     <script src="js/home.js"></script>
     <script src="js/login.js"></script>
     <script src="js/follow.js"></script>
+    <script src="js/search.js"></script> <!-- Added search.js -->
 </body>
 </html>

@@ -35,35 +35,3 @@ nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
 
 // Auto advance
 let autoAdvance = setInterval(() => goToSlide(currentSlide + 1), 5000);
-
-// Filtering functionality
-const filterButtons = document.querySelectorAll('.filter-btn');
-filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const category = button.getAttribute('data-category');
-        filterSlides(category);
-    });
-});
-
-function filterSlides(category) {
-    clearInterval(autoAdvance); // Stop auto-advance when filtering
-    let filteredSlides = 0;
-    slides.forEach((slide, index) => {
-        const slideCategory = slide.getAttribute('data-category');
-        if (slideCategory === category) {
-            slide.style.display = 'flex';
-            if (filteredSlides === 0) {
-                goToSlide(index);
-            }
-            filteredSlides++;
-        } else {
-            slide.style.display = 'none';
-        }
-    });
-    if (filteredSlides === 0) {
-        // If no slides match the filter, show a message or handle accordingly
-        console.log('No slides match the selected category.');
-    } else {
-        autoAdvance = setInterval(() => goToSlide(currentSlide + 1), 5000); // Restart auto-advance
-    }
-}
