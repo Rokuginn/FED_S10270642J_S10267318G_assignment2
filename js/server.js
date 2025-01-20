@@ -90,6 +90,7 @@ app.post('/listing', upload.single('image'), async (req, res) => {
     const { partName, category, condition, price, description, userId } = req.body; // Include userId
     const imagePath = '/uploads/' + req.file.filename; // Ensure the correct relative path
     try {
+        console.log('Creating new listing with data:', { partName, category, condition, price, description, imagePath, userId });
         const newListing = new Listing({ partName, category, condition, price, description, imagePath, userId });
         await newListing.save();
         console.log('New listing created:', newListing); // Log the new listing

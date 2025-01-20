@@ -42,22 +42,29 @@ listingForm.addEventListener('submit', async (e) => {
     const user = JSON.parse(localStorage.getItem('user')); // Get the logged-in user
     formData.append('userId', user._id); // Append userId to the form data
 
-    const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/listing', {
-        method: 'POST',
-        body: formData
-    });
+    try {
+        console.log('Submitting listing:', formData);
+        const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/listing', {
+            method: 'POST',
+            body: formData
+        });
 
-    const result = await response.json();
-    if (result.success) {
-        alert('Listing submitted successfully!');
-        listingForm.reset();
-        addListedItem(result.listing);
-        imagePreviewDefaultText.style.display = null;
-        imagePreviewImage.style.display = null;
-        imagePreviewImage.setAttribute('src', '');
-        conditionButtons.forEach(btn => btn.classList.remove('selected'));
-    } else {
-        alert('Failed to submit listing: ' + result.message);
+        const result = await response.json();
+        console.log('Listing submission result:', result);
+        if (result.success) {
+            alert('Listing submitted successfully!');
+            listingForm.reset();
+            addListedItem(result.listing);
+            imagePreviewDefaultText.style.display = null;
+            imagePreviewImage.style.display = null;
+            imagePreviewImage.setAttribute('src', '');
+            conditionButtons.forEach(btn => btn.classList.remove('selected'));
+        } else {
+            alert('Failed to submit listing: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error submitting listing:', error);
+        alert('Failed to submit listing: ' + error.message);
     }
 });
 
