@@ -47,7 +47,7 @@ loginForm.addEventListener('submit', async (e) => {
         displayUserInfo(result.username, result.profilePicture);
         signUpBtn.textContent = 'Log out';
         sellBtn.style.display = 'inline-block';
-        localStorage.setItem('user', JSON.stringify({ username: result.username, profilePicture: result.profilePicture }));
+        localStorage.setItem('user', JSON.stringify({ _id: result.userId, username: result.username, profilePicture: result.profilePicture }));
     } else {
         alert('Login failed!');
     }
@@ -76,7 +76,7 @@ registerForm.addEventListener('submit', async (e) => {
         displayUserInfo(result.username, result.profilePicture); // Use the response data
         signUpBtn.textContent = 'Log out'; // Change button text to 'Log out'
         sellBtn.style.display = 'inline-block'; // Show the Sell button
-        localStorage.setItem('user', JSON.stringify({ username: result.username, profilePicture: result.profilePicture })); // Store user info in localStorage
+        localStorage.setItem('user', JSON.stringify({ _id: result.userId, username: result.username, profilePicture: result.profilePicture })); // Store user info in localStorage
     } else {
         alert('Registration failed: ' + result.message);
     }

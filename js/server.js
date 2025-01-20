@@ -59,7 +59,7 @@ app.post('/login', async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username, password });
     if (user) {
-        res.json({ success: true, username: user.username, profilePicture: 'path/to/profile-picture.jpg' });
+        res.json({ success: true, userId: user._id, username: user.username, profilePicture: 'path/to/profile-picture.jpg' });
     } else {
         res.json({ success: false });
     }
@@ -77,7 +77,7 @@ app.post('/register', async (req, res) => {
         }
         const newUser = new User({ username, email, password });
         await newUser.save();
-        res.json({ success: true, username: newUser.username, profilePicture: 'path/to/profile-picture.jpg' });
+        res.json({ success: true, userId: newUser._id, username: newUser.username, profilePicture: 'path/to/profile-picture.jpg' });
     } catch (error) {
         console.error('Error during registration:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
