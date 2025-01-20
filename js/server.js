@@ -1,23 +1,29 @@
+const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const cors = require('cors'); // Import the cors package
 const multer = require('multer'); // Import multer for file uploads
-const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const app = express();
 const port = 3000;
 
+// Ensure the public/uploads directory exists
+const uploadDir = path.join(__dirname, 'public/uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 app.use(cors()); // Enable CORS for all routes
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from the public directory
-app.use('/uploads', express.static(path.join(__dirname, 'public/uploads'))); // Serve uploaded files
+app.use('/uploads', express.static(uploadDir)); // Serve uploaded files
 
 // Set up multer for file uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadPath = path.join(__dirname, 'public/uploads');
-        cb(null, uploadPath);
+        cb(null, uploadDir);
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname));

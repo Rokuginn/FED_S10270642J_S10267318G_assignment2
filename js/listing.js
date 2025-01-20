@@ -49,8 +49,12 @@ listingForm.addEventListener('submit', async (e) => {
             body: formData
         });
 
-        const result = await response.json();
+        const responseText = await response.text(); // Get the raw response text
+        console.log('Raw response:', responseText);
+
+        const result = JSON.parse(responseText); // Parse the response text as JSON
         console.log('Listing submission result:', result);
+
         if (result.success) {
             alert('Listing submitted successfully!');
             listingForm.reset();
