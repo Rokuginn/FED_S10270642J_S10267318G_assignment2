@@ -4,7 +4,7 @@ const unfollowBtn = document.getElementById('unfollowBtn');
 
 followBtn.addEventListener('click', async () => {
     const following = followBtn.getAttribute('data-username');
-    const response = await fetch('/follow', {
+    const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/follow', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -22,7 +22,7 @@ followBtn.addEventListener('click', async () => {
 
 unfollowBtn.addEventListener('click', async () => {
     const following = unfollowBtn.getAttribute('data-username');
-    const response = await fetch('/unfollow', {
+    const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/unfollow', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

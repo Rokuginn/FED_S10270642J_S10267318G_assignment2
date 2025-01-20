@@ -34,7 +34,8 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 const userSchema = new mongoose.Schema({
     username: String,
     email: String,
-    password: String
+    password: String,
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // Add following field
 });
 
 const User = mongoose.model('User', userSchema);
@@ -47,6 +48,7 @@ const listingSchema = new mongoose.Schema({
     price: Number,
     description: String,
     imagePath: String,
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Add userId field
     date: { type: Date, default: Date.now }
 });
 
@@ -84,10 +86,10 @@ app.post('/register', async (req, res) => {
 
 // Handle listing submissions
 app.post('/listing', upload.single('image'), async (req, res) => {
-    const { partName, category, condition, price, description } = req.body;
+    const { partName, category, condition, price, description, userId } = req.body; // Include userId
     const imagePath = '/uploads/' + req.file.filename; // Ensure the correct relative path
     try {
-        const newListing = new Listing({ partName, category, condition, price, description, imagePath });
+        const newListing = new Listing({ partName, category, condition, price, description, imagePath, userId });
         await newListing.save();
         console.log('New listing created:', newListing); // Log the new listing
         res.json({ success: true, listing: newListing });
@@ -97,13 +99,49 @@ app.post('/listing', upload.single('image'), async (req, res) => {
     }
 });
 
-// Fetch all listings
+// Fetch listings for a specific user
 app.get('/listings', async (req, res) => {
+    const { userId } = req.query; // Get userId from query parameters
     try {
-        const listings = await Listing.find();
+        const user = await User.findById(userId).populate('following');
+        const followingIds = user.following.map(user => user._id);
+        const listings = await Listing.find({ userId: { $in: followingIds } });
         res.json(listings);
     } catch (error) {
         console.error('Error fetching listings:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
+// Handle follow requests
+app.post('/follow', async (req, res) => {
+    const { followerId, followingId } = req.body;
+    try {
+        const follower = await User.findById(followerId);
+        const following = await User.findById(followingId);
+        if (!follower.following.includes(followingId)) {
+            follower.following.push(followingId);
+            await follower.save();
+            res.json({ success: true });
+        } else {
+            res.json({ success: false, message: 'Already following' });
+        }
+    } catch (error) {
+        console.error('Error during follow:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
+// Handle unfollow requests
+app.post('/unfollow', async (req, res) => {
+    const { followerId, followingId } = req.body;
+    try {
+        const follower = await User.findById(followerId);
+        follower.following = follower.following.filter(id => id.toString() !== followingId);
+        await follower.save();
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error during unfollow:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });

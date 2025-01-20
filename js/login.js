@@ -32,7 +32,7 @@ loginForm.addEventListener('submit', async (e) => {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    const response = await fetch('http://localhost:3000/login', { // Ensure the correct URL
+    const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -44,10 +44,10 @@ loginForm.addEventListener('submit', async (e) => {
     if (result.success) {
         alert('Login successful!');
         loginPopup.style.display = 'none';
-        displayUserInfo(result.username, result.profilePicture); // Use the response data
-        signUpBtn.textContent = 'Log out'; // Change button text to 'Log out'
-        sellBtn.style.display = 'inline-block'; // Show the Sell button
-        localStorage.setItem('user', JSON.stringify({ username: result.username, profilePicture: result.profilePicture })); // Store user info in localStorage
+        displayUserInfo(result.username, result.profilePicture);
+        signUpBtn.textContent = 'Log out';
+        sellBtn.style.display = 'inline-block';
+        localStorage.setItem('user', JSON.stringify({ username: result.username, profilePicture: result.profilePicture }));
     } else {
         alert('Login failed!');
     }
@@ -61,7 +61,7 @@ registerForm.addEventListener('submit', async (e) => {
     const email = document.getElementById('regEmail').value;
     const password = document.getElementById('regPassword').value;
 
-    const response = await fetch('http://localhost:3000/register', {
+    const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
