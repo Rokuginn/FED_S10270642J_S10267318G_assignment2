@@ -88,8 +88,8 @@ function addListedItem(listing) {
 }
 
 // Fetch and display existing listings on page load
-async function fetchListings() {
-    const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/listings');
+async function fetchUserListings(userId) {
+    const response = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listings/${userId}`);
     const listings = await response.json();
     listings.forEach(listing => addListedItem(listing));
 }
@@ -100,8 +100,8 @@ document.addEventListener('DOMContentLoaded', () => {
         displayUserInfo(user.username, user.profilePicture);
         document.getElementById('signUpBtn').textContent = 'Log out';
         document.getElementById('sellBtn').style.display = 'inline-block';
+        fetchUserListings(user._id); // Fetch listings for the logged-in user
     }
-    fetchListings();
 });
 
 // Function to display user information

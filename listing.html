@@ -41,6 +41,39 @@
     <div class="search-bar" id="searchBar">
         <input type="text" id="searchInput" placeholder="Search...">
     </div>
+    <!-- Login/Registration Popup -->
+    <div id="loginPopup" class="login-popup">
+        <div class="login-popup-content">
+            <span class="close-btn">&times;</span>
+            <div class="tab">
+                <button class="tablinks" onclick="openTab(event, 'Login')" id="defaultOpen">Login</button>
+                <button class="tablinks" onclick="openTab(event, 'Register')">Register</button>
+            </div>
+            <div id="Login" class="tabcontent">
+                <h2>Login</h2>
+                <form id="loginForm">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+            <div id="Register" class="tabcontent">
+                <h2>Register</h2>
+                <form id="registerForm">
+                    <label for="regUsername">Username:</label>
+                    <input type="text" id="regUsername" name="username" required>
+                    <label for="regEmail">Email:</label>
+                    <input type="email" id="regEmail" name="email" required>
+                    <label for="regPassword">Password:</label>
+                    <input type="password" id="regPassword" name="password" required>
+                    <button type="submit">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Listing Page Container -->
     <div class="listing-page-container">
@@ -90,7 +123,7 @@
 
         <!-- Listed Items -->
         <div class="listed-items-container" id="listedItemsContainer">
-            <h2>Listed Items</h2>
+            <h2>Your Listed Items</h2>
             <div id="listedItems" class="grid-container"></div>
         </div>
     </div>

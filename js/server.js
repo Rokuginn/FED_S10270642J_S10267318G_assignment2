@@ -56,7 +56,8 @@ const listingSchema = new mongoose.Schema({
     description: String,
     imagePath: String,
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Add userId field
-    date: { type: Date, default: Date.now }
+    date: { type: Date, default: Date.now },
+    likes: { type: Number, default: 0 } // Add likes property
 });
 
 const Listing = mongoose.model('Listing', listingSchema);
@@ -118,6 +119,18 @@ app.get('/listings', async (req, res) => {
     }
 });
 
+// Fetch listings for a specific user
+app.get('/listings/:userId', async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const listings = await Listing.find({ userId });
+        res.json(listings);
+    } catch (error) {
+        console.error('Error fetching listings:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
 // Handle follow requests
 app.post('/follow', async (req, res) => {
     const { followerId, followingId } = req.body;
@@ -147,6 +160,42 @@ app.post('/unfollow', async (req, res) => {
         res.json({ success: true });
     } catch (error) {
         console.error('Error during unfollow:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
+// Handle like requests
+app.post('/listings/:id/like', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const listing = await Listing.findById(id);
+        if (listing) {
+            listing.likes += 1;
+            await listing.save();
+            res.json({ success: true, likes: listing.likes });
+        } else {
+            res.status(404).json({ success: false, message: 'Listing not found' });
+        }
+    } catch (error) {
+        console.error('Error liking listing:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
+// Handle unlike requests
+app.post('/listings/:id/unlike', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const listing = await Listing.findById(id);
+        if (listing) {
+            listing.likes = Math.max(0, listing.likes - 1); // Ensure likes don't go below 0
+            await listing.save();
+            res.json({ success: true, likes: listing.likes });
+        } else {
+            res.status(404).json({ success: false, message: 'Listing not found' });
+        }
+    } catch (error) {
+        console.error('Error unliking listing:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });

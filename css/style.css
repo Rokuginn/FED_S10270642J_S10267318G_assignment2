@@ -387,3 +387,22 @@ body {
     font-size: 16px;
     color: #555;
 }
+
+.for-you-section, .trending-section, .recent-release-section {
+    padding: 20px;
+    background-color: #161B22;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.for-you-section h2, .trending-section h2, .recent-release-section h2 {
+    color: #FFFFFF;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
