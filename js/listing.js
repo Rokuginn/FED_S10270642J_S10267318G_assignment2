@@ -76,7 +76,15 @@ function addListedItem(listing) {
     console.log('Adding listing:', listing);
     const itemCard = document.createElement('div');
     itemCard.classList.add('item-card');
+
+    // Calculate how long ago the listing was created
+    const listingDate = new Date(listing.date);
+    const now = new Date();
+    const timeDiff = Math.abs(now - listingDate);
+    const daysAgo = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
     itemCard.innerHTML = `
+        <div class="listing-time">${daysAgo} days ago</div>
         <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${listing.imagePath}" alt="${listing.partName}" class="item-image">
         <div class="item-card-content">
             <h3>${listing.partName}</h3>
