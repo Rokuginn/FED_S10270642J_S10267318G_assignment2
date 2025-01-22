@@ -200,6 +200,22 @@ app.post('/listings/:id/unlike', async (req, res) => {
     }
 });
 
+// Handle delete requests
+app.delete('/listings/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const listing = await Listing.findByIdAndDelete(id);
+        if (listing) {
+            res.json({ success: true });
+        } else {
+            res.status(404).json({ success: false, message: 'Listing not found' });
+        }
+    } catch (error) {
+        console.error('Error deleting listing:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });

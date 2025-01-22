@@ -77,14 +77,35 @@ function addListedItem(listing) {
     const itemCard = document.createElement('div');
     itemCard.classList.add('item-card');
     itemCard.innerHTML = `
-        <img src="${listing.imagePath}" alt="${listing.partName}" class="item-image">
-        <h3>${listing.partName}</h3>
-        <p>Category: ${listing.category}</p>
-        <p>Condition: ${listing.condition}</p>
-        <p>Price: $${listing.price}</p>
-        <p>${listing.description}</p>
+        <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${listing.imagePath}" alt="${listing.partName}" class="item-image">
+        <div class="item-card-content">
+            <h3>${listing.partName}</h3>
+            <p class="price">$${listing.price}</p>
+            <p>Category: ${listing.category}</p>
+            <p>Condition: ${listing.condition}</p>
+            <button class="delete-btn" onclick="deleteListing('${listing._id}')">Delete</button>
+        </div>
     `;
     listedItemsContainer.appendChild(itemCard);
+}
+
+async function deleteListing(listingId) {
+    try {
+        const response = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listings/${listingId}`, {
+            method: 'DELETE'
+        });
+        const result = await response.json();
+        if (result.success) {
+            alert('Listing deleted successfully!');
+            // Remove the item card from the DOM
+            document.querySelector(`.item-card[data-id="${listingId}"]`).remove();
+        } else {
+            alert('Failed to delete listing: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error deleting listing:', error);
+        alert('Failed to delete listing: ' + error.message);
+    }
 }
 
 // Fetch and display existing listings on page load
