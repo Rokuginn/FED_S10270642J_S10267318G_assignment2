@@ -107,13 +107,10 @@ app.post('/listing', upload.single('image'), async (req, res) => {
     }
 });
 
-// Fetch listings for a specific user
+// Fetch all listings
 app.get('/listings', async (req, res) => {
-    const { userId } = req.query; // Get userId from query parameters
     try {
-        const user = await User.findById(userId).populate('following');
-        const followingIds = user.following.map(user => user._id);
-        const listings = await Listing.find({ userId: { $in: followingIds } });
+        const listings = await Listing.find();
         res.json(listings);
     } catch (error) {
         console.error('Error fetching listings:', error);

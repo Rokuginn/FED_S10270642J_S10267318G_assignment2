@@ -89,8 +89,7 @@ function addListedItem(listing) {
 
 // Fetch and display existing listings on page load
 async function fetchListings() {
-    const user = JSON.parse(localStorage.getItem('user')); // Get the logged-in user
-    const response = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listings?userId=${user._id}`);
+    const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/listings');
     const listings = await response.json();
     listings.forEach(listing => addListedItem(listing));
 }
