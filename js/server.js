@@ -57,7 +57,8 @@ const listingSchema = new mongoose.Schema({
     imagePath: String,
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Add userId field
     date: { type: Date, default: Date.now },
-    likes: { type: Number, default: 0 } // Add likes property
+    likes: { type: Number, default: 0 }, // Add likes property
+    likedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // Add likedBy field
 });
 
 const Listing = mongoose.model('Listing', listingSchema);
@@ -180,38 +181,30 @@ app.post('/unfollow', async (req, res) => {
     }
 });
 
-// Handle like requests
+// Handle like/unlike requests
 app.post('/listings/:id/like', async (req, res) => {
     const { id } = req.params;
+    const { userId } = req.body; // Get the userId from the request body
     try {
         const listing = await Listing.findById(id);
         if (listing) {
-            listing.likes += 1;
+            const userIndex = listing.likedBy.indexOf(userId);
+            if (userIndex === -1) {
+                // User has not liked the listing, so add their ID
+                listing.likedBy.push(userId);
+                listing.likes += 1;
+            } else {
+                // User has already liked the listing, so remove their ID
+                listing.likedBy.splice(userIndex, 1);
+                listing.likes = Math.max(0, listing.likes - 1); // Ensure likes don't go below 0
+            }
             await listing.save();
-            res.json({ success: true, likes: listing.likes });
+            res.json({ success: true, likes: listing.likes, likedBy: listing.likedBy });
         } else {
             res.status(404).json({ success: false, message: 'Listing not found' });
         }
     } catch (error) {
-        console.error('Error liking listing:', error);
-        res.status(500).json({ success: false, message: 'Internal server error' });
-    }
-});
-
-// Handle unlike requests
-app.post('/listings/:id/unlike', async (req, res) => {
-    const { id } = req.params;
-    try {
-        const listing = await Listing.findById(id);
-        if (listing) {
-            listing.likes = Math.max(0, listing.likes - 1); // Ensure likes don't go below 0
-            await listing.save();
-            res.json({ success: true, likes: listing.likes });
-        } else {
-            res.status(404).json({ success: false, message: 'Listing not found' });
-        }
-    } catch (error) {
-        console.error('Error unliking listing:', error);
+        console.error('Error liking/unliking listing:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });
@@ -228,6 +221,25 @@ app.delete('/listings/:id', async (req, res) => {
         }
     } catch (error) {
         console.error('Error deleting listing:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
+// Handle profile picture update
+app.post('/updateProfilePicture', upload.single('newProfilePicture'), async (req, res) => {
+    const { userId } = req.body;
+    const newProfilePicturePath = '/uploads/' + req.file.filename;
+    try {
+        const user = await User.findById(userId);
+        if (user) {
+            user.profilePicture = newProfilePicturePath;
+            await user.save();
+            res.json({ success: true, profilePicture: newProfilePicturePath });
+        } else {
+            res.status(404).json({ success: false, message: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error updating profile picture:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });

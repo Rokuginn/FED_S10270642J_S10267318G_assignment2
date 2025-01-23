@@ -63,15 +63,20 @@ async function fetchRecentReleaseItems() {
 }
 
 async function likeListing(listingId) {
-    const response = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listings/${listingId}/like`, {
-        method: 'POST'
-    });
-    const result = await response.json();
-    if (result.success) {
-        const likesElement = document.getElementById(`likes-${listingId}`);
-        likesElement.textContent = result.likes;
-    } else {
-        alert('Failed to like the listing');
+    try {
+        const response = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listings/${listingId}/like`, {
+            method: 'POST'
+        });
+        const result = await response.json();
+        if (result.success) {
+            const likesElement = document.querySelector(`.item-card[data-id="${listingId}"] .likes`);
+            likesElement.textContent = `${result.likes} likes`;
+        } else {
+            alert('Failed to like listing: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error liking listing:', error);
+        alert('Failed to like listing: ' + error.message);
     }
 }
 
@@ -104,8 +109,16 @@ async function addListedItem(container, listing) {
     const userResponse = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/users/${listing.userId}`);
     const user = await userResponse.json();
 
+    // Check if the current user has liked the listing
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+    const hasLiked = listing.likedBy.includes(currentUser._id);
+
     itemCard.innerHTML = `
         <div class="listing-time">${daysAgo} days ago</div>
+        <div class="user-info">
+            <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${user.profilePicture}" alt="${user.username}">
+            <span>${user.username}</span>
+        </div>
         <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${listing.imagePath}" alt="${listing.partName}" class="item-image">
         <div class="item-card-content">
             <h3>${listing.partName}</h3>
@@ -113,13 +126,34 @@ async function addListedItem(container, listing) {
             <p>Category: ${listing.category}</p>
             <p>Condition: ${listing.condition}</p>
             <p class="likes">${listing.likes} likes</p>
-            <div class="user-info">
-                <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${user.profilePicture}" alt="${user.username}">
-                <span>${user.username}</span>
-            </div>
+            <button class="like-btn ${hasLiked ? 'liked' : ''}" onclick="toggleLike('${listing._id}', this)"><i class="fas fa-heart"></i></button>
         </div>
     `;
     container.appendChild(itemCard);
+}
+
+async function toggleLike(listingId, button) {
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+    try {
+        const response = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listings/${listingId}/like`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId: currentUser._id })
+        });
+        const result = await response.json();
+        if (result.success) {
+            const likesElement = document.querySelector(`.item-card[data-id="${listingId}"] .likes`);
+            likesElement.textContent = `${result.likes} likes`;
+            button.classList.toggle('liked');
+        } else {
+            alert('Failed to like/unlike listing: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error liking/unliking listing:', error);
+        alert('Failed to like/unlike listing: ' + error.message);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -142,3 +142,49 @@ document.addEventListener('DOMContentLoaded', () => {
         sellBtn.style.display = 'inline-block';
     }
 });
+
+const profilePicture = document.getElementById('profilePicture');
+const profilePicturePopup = document.getElementById('profilePicturePopup');
+const profilePictureCloseBtn = profilePicturePopup.querySelector('.close-btn');
+const profilePictureForm = document.getElementById('profilePictureForm');
+
+profilePicture.addEventListener('click', () => {
+    profilePicturePopup.style.display = 'block';
+});
+
+profilePictureCloseBtn.addEventListener('click', () => {
+    profilePicturePopup.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+    if (e.target == profilePicturePopup) {
+        profilePicturePopup.style.display = 'none';
+    }
+});
+
+profilePictureForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(profilePictureForm);
+    const user = JSON.parse(localStorage.getItem('user')); // Get the logged-in user
+    formData.append('userId', user._id); // Append userId to the form data
+
+    try {
+        const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/updateProfilePicture', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert('Profile picture updated successfully!');
+            profilePicture.src = result.profilePicture;
+            localStorage.setItem('user', JSON.stringify({ ...user, profilePicture: result.profilePicture }));
+            profilePicturePopup.style.display = 'none';
+        } else {
+            alert('Failed to update profile picture: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error updating profile picture:', error);
+        alert('Failed to update profile picture: ' + error.message);
+    }
+});
