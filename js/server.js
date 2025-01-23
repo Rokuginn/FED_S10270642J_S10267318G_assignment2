@@ -5,51 +5,43 @@ const cors = require('cors'); // Import the cors package
 const multer = require('multer'); // Import multer for file uploads
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const Grid = require('gridfs-stream');
-const { GridFsStorage } = require('multer-gridfs-storage');
 
 const app = express();
 const port = 3000;
 
-// Enable CORS for all requests
-app.use(cors({
-    origin: 'https://your-frontend-domain.com', // Replace with your frontend domain
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    optionsSuccessStatus: 204
-}));
+// Ensure the public/uploads directory exists
+const uploadDir = path.join(__dirname, 'public/uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+app.use(cors()); // Enable CORS for all routes
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from the public directory
+app.use('/uploads', express.static(uploadDir)); // Serve uploaded files
+
+// Set up multer for file uploads
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage: storage });
 
 // Connect to MongoDB Cluster
 const mongoURI = 'mongodb+srv://Rokuginn:ac,1300101@mokesellcluster.8luqw.mongodb.net/?retryWrites=true&w=majority&appName=MokeSellCluster';
-const conn = mongoose.createConnection(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
-
-let gfs;
-conn.once('open', () => {
-    // Initialize GridFS stream
-    gfs = Grid(conn.db, mongoose.mongo);
-    gfs.collection('uploads');
-});
-
-// Set up GridFS storage for multer
-const storage = new GridFsStorage({
-    url: mongoURI,
-    file: (req, file) => {
-        return {
-            bucketName: 'uploads', // Bucket name should match the collection name
-            filename: `${Date.now()}-${file.originalname}`
-        };
-    }
-});
-const upload = multer({ storage });
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB connected successfully'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 // Define a schema and model for user login information
 const userSchema = new mongoose.Schema({
     username: String,
     email: String,
     password: String,
-    profilePicture: String,
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // Add following field
 });
 
@@ -104,7 +96,7 @@ app.post('/register', async (req, res) => {
 // Handle listing submissions
 app.post('/listing', upload.single('image'), async (req, res) => {
     const { partName, category, condition, price, description, userId } = req.body; // Include userId
-    const imagePath = `/image/${req.file.id}`; // Use the file ID from GridFS
+    const imagePath = '/uploads/' + req.file.filename; // Ensure the correct relative path
     try {
         console.log('Creating new listing with data:', { partName, category, condition, price, description, imagePath, userId });
         const newListing = new Listing({ partName, category, condition, price, description, imagePath, userId, date: new Date() });
@@ -115,20 +107,6 @@ app.post('/listing', upload.single('image'), async (req, res) => {
         console.error('Error during listing submission:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
-});
-
-// Serve images from GridFS
-app.get('/image/:id', (req, res) => {
-    const fileId = req.params.id;
-    gfs.files.findOne({ _id: mongoose.Types.ObjectId(fileId) }, (err, file) => {
-        if (!file || file.length === 0) {
-            return res.status(404).json({ success: false, message: 'File not found' });
-        }
-
-        const readstream = gfs.createReadStream(file.filename);
-        res.set('Content-Type', file.contentType);
-        readstream.pipe(res);
-    });
 });
 
 // Fetch all listings
@@ -250,7 +228,7 @@ app.delete('/listings/:id', async (req, res) => {
 // Handle profile picture update
 app.post('/updateProfilePicture', upload.single('newProfilePicture'), async (req, res) => {
     const { userId } = req.body;
-    const newProfilePicturePath = `/image/${req.file.id}`; // Use the file ID from GridFS
+    const newProfilePicturePath = '/uploads/' + req.file.filename;
     try {
         const user = await User.findById(userId);
         if (user) {
