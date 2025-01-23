@@ -134,6 +134,7 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
     margin: 10px;
+    height: 350px; /* Increase the height to fit the profile picture, name, and days listed ago */
 }
 
 .item-card img {
@@ -148,6 +149,7 @@ body {
     padding: 10px;
     text-align: left;
     width: 100%;
+    margin-top: auto; /* Push the content to the bottom */
 }
 
 .item-card h3 {
@@ -182,8 +184,9 @@ body {
     align-items: center;
     margin-top: 10px;
     position: absolute;
-    top: 30px;
+    top: 30px; /* Adjusted to be below the listing-time */
     left: 10px;
+    z-index: 1; /* Ensure it stays on top */
 }
 
 .item-card .user-info img {
@@ -231,6 +234,7 @@ body {
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 12px;
+    z-index: 1; /* Ensure it stays on top */
 }
 
 .like-btn {
