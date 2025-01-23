@@ -76,6 +76,7 @@ function addListedItem(listing) {
     console.log('Adding listing:', listing);
     const itemCard = document.createElement('div');
     itemCard.classList.add('item-card');
+    itemCard.setAttribute('data-id', listing._id); // Set the data-id attribute
 
     // Calculate how long ago the listing was created
     const listingDate = new Date(listing.date);

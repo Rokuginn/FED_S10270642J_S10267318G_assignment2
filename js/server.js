@@ -131,6 +131,22 @@ app.get('/listings/:userId', async (req, res) => {
     }
 });
 
+// Fetch user information
+app.get('/users/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const user = await User.findById(id);
+        if (user) {
+            res.json(user);
+        } else {
+            res.status(404).json({ success: false, message: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
 // Handle follow requests
 app.post('/follow', async (req, res) => {
     const { followerId, followingId } = req.body;

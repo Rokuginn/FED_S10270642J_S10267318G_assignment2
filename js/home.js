@@ -88,19 +88,36 @@ async function unlikeListing(listingId) {
     }
 }
 
-function addListedItem(container, listing) {
+async function addListedItem(container, listing) {
+    console.log('Adding listing:', listing);
     const itemCard = document.createElement('div');
     itemCard.classList.add('item-card');
+    itemCard.setAttribute('data-id', listing._id); // Set the data-id attribute
+
+    // Calculate how long ago the listing was created
+    const listingDate = new Date(listing.date);
+    const now = new Date();
+    const timeDiff = Math.abs(now - listingDate);
+    const daysAgo = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+    // Fetch user information
+    const userResponse = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/users/${listing.userId}`);
+    const user = await userResponse.json();
+
     itemCard.innerHTML = `
-        <img src="${listing.imagePath}" alt="${listing.partName}" class="item-image">
-        <h3>${listing.partName}</h3>
-        <p>Category: ${listing.category}</p>
-        <p>Condition: ${listing.condition}</p>
-        <p>Price: $${listing.price}</p>
-        <p>${listing.description}</p>
-        <p>Likes: <span id="likes-${listing._id}">${listing.likes}</span></p>
-        <button onclick="likeListing('${listing._id}')">Like</button>
-        <button onclick="unlikeListing('${listing._id}')">Unlike</button>
+        <div class="listing-time">${daysAgo} days ago</div>
+        <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${listing.imagePath}" alt="${listing.partName}" class="item-image">
+        <div class="item-card-content">
+            <h3>${listing.partName}</h3>
+            <p class="price">$${listing.price}</p>
+            <p>Category: ${listing.category}</p>
+            <p>Condition: ${listing.condition}</p>
+            <p class="likes">${listing.likes} likes</p>
+            <div class="user-info">
+                <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${user.profilePicture}" alt="${user.username}">
+                <span>${user.username}</span>
+            </div>
+        </div>
     `;
     container.appendChild(itemCard);
 }
