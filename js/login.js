@@ -1,29 +1,3 @@
-// Popup functionality
-const signUpBtn = document.getElementById('signUpBtn'); // Updated selector
-const loginPopup = document.getElementById('loginPopup');
-const closeBtn = document.querySelector('.close-btn');
-const sellBtn = document.getElementById('sellBtn'); // Added selector for Sell button
-
-signUpBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (signUpBtn.textContent === 'Log out') {
-        if (confirm('Are you sure you want to log out?')) {
-            logoutUser();
-        }
-    } else {
-        loginPopup.style.display = 'block';
-    }
-});
-
-closeBtn.addEventListener('click', () => {
-    loginPopup.style.display = 'none';
-});
-
-window.addEventListener('click', (e) => {
-    if (e.target == loginPopup) {
-        loginPopup.style.display = 'none';
-    }
-});
 
 // Form submission
 document.getElementById('loginForm').addEventListener('submit', async (e) => {

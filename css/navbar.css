@@ -1,28 +1,53 @@
+* {
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    position: relative;
+}
+
 .navbar {
+    height: 80px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
-    background: #000000;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to left, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to left, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    align-items: center;
+    font-size: 1.2rem;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    overflow: hidden;
+    padding: 10px 20px; /* Moved from style.css */
+    border-bottom: 1px solid #30363D; /* Moved from style.css */
 }
 
 .logo {
     font-size: 24px;
     font-weight: bold;
-    background: #00F260;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #0575E6, #00F260);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #0575E6, #00F260); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, #0066FF, #00FF9D);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    padding-left: 110px;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 50px;
 }
 
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 50px;
+    gap: 20px;
 }
 
 .nav-links li {
@@ -30,46 +55,18 @@
 }
 
 .nav-links a {
-    color: rgb(255, 255, 255); /* Changed to black */
+    color: #fff;
     text-decoration: none;
-    font-size: 18px;
-}
-
-.search-bar {
-    position: absolute;
-    top: 50px; /* Position it below the navbar */
-    right: 20px;
-    width: 0;
-    max-width: 600px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    transition: width 0.3s ease;
-}
-
-.search-bar input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    background: #0D1117;
-    border: 1px solid #30363D;
-    color: #FFFFFF;
-    border-radius: 5px;
-}
-
-#searchBtn {
-    background: none;
-    border: none;
-    color: #8B949E;
-    cursor: pointer;
     font-size: 20px;
-    padding: 5px;
     transition: color 0.3s ease;
 }
 
-#searchBtn:hover {
+.nav-links a:hover {
     color: #00FF9D;
+}
+
+#logoutLink {
+    display: none; /* Initially hidden */
 }
 
 .user-info {
@@ -79,84 +76,12 @@
 }
 
 .user-info #welcomeMessage {
-    font-size: 18px;
-    color: rgb(255, 255, 255);
-}
-
-.profile-picture {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.icons {
+    font-size: 20px;
     display: flex;
     align-items: center;
-    gap: 15px;
 }
 
-.icons a, #searchBtn {
-    color: rgb(233, 233, 233); /* Ensure the icons are black */
-}
-
-.icons a:hover, #searchBtn:hover {
-    color: #00FF9D;
-}
-
-.icons i {
-    font-size: 24px; /* Adjust the size of the icons */
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
-    background: #0D1117;
-}
-
-.navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background: #161B22;
-    border-bottom: 1px solid #30363D;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    background: linear-gradient(to right, #0066FF, #00FF9D);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.nav-links a {
-    color: #FFFFFF;
-    transition: color 0.3s ease;
-}
-
-.nav-links a:hover {
-    color: #00FF9D;
-}
-
-.search-bar input {
-    background: #0D1117;
-    border: 1px solid #30363D;
-    color: #FFFFFF;
-    padding: 8px;
-}
-
-.icons a {
-    color: #8B949E;
-}
-
-.icons a:hover {
-    color: #00FF9D;
-}
-
-/* Styles for the Sell button */
-#sellBtn {
-    margin-left: 50px; /* Move the button slightly to the right */
+.user-info #sellBtn {
     padding: 10px 20px;
     background: linear-gradient(to right, #0066FF, #00FF9D);
     color: #FFFFFF;
@@ -165,10 +90,33 @@ body {
     cursor: pointer;
     font-size: 16px;
     transition: transform 0.3s ease, background-color 0.3s ease;
-    font-family: Poppins, sans-serif;
+    font-family: 'Poppins', sans-serif;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
 }
 
-#sellBtn:hover {
+.user-info #sellBtn:hover {
     transform: translateY(-2px);
     filter: brightness(1.2);
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.icons a, .icons button {
+    color: #fff;
+    font-size: 20px;
+    transition: color 0.3s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.icons a:hover, .icons button:hover {
+    color: #00FF9D;
 }
