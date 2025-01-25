@@ -31,6 +31,8 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
+    console.log('Submitting login request:', { username, password });
+
     try {
         const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/login', {
             method: 'POST',
@@ -41,6 +43,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         });
 
         const result = await response.json();
+        console.log('Login response:', result);
         if (result.success) {
             localStorage.setItem('user', JSON.stringify({ _id: result.userId, username: result.username, profilePicture: result.profilePicture }));
             alert('Login successful!');
@@ -62,6 +65,8 @@ registerForm.addEventListener('submit', async (e) => {
     const email = document.getElementById('regEmail').value;
     const password = document.getElementById('regPassword').value;
 
+    console.log('Submitting registration request:', { username, email, password });
+
     try {
         const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/register', {
             method: 'POST',
@@ -72,6 +77,7 @@ registerForm.addEventListener('submit', async (e) => {
         });
 
         const result = await response.json();
+        console.log('Registration response:', result);
         if (result.success) {
             localStorage.setItem('user', JSON.stringify({ _id: result.userId, username: result.username, profilePicture: result.profilePicture }));
             alert('Registration successful!');
