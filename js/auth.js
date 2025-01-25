@@ -15,3 +15,13 @@ document.getElementById('logoutLink').addEventListener('click', (e) => {
     localStorage.removeItem('user');
     window.location.href = 'login.html';
 });
+
+// To log user out when browser is closed or navigated away from the site
+window.addEventListener('beforeunload', (event) => {
+    const currentUrl = new URL(window.location.href);
+    const nextUrl = new URL(event.target.activeElement.href);
+
+    if (currentUrl.origin !== nextUrl.origin) {
+        localStorage.removeItem('user');
+    }
+});

@@ -1,4 +1,3 @@
-
 // Form submission
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -6,6 +5,9 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     const password = document.getElementById('password').value;
 
     console.log('Submitting login request:', { username, password });
+
+    // Show loading screen
+    document.getElementById('loadingScreen').style.display = 'flex';
 
     try {
         const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/login', {
@@ -24,10 +26,12 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             window.location.href = 'index.html';
         } else {
             alert('Login failed: ' + result.message);
+            document.getElementById('loadingScreen').style.display = 'none'; // Hide loading screen on failure
         }
     } catch (error) {
         console.error('Error during login:', error);
         alert('Login failed: ' + error.message);
+        document.getElementById('loadingScreen').style.display = 'none'; // Hide loading screen on error
     }
 });
 

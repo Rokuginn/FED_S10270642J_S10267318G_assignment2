@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
         displayUserInfo(user.username, user.profilePicture);
-        document.getElementById('signUpBtn').textContent = 'Log out';
+        document.getElementById('logoutLink').textContent = 'Log out';
         document.getElementById('sellBtn').style.display = 'inline-block';
         fetchUserListings(user._id); // Fetch listings for the logged-in user
     }
