@@ -22,26 +22,22 @@
             <li><a href="#">Home</a></li>
             <li><a href="#">PC Parts</a></li>
             <li><a href="#">Peripheral</a></li>
-            <li><a href="#" id="signUpBtn">SignUp</a></li> <!-- Added id to the SignUp link -->
         </ul>
         <div class="user-info" id="userInfo" style="display: none;">
             <img id="profilePicture" src="https://fed-s10270642j-s10267318g-assignment2.onrender.com/Images/avatar-default.svg" alt="" class="profile-picture">
             <span id="welcomeMessage"></span>
-            <button id="sellBtn" style="display: none;">Sell</button> <!-- Added Sell button -->
+            <button id="logoutBtn" style="display: none;">Log out</button> <!-- Changed to Log out button -->
         </div>
         <div class="icons">
             <a href="#"><i class="fas fa-heart"></i></a>
             <a href="#"><i class="fas fa-shopping-cart"></i></a>
             <a href="#"><i class="fas fa-comment-dots"></i></a>
-            <button id="searchBtn"><i class="fas fa-search"></i></button>
         </div>
     </nav>
     <!-- Navbar End-->
     
     <!-- Search Bar -->
-    <div class="search-bar" id="searchBar">
-        <input type="text" id="searchInput" placeholder="Search...">
-    </div>
+    <!-- Removed search bar from here -->
     
     <!-- Login/Registration Popup -->
     <div id="loginPopup" class="login-popup">
@@ -92,6 +88,10 @@
     <div class="main-content">
         <!-- Filter Column -->
         <aside class="filter-column">
+            <!-- Added search bar -->
+            <div class="search-bar" id="searchBar">
+                <input type="text" id="searchInput" placeholder="Search...">
+            </div>
             <h3>Filter by Category</h3>
             <ul>
                 <li><button class="filter-btn" data-category="gpu">GPU</button></li>
