@@ -1,40 +1,49 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Form submission
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
-        console.log('Submitting login request:', { username, password });
+            console.log('Submitting login request:', { username, password });
 
-        // Show loading screen
-        document.getElementById('loadingScreen').style.display = 'flex';
+            // Show loading screen
+            document.getElementById('loadingScreen').style.display = 'flex';
 
-        try {
-            const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            });
+            try {
+                const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
 
-            const result = await response.json();
-            console.log('Login response:', result);
-            if (result.success) {
-                localStorage.setItem('user', JSON.stringify({ _id: result.userId, username: result.username, profilePicture: result.profilePicture }));
-                alert('Login successful!');
-                window.location.href = 'index.html';
-            } else {
-                alert('Login failed: ' + result.message);
-                document.getElementById('loadingScreen').style.display = 'none'; // Hide loading screen on failure
+                const result = await response.json();
+                console.log('Login response:', result);
+                if (result.success) {
+                    localStorage.setItem('user', JSON.stringify({ _id: result.userId, username: result.username, profilePicture: result.profilePicture }));
+
+                    // Delay before navigating to the next page
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000); // Adjust the delay time (in milliseconds)
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Login failed: ' + result.message);
+                    document.getElementById('loadingScreen').style.display = 'none'; // Hide loading screen on failure
+                }
+            } catch (error) {
+                console.error('Error during login:', error);
+                alert('Login failed: ' + error.message);
+                document.getElementById('loadingScreen').style.display = 'none'; // Hide loading screen on error
             }
-        } catch (error) {
-            console.error('Error during login:', error);
-            alert('Login failed: ' + error.message);
-            document.getElementById('loadingScreen').style.display = 'none'; // Hide loading screen on error
-        }
-    });
+        });
+    } else {
+        console.error('Login form not found');
+    }
 
     // Registration functionality
     const registerForm = document.getElementById('registerForm');

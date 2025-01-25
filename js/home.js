@@ -112,15 +112,16 @@ async function addListedItem(container, listing) {
     // Check if the current user has liked the listing
     const currentUser = JSON.parse(localStorage.getItem('user'));
     const hasLiked = listing.likedBy.includes(currentUser._id);
-    //Display Item Card
+
+    // Display Item Card
+    const imageUrl = `https://fed-s10270642j-s10267318g-assignment2.onrender.com${listing.imagePath}`;
     itemCard.innerHTML = `
         <div class="listing-time">${daysAgo} days ago</div>
-        
-        <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${listing.imagePath}" alt="${listing.partName}" class="item-image">
+        <img src="${imageUrl}" alt="${listing.partName}" class="item-image">
         <div class="item-card-content">
             <h3>${listing.partName}</h3>
             <div class="user-info">
-            <p class="user-name">Listed by: ${user.username}</p>
+                <p class="user-name">Listed by: ${user.username}</p>
             </div>
             <p class="price">$${listing.price}</p>
             <p>Category: ${listing.category}</p>
