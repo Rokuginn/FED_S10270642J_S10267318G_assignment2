@@ -49,7 +49,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             alert('Login successful!');
             window.location.href = 'index.html';
         } else {
-            alert('Login failed!');
+            alert('Login failed: ' + result.message);
         }
     } catch (error) {
         console.error('Error during login:', error);

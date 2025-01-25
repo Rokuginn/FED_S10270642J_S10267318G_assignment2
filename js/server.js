@@ -67,13 +67,18 @@ const Listing = mongoose.model('Listing', listingSchema);
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
     console.log('Login request received:', { username, password });
-    const user = await User.findOne({ username, password });
-    if (user) {
-        console.log('Login successful:', user);
-        res.json({ success: true, userId: user._id, username: user.username, profilePicture: 'path/to/profile-picture.jpg' });
-    } else {
-        console.log('Login failed: User not found');
-        res.json({ success: false });
+    try {
+        const user = await User.findOne({ username, password });
+        if (user) {
+            console.log('Login successful:', user);
+            res.json({ success: true, userId: user._id, username: user.username, profilePicture: 'path/to/profile-picture.jpg' });
+        } else {
+            console.log('Login failed: User not found');
+            res.json({ success: false, message: 'Invalid username or password' });
+        }
+    } catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });
 
