@@ -254,6 +254,17 @@ app.post('/updateProfilePicture', upload.single('newProfilePicture'), async (req
     }
 });
 
+// Route to serve images from the uploads directory
+app.get('/images/:imageName', (req, res) => {
+    const { imageName } = req.params;
+    const imagePath = path.join(uploadDir, imageName);
+    res.sendFile(imagePath, (err) => {
+        if (err) {
+            res.status(404).send('Image not found');
+        }
+    });
+});
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
