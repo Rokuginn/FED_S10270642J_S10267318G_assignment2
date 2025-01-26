@@ -27,11 +27,12 @@ html, body {
 }
 
 .logo {
-    font-size: 24px;
+    font-size: 30px;
     font-weight: bold;
     background: linear-gradient(to right, #0066FF, #00FF9D);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    margin-left: 130px;
 }
 
 .nav-container {
@@ -40,8 +41,8 @@ html, body {
     align-items: center;
     width: 100%;
     max-width: 1300px;
-    margin: 0 auto;
-    padding: 0 50px;
+    margin: 10 auto;
+    padding: 10 50px;
 }
 
 .nav-links {

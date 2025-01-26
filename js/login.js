@@ -9,9 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             console.log('Submitting login request:', { username, password });
 
-            // Show loading screen
-            document.getElementById('loadingScreen').style.display = 'flex';
-
             try {
                 const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/login', {
                     method: 'POST',
@@ -24,21 +21,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
                 console.log('Login response:', result);
                 if (result.success) {
-                    localStorage.setItem('user', JSON.stringify({ _id: result.userId, username: result.username, profilePicture: result.profilePicture }));
-
-                    // Delay before navigating to the next page
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 2000); // Adjust the delay time (in milliseconds)
-                    window.location.href = 'index.html';
+                    localStorage.setItem('user', JSON.stringify({ _id: result.userId, username: result.username }));
+                    alert('Login successful!');
+                    // Redirect to loading page
+                    window.location.href = 'loading.html';
                 } else {
                     alert('Login failed: ' + result.message);
-                    document.getElementById('loadingScreen').style.display = 'none'; // Hide loading screen on failure
+                    window.location.href = 'login.html'; // Redirect back to login page on failure
                 }
             } catch (error) {
                 console.error('Error during login:', error);
                 alert('Login failed: ' + error.message);
-                document.getElementById('loadingScreen').style.display = 'none'; // Hide loading screen on error
+                window.location.href = 'login.html'; // Redirect back to login page on error
             }
         });
     } else {
@@ -47,37 +41,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Registration functionality
     const registerForm = document.getElementById('registerForm');
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const username = document.getElementById('regUsername').value;
-        const email = document.getElementById('regEmail').value;
-        const password = document.getElementById('regPassword').value;
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
 
-        console.log('Submitting registration request:', { username, email, password });
+            console.log('Submitting registration request:', { username, email, password });
 
-        try {
-            const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, email, password })
-            });
+            try {
+                const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, email, password })
+                });
 
-            const result = await response.json();
-            console.log('Registration response:', result);
-            if (result.success) {
-                localStorage.setItem('user', JSON.stringify({ _id: result.userId, username: result.username, profilePicture: result.profilePicture }));
-                alert('Registration successful!');
-                window.location.href = 'index.html';
-            } else {
-                alert('Registration failed: ' + result.message);
+                const result = await response.json();
+                console.log('Registration response:', result);
+                if (result.success) {
+                    alert('Registration successful!');
+                    window.location.href = 'login.html'; // Redirect to login page after successful registration
+                } else {
+                    alert('Registration failed: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error during registration:', error);
+                alert('Registration failed: ' + error.message);
             }
-        } catch (error) {
-            console.error('Error during registration:', error);
-            alert('Registration failed: ' + error.message);
-        }
-    });
+        });
+    }
 
     // Tab functionality
     function openTab(evt, tabName) {
@@ -94,16 +89,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Open the default tab
-    document.getElementById('defaultOpen').click();
+    const defaultOpen = document.getElementById('defaultOpen');
+    if (defaultOpen) {
+        defaultOpen.click();
+    }
 
     // Function to display user information
-    function displayUserInfo(username, profilePicturePath) {
+    function displayUserInfo(username) {
         const userInfo = document.getElementById('userInfo');
         const welcomeMessage = document.getElementById('welcomeMessage');
-        const profilePicture = document.getElementById('profilePicture');
 
         welcomeMessage.textContent = `Welcome, ${username}`;
-        profilePicture.src = profilePicturePath;
 
         userInfo.style.display = 'flex';
     }
@@ -113,10 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear user information
         const userInfo = document.getElementById('userInfo');
         const welcomeMessage = document.getElementById('welcomeMessage');
-        const profilePicture = document.getElementById('profilePicture');
 
         welcomeMessage.textContent = '';
-        profilePicture.src = '';
 
         userInfo.style.display = 'none';
         signUpBtn.textContent = 'SignUp'; // Change button text back to 'SignUp'
@@ -133,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if user is logged in on page load
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
-        displayUserInfo(user.username, user.profilePicture);
+        displayUserInfo(user.username);
         signUpBtn.textContent = 'Log out';
         sellBtn.style.display = 'inline-block';
     }
@@ -156,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
             profilePicturePopup.style.display = 'none';
         }
     });
-
+    //Scrapped Profile Picture Update Functionality
     profilePictureForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(profilePictureForm);

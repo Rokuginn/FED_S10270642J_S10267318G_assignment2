@@ -1,0 +1,35 @@
+/* Ensure the loading screen covers the entire viewport */
+body.loading-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #30363D; /* Match the background color of your website */
+    font-family: 'Poppins', sans-serif; /* Use the same font as your website */
+}
+
+/* Style the loading container */
+.loading-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style the loading animation */
+.loading-container lottie-player {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+}
+
+/* Center and style the loading message */
+.loading-message {
+    font-size: 1.2em;
+    background: linear-gradient(to right, #0066FF, #00FF9D);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+}
