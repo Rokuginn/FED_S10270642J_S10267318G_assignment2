@@ -9,8 +9,8 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
-// Ensure the public/uploads directory exists
-const uploadDir = path.join(__dirname, 'public/uploads');
+// Ensure the /mnt/data/uploads directory exists
+const uploadDir = path.join('/mnt/data', 'uploads');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
