@@ -46,6 +46,7 @@ async function fetchForYouItems() {
     const listings = await fetchAllListings();
     const forYouItemsContainer = document.getElementById('forYouItems');
     listings.forEach(listing => addListedItem(forYouItemsContainer, listing));
+    attachLikeButtonListeners(forYouItemsContainer);
 }
 
 async function fetchTrendingItems() {
@@ -53,6 +54,7 @@ async function fetchTrendingItems() {
     const trendingItemsContainer = document.getElementById('trendingItems');
     const trendingItems = listings.sort((a, b) => b.likes - a.likes).slice(0, 5); // Assuming 'likes' is a property of listing
     trendingItems.forEach(listing => addListedItem(trendingItemsContainer, listing));
+    attachLikeButtonListeners(trendingItemsContainer);
 }
 
 async function fetchRecentReleaseItems() {
@@ -60,12 +62,17 @@ async function fetchRecentReleaseItems() {
     const recentReleaseItemsContainer = document.getElementById('recentReleaseItems');
     const recentReleaseItems = listings.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5); // Assuming 'date' is a property of listing
     recentReleaseItems.forEach(listing => addListedItem(recentReleaseItemsContainer, listing));
+    attachLikeButtonListeners(recentReleaseItemsContainer);
 }
 
 async function likeListing(listingId) {
     try {
         const response = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listings/${listingId}/like`, {
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId: JSON.parse(localStorage.getItem('user'))._id })
         });
         const result = await response.json();
         if (result.success) {
@@ -82,7 +89,11 @@ async function likeListing(listingId) {
 
 async function unlikeListing(listingId) {
     const response = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listings/${listingId}/unlike`, {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId: JSON.parse(localStorage.getItem('user'))._id })
     });
     const result = await response.json();
     if (result.success) {
@@ -127,10 +138,20 @@ async function addListedItem(container, listing) {
             <p>Category: ${listing.category}</p>
             <p>Condition: ${listing.condition}</p>
             <p class="likes">${listing.likes} likes</p>
-            <button class="like-btn ${hasLiked ? 'liked' : ''}" onclick="toggleLike('${listing._id}', this)"><i class="fas fa-heart"></i></button>
+            <button class="like-btn ${hasLiked ? 'liked' : ''}" data-id="${listing._id}"><i class="fas fa-heart"></i></button>
         </div>
     `;
     container.appendChild(itemCard);
+}
+
+function attachLikeButtonListeners(container) {
+    const likeButtons = container.querySelectorAll('.like-btn');
+    likeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const listingId = button.getAttribute('data-id');
+            toggleLike(listingId, button);
+        });
+    });
 }
 
 async function toggleLike(listingId, button) {
