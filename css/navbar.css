@@ -1,6 +1,6 @@
 * {
     box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+    font-family: 'Open Sans', sans-serif;
     margin: 0;
     padding: 0;
     scroll-behavior: smooth;
@@ -22,16 +22,15 @@ html, body {
     top: 0;
     z-index: 999;
     overflow: hidden;
-    padding: 10px 20px; /* Moved from style.css */
-    border-bottom: 1px solid #30363D; /* Moved from style.css */
+    padding: 10px 20px;
+    background-color: #FFFFFF; /* White */
+    border-bottom: 1px solid #CCCCCC; /* Light Gray */
 }
 
 .logo {
     font-size: 30px;
     font-weight: bold;
-    background: linear-gradient(to right, #0066FF, #00FF9D);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #0071C5; /* Primary Blue */
     margin-left: 130px;
 }
 
@@ -42,7 +41,7 @@ html, body {
     width: 100%;
     max-width: 1300px;
     margin: 10 auto;
-    padding: 10 50px;
+    padding: 20 50px;
 }
 
 .nav-links {
@@ -56,14 +55,15 @@ html, body {
 }
 
 .nav-links a {
-    color: #fff;
+    color: #1f1f1f; /* Primary Blue */
     text-decoration: none;
     font-size: 20px;
+    font-weight: 500;
     transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-    color: #00FF9D;
+    color: #00ADEF; /* Light Blue */
 }
 
 #logoutLink {
@@ -80,18 +80,20 @@ html, body {
     font-size: 20px;
     display: flex;
     align-items: center;
+    color: #000000; /* Primary Blue */
+    font-weight: 300;
 }
 
 .user-info #sellBtn {
     padding: 10px 20px;
-    background: linear-gradient(to right, #0066FF, #00FF9D);
-    color: #FFFFFF;
+    background: #00ADEF; /* Light Blue */
+    color: #FFFFFF; /* White */
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     transition: transform 0.3s ease, background-color 0.3s ease;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin-left: 10px;
     display: flex;
     align-items: center;
@@ -100,7 +102,7 @@ html, body {
 
 .user-info #sellBtn:hover {
     transform: translateY(-2px);
-    filter: brightness(1.2);
+    background: #0056A4; /* Secondary Blue */
 }
 
 .icons {
@@ -110,7 +112,7 @@ html, body {
 }
 
 .icons a, .icons button {
-    color: #fff;
+    color: #0071C5; /* Primary Blue */
     font-size: 20px;
     transition: color 0.3s ease;
     background: none;
@@ -119,5 +121,5 @@ html, body {
 }
 
 .icons a:hover, .icons button:hover {
-    color: #00FF9D;
+    color: #00ADEF; /* Light Blue */
 }

@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    
+    <title>MokeSell - Home</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/search.css"> <!-- Added search.css -->
+    <link rel="stylesheet" href="css/search.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const user = JSON.parse(localStorage.getItem('user'));
@@ -30,7 +33,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="#">PC Parts</a></li>
                 <li><a href="#">About</a></li>
-                <li><a href="#" id="logoutLink" style="display: none;">Log out</a></li> <!-- Changed to log out link -->
+                <li><a href="#" id="logoutLink" style="display: none;">Log out</a></li>
             </ul>
             <div class="user-info" id="userInfo" style="display: none;">
                 <span id="welcomeMessage"></span>
@@ -44,33 +47,18 @@
         </div>
     </nav>
     <!-- Navbar End-->
-    
-    <!-- Search Bar -->
-    <!-- Removed search bar from here -->
-    
+
+    <!-- Main Content -->
     <div class="main-content">
         <!-- Filter Column -->
-        <aside class="filter-column">
-            <!-- Added search bar -->
-            
-            <h3>Filter by Category</h3>
-            <ul>
-                <li><button class="filter-btn" data-category="gpu">GPU</button></li>
-                <li><button class="filter-btn" data-category="cpu">CPU</button></li>
-                <li><button class="filter-btn" data-category="motherboard">Motherboard</button></li>
-                <li><button class="filter-btn" data-category="ram">RAM</button></li>
-                <li><button class="filter-btn" data-category="storage">Storage</button></li>
-                <li><button class="filter-btn" data-category="psu">PSU</button></li>
-                <li><button class="filter-btn" data-category="case">Case</button></li>
-            </ul>
-        </aside>
+        
 
         <!-- Hero Section -->
         <section class="upcoming-pc-parts-hero">
             <div class="hero-slider">
                 <div class="hero-slide" data-category="gpu">
                     <div class="hero-image">
-                        <img src="Images\geforce-ada-4090-web-og-1200x630.jpg" alt="Nvidia RTX 4090">
+                        <img src="Images/geforce-ada-4090-web-og-1200x630.jpg" alt="Nvidia RTX 4090">
                     </div>
                     <div class="hero-content">
                         <span class="release-date">Arriving in Early 2025</span>
@@ -81,7 +69,7 @@
                 </div>
                 <div class="hero-slide" data-category="cpu">
                     <div class="hero-image">
-                        <img src="Images\Intel-13th-generation-CPUs-performance.jpg" alt="Intel Core i9-13900K">
+                        <img src="Images/Intel-13th-generation-CPUs-performance.jpg" alt="Intel Core i9-13900K">
                     </div>
                     <div class="hero-content">
                         <span class="release-date">Available Now</span>
@@ -92,7 +80,7 @@
                 </div>
                 <div class="hero-slide" data-category="gpu">
                     <div class="hero-image">
-                        <img src="Images\AMD-RADEON-RX-7900-XT-HERO-BANNER-1200x557.jpg" alt="AMD Radeon RX 7900 XT">
+                        <img src="Images/AMD-RADEON-RX-7900-XT-HERO-BANNER-1200x557.jpg" alt="AMD Radeon RX 7900 XT">
                     </div>
                     <div class="hero-content">
                         <span class="release-date">Available Now</span>
@@ -101,7 +89,7 @@
                         <a href="#" class="hero-cta">Buy Now</a>
                     </div>
                 </div>
-                </div>
+            </div>
             <div class="hero-nav">
                 <button class="prev-slide">&lt;</button>
                 <div class="slide-dots"></div>
@@ -110,7 +98,7 @@
         </section>
     </div>
     <!-- PC Parts Hero Section End -->
-    
+
     <!-- For You Section -->
     <section class="for-you-section">
         <h2>For You</h2>
@@ -133,10 +121,47 @@
     <button id="followBtn" data-username="exampleUser">Follow</button>
     <button id="unfollowBtn" data-username="exampleUser">Unfollow</button>
 
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>About MokeSell</h3>
+                <p>MokeSell is your go-to platform for buying and selling computer parts. We offer a wide range of products from top brands to meet all your computing needs.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">PC Parts</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p>Email: support@mokesell.com</p>
+                <p>Phone: +1 234 567 890</p>
+                <p>Address: 123 Tech Street, Silicon Valley, CA</p>
+            </div>
+            <div class="footer-social">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 MokeSell. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script src="js/home.js"></script>
     <script src="js/login.js"></script>
     <script src="js/follow.js"></script>
-    <script src="js/search.js"></script> <!-- Added search.js -->
+    <script src="js/search.js"></script>
     <script src="js/auth.js"></script>
 </body>
 </html>

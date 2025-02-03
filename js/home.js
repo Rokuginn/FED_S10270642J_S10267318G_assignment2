@@ -145,9 +145,17 @@ async function toggleLike(listingId, button) {
         });
         const result = await response.json();
         if (result.success) {
-            const likesElement = document.querySelector(`.item-card[data-id="${listingId}"] .likes`);
-            likesElement.textContent = `${result.likes} likes`;
-            button.classList.toggle('liked');
+            // Update like counts for all elements with the same listing ID
+            const likesElements = document.querySelectorAll(`.item-card[data-id="${listingId}"] .likes`);
+            likesElements.forEach(likesElement => {
+                likesElement.textContent = `${result.likes} likes`;
+            });
+
+            // Toggle the like button class for all elements with the same listing ID
+            const likeButtons = document.querySelectorAll(`.item-card[data-id="${listingId}"] .like-btn`);
+            likeButtons.forEach(likeButton => {
+                likeButton.classList.toggle('liked');
+            });
         } else {
             alert('Failed to like/unlike listing: ' + result.message);
         }
