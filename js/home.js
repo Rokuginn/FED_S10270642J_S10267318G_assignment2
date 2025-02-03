@@ -116,19 +116,21 @@ async function addListedItem(container, listing) {
     // Display Item Card
     const imageUrl = `https://fed-s10270642j-s10267318g-assignment2.onrender.com${listing.imagePath}`;
     itemCard.innerHTML = `
-        <div class="listing-time">${daysAgo} days ago</div>
-        <img src="${imageUrl}" alt="${listing.partName}" class="item-image">
-        <div class="item-card-content">
-            <h3>${listing.partName}</h3>
-            <div class="user-info">
-                <p class="user-name">Listed by: ${user.username}</p>
+        <a href="item.html?id=${listing._id}" class="item-card-link">
+            <div class="listing-time">${daysAgo} days ago</div>
+            <img src="${imageUrl}" alt="${listing.partName}" class="item-image">
+            <div class="item-card-content">
+                <h3>${listing.partName}</h3>
+                <div class="user-info">
+                    <p class="user-name">Listed by: ${user.username}</p>
+                </div>
+                <p class="price">$${listing.price}</p>
+                <p>Category: ${listing.category}</p>
+                <p>Condition: ${listing.condition}</p>
+                <p class="likes">${listing.likes} likes</p>
+                <button class="like-btn ${hasLiked ? 'liked' : ''}" onclick="toggleLike('${listing._id}', this)"><i class="fas fa-heart"></i></button>
             </div>
-            <p class="price">$${listing.price}</p>
-            <p>Category: ${listing.category}</p>
-            <p>Condition: ${listing.condition}</p>
-            <p class="likes">${listing.likes} likes</p>
-            <button class="like-btn ${hasLiked ? 'liked' : ''}" onclick="toggleLike('${listing._id}', this)"><i class="fas fa-heart"></i></button>
-        </div>
+        </a>
     `;
     container.appendChild(itemCard);
 }
