@@ -5,17 +5,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (itemId) {
         try {
-            const response = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listings/${itemId}`);
-            const data = await response.json();
-            console.log('Fetched data:', data); // Log the fetched data
+            const response = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listing/${itemId}`);
+            console.log('Response status:', response.status); // Log the response status
+            const responseText = await response.text();
+            console.log('Raw response text:', responseText); // Log the raw response text
 
-            // Check if the fetched data is an array and access the first item
-            const item = Array.isArray(data) ? data[0] : data;
-            console.log('Item:', item); // Log the item
+            const item = JSON.parse(responseText);
+            console.log('Fetched item:', item); // Log the fetched item
 
             // Check if the item has the expected properties
             if (item && item.partName && item.imagePath && item.price && item.category && item.condition && item.description && item.userId && item.likes !== undefined) {
                 const itemDetailsContainer = document.getElementById('itemDetailsContainer');
+                console.log('Updating HTML with item details'); // Log before updating HTML
                 itemDetailsContainer.innerHTML = `
                     <div class="item-image-container">
                         <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${item.imagePath}" alt="${item.partName}">
@@ -30,13 +31,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <p class="likes">${item.likes} likes</p>
                     </div>
                 `;
+                console.log('HTML updated successfully'); // Log after updating HTML
             } else {
                 console.error('Fetched item does not have the expected properties:', item);
+                const itemDetailsContainer = document.getElementById('itemDetailsContainer');
+                itemDetailsContainer.innerHTML = '<p>Item details are incomplete or missing.</p>';
             }
         } catch (error) {
             console.error('Error fetching item details:', error);
+            const itemDetailsContainer = document.getElementById('itemDetailsContainer');
+            itemDetailsContainer.innerHTML = '<p>Error fetching item details.</p>';
         }
     } else {
         console.error('No item ID found in URL');
+        const itemDetailsContainer = document.getElementById('itemDetailsContainer');
+        itemDetailsContainer.innerHTML = '<p>No item ID found in URL.</p>';
     }
 });

@@ -142,6 +142,22 @@ app.get('/listings/:userId', async (req, res) => {
     }
 });
 
+// Fetch a single listing by ID
+app.get('/listing/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const listing = await Listing.findById(id);
+        if (listing) {
+            res.json(listing);
+        } else {
+            res.status(404).json({ success: false, message: 'Listing not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching listing:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
 // Fetch user information
 app.get('/users/:id', async (req, res) => {
     const { id } = req.params;
