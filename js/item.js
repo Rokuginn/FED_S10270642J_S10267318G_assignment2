@@ -13,6 +13,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             const item = JSON.parse(responseText);
             console.log('Fetched item:', item); // Log the fetched item
 
+            // Fetch user information
+            const userResponse = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/users/${item.userId}`);
+            const user = await userResponse.json();
+            console.log('Fetched user:', user); // Log the fetched user
+
             // Check if the item has the expected properties
             if (item && item.partName && item.imagePath && item.price && item.category && item.condition && item.description && item.userId && item.likes !== undefined) {
                 const itemDetailsContainer = document.getElementById('itemDetailsContainer');
@@ -26,10 +31,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <p class="price">$${item.price}</p>
                         <p class="category">Category: ${item.category}</p>
                         <p class="condition">Condition: ${item.condition}</p>
-                        <p class="description">${item.description}</p>
-                        <p class="listed-by">Listed by: ${item.userId}</p>
+                        <p class="listed-by">Listed by: ${user.username}</p>
                         <p class="likes">${item.likes} likes</p>
                     </div>
+                    <div class="user-info-container">
+                        <h2>${user.username}</h2>
+                        <p>Followers: ${user.followers}</p>
+                        <a href="#" class="chat-button">Chat with Seller</a>
+                        <div class="make-offer">
+                            <h2>Make an Offer</h2>
+                            <input type="number" placeholder="Enter your offer price">
+                            <button>Submit Offer</button>
+                        </div>
+                    </div>
+                `;
+                const itemDescriptionContainer = document.getElementById('itemDescriptionContainer');
+                itemDescriptionContainer.innerHTML = `
+                    <h2>Description</h2>
+                    <p>${item.description}</p>
                 `;
                 console.log('HTML updated successfully'); // Log after updating HTML
             } else {

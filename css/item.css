@@ -1,49 +1,147 @@
-.item-details-container {
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.item-page-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    margin: 20px auto;
+    padding: 40px;
+    margin: 40px auto;
+}
+
+.item-details-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 40px;
+    width: 100%;
+    background-color: #f4f4f4; /* Blend with background color */
+    padding: 40px;
 }
 
 .item-image-container {
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 20px;
+    flex: 1;
+    margin-right: 40px;
 }
 
 .item-image-container img {
     width: 100%;
+    height: auto;
     border-radius: 10px;
+    object-fit: cover; /* Ensure the image covers the container */
 }
 
 .item-details {
-    width: 100%;
-    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .item-details h1 {
-    font-size: 24px;
+    font-size: 32px;
     margin-bottom: 10px;
     color: #333;
 }
 
 .item-details .price {
-    font-size: 20px;
+    font-size: 28px;
     color: #e74c3c;
     margin-bottom: 10px;
 }
 
 .item-details .category,
 .item-details .condition,
-.item-details .description,
 .item-details .listed-by,
 .item-details .likes {
-    font-size: 16px;
+    font-size: 20px;
     color: #555;
     margin-bottom: 10px;
+}
+
+.item-description-container {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.item-description-container h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.item-description-container p {
+    font-size: 18px;
+    color: #555;
+}
+
+.user-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #f4f4f4; /* Blend with background color */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-info-container h2 {
+    font-size: 24px;
+    color: #333;
+}
+
+.user-info-container p {
+    font-size: 18px;
+    color: #555;
+}
+
+.chat-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.make-offer {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f4f4f4; /* Blend with background color */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.make-offer h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.make-offer input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.make-offer button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
 }
