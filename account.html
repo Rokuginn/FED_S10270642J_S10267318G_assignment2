@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Item Details - MokeSell</title>
-    <link rel="stylesheet" href="css/item.css">
+    <title>Account - MokeSell</title>
+    <link rel="stylesheet" href="css/account.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/footer.css">
@@ -34,18 +34,37 @@
         </div>
     </nav>
     <!-- Navbar End-->
-    <div class="item-page-container">
-        <div class="item-details-container" id="itemDetailsContainer">
-            <!-- Item details will be populated here -->
+
+    <!-- Account Page Container -->
+    <div class="account-page-container">
+        <div class="account-info-container">
+            <img id="profilePicture" src="Images/avatar-default.svg" alt="Profile Picture" class="profile-picture">
+            <h1 id="username">Username</h1>
+            <p id="description">Description</p>
+            <textarea id="descriptionInput" placeholder="Update your description"></textarea>
+            <p id="dealMethod">Deal Method: <span>Online</span></p>
+            <select id="dealMethodInput">
+                <option value="Online">Online</option>
+                <option value="In-Person">In-Person</option>
+            </select>
+            <button id="saveBtn">Save</button>
+            <button id="followBtn" style="display: none;">Follow</button>
+            <button id="unfollowBtn" style="display: none;">Unfollow</button>
+            <div class="account-stats">
+                <p>Followers: <span id="followersCount">0</span></p>
+                <p>Following: <span id="followingCount">0</span></p>
+                <p>Total Likes: <span id="totalLikes">0</span></p>
+            </div>
         </div>
-        <div class="item-description-container" id="itemDescriptionContainer">
-            <!-- Item description will be populated here -->
+        <div class="account-listings-container">
+            <h2>Your Listings</h2>
+            <div id="accountListings" class="grid-container"></div>
         </div>
     </div>
 
+    <script src="js/account.js"></script>
     <script src="js/login.js"></script>
     <script src="js/search.js"></script>
     <script src="js/auth.js"></script>
-    <script src="js/item.js"></script>
 </body>
 </html>

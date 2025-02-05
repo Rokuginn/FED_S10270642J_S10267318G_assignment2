@@ -42,7 +42,10 @@ const userSchema = new mongoose.Schema({
     username: String,
     email: String,
     password: String,
-    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // Add following field
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    description: String, // Add description field
+    dealMethod: String // Add dealMethod field
 });
 
 const User = mongoose.model('User', userSchema);
@@ -183,7 +186,9 @@ app.post('/follow', async (req, res) => {
         const following = await User.findById(followingId);
         if (!follower.following.includes(followingId)) {
             follower.following.push(followingId);
+            following.followers.push(followerId);
             await follower.save();
+            await following.save();
             res.json({ success: true });
         } else {
             res.json({ success: false, message: 'Already following' });
@@ -199,8 +204,11 @@ app.post('/unfollow', async (req, res) => {
     const { followerId, followingId } = req.body;
     try {
         const follower = await User.findById(followerId);
+        const following = await User.findById(followingId);
         follower.following = follower.following.filter(id => id.toString() !== followingId);
+        following.followers = following.followers.filter(id => id.toString() !== followerId);
         await follower.save();
+        await following.save();
         res.json({ success: true });
     } catch (error) {
         console.error('Error during unfollow:', error);
@@ -267,6 +275,25 @@ app.post('/updateProfilePicture', upload.array('newProfilePicture', 1), async (r
         }
     } catch (error) {
         console.error('Error updating profile picture:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
+// Handle profile update
+app.post('/updateProfile', async (req, res) => {
+    const { userId, description, dealMethod } = req.body;
+    try {
+        const user = await User.findById(userId);
+        if (user) {
+            user.description = description;
+            user.dealMethod = dealMethod;
+            await user.save();
+            res.json({ success: true });
+        } else {
+            res.status(404).json({ success: false, message: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error updating profile:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });

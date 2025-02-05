@@ -156,14 +156,23 @@ async function addListedItem(container, listing) {
                 <p>Category: ${fullCategoryName}</p>
                 <p>Condition: ${formatCondition(listing.condition)}</p>
                 <p class="likes">${listing.likes} likes</p>
-                <button class="like-btn ${hasLiked ? 'liked' : ''}" onclick="toggleLike('${listing._id}', this)"><i class="fas fa-heart"></i></button>
+                <button class="like-btn ${hasLiked ? 'liked' : ''}"><i class="fas fa-heart"></i></button>
             </div>
         </a>
     `;
     container.appendChild(itemCard);
+
+    // Add event listener to the like button to prevent redirection
+    const likeButton = itemCard.querySelector('.like-btn');
+    likeButton.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent the default action of the anchor tag
+        event.stopPropagation(); // Stop the event from propagating to the parent elements
+        toggleLike(listing._id, likeButton, event);
+    });
 }
 
-async function toggleLike(listingId, button) {
+async function toggleLike(listingId, button, event) {
+    event.stopPropagation(); // Stop the event from propagating to the parent elements
     const currentUser = JSON.parse(localStorage.getItem('user'));
     try {
         const response = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listings/${listingId}/like`, {

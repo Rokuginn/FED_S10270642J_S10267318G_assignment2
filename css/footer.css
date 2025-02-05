@@ -1,6 +1,6 @@
 .footer {
-    background-color: #2C3E50; /* Dark Blue */
-    color: #ECF0F1; /* Light Gray */
+    background-color: #161B22; /* Dark background */
+    color: #FFFFFF; /* White text */
     padding: 40px 20px;
     font-family: 'Roboto', sans-serif;
 }
@@ -46,7 +46,7 @@
 }
 
 .footer-links ul li a {
-    color: #ECF0F1; /* Light Gray */
+    color: #FFFFFF; /* White text */
     text-decoration: none;
     transition: color 0.3s ease;
 }
@@ -61,7 +61,7 @@
 }
 
 .footer-social .social-icons a {
-    color: #ECF0F1; /* Light Gray */
+    color: #FFFFFF; /* White text */
     font-size: 20px;
     transition: color 0.3s ease;
 }
