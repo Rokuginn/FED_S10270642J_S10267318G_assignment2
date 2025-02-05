@@ -3,12 +3,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!user && window.location.pathname !== '/login.html') {
         window.location.href = 'login.html';
     } else if (user) {
-        document.getElementById('userInfo').style.display = 'flex';
-        document.getElementById('welcomeMessage').textContent = `Welcome, ${user.username}`;
+        displayUserInfo(user);
         document.getElementById('logoutLink').style.display = 'block';
         document.getElementById('sellBtn').style.display = 'block';
+        displayNavbarProfilePicture(user.profilePicture);
     }
 });
+
+function displayUserInfo(user) {
+    const userInfo = document.getElementById('userInfo');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    const profilePicture = document.getElementById('profilePicture');
+
+    welcomeMessage.textContent = `Welcome, ${user.username}`;
+    profilePicture.src = user.profilePicture || 'path/to/default-profile-picture.jpg';
+
+    userInfo.style.display = 'flex';
+}
+
+function displayNavbarProfilePicture(profilePicturePath) {
+    const navbarProfilePicture = document.getElementById('profilePicture');
+    navbarProfilePicture.src = profilePicturePath || 'path/to/default-profile-picture.jpg';
+}
 
 document.getElementById('logoutLink').addEventListener('click', (e) => {
     e.preventDefault();

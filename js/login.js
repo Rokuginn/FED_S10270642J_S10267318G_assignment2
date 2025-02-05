@@ -44,19 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const username = document.getElementById('regUsername').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-
-            console.log('Submitting registration request:', { username, email, password });
+            const formData = new FormData(registerForm);
+            console.log('Submitting registration request:', formData);
 
             try {
                 const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/register', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, email, password })
+                    body: formData
                 });
 
                 const result = await response.json();

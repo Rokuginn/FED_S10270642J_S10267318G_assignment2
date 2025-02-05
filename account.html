@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account - MokeSell</title>
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/account.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">MokeSell</div>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">PC Parts</a></li>
+                <li><a href="account.html">Account</a></li>
+                <li><a href="#" id="logoutLink" style="display: none;">Log out</a></li>
+            </ul>
+            <div class="user-info" id="userInfo" style="display: none;">
+                <img id="profilePicture" src="path/to/default-profile-picture.jpg" alt="Profile Picture" class="profile-picture">
+                <span id="welcomeMessage"></span>
+                <a href="listing.html" id="sellBtn" style="display: none;">Sell</a>
+            </div>
+            <div class="icons">
+                <a href="#"><i class="fas fa-heart"></i></a>
+                <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                <a href="#"><i class="fas fa-comment-dots"></i></a>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar End-->
+
+    <!-- Account Page Container -->
+    <div class="account-page-container">
+        <div class="account-info-container">
+            <h2>Account Information</h2>
+            <div class="profile-picture-container">
+                <img id="accountProfilePicture" src="path/to/default-profile-picture.jpg" alt="Profile Picture" class="profile-picture">
+                <input type="file" id="uploadProfilePicture" accept="image/*">
+                <button id="uploadProfilePictureBtn">Upload Profile Picture</button>
+                <div class="image-preview" id="profileImagePreview">
+                    <img src="" alt="Profile Image Preview" class="image-preview__image">
+                    <span class="image-preview__default-text">Profile Image Preview</span>
+                </div>
+            </div>
+            <div class="user-details">
+                <p><strong>Username:</strong> <span id="accountUsername"></span></p>
+                <p><strong>Email:</strong> <span id="accountEmail"></span></p>
+                <p><strong>Deal Method:</strong> <span id="accountDealMethod"></span></p>
+                <label for="dealMethod">Update Deal Method:</label>
+                <input type="text" id="dealMethod" name="dealMethod">
+                <button id="updateDealMethodBtn">Update Deal Method</button>
+            </div>
+        </div>
+
+        <div class="user-listings-container">
+            <h2>Your Listings</h2>
+            <div id="userListings" class="grid-container"></div>
+        </div>
+    </div>
+
+    <script src="js/account.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

@@ -175,6 +175,28 @@ async function toggleLike(listingId, button) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+        displayUserInfo(user.username, user.profilePicture);
+        document.getElementById('logoutLink').textContent = 'Log out';
+        document.getElementById('sellBtn').style.display = 'inline-block';
+        fetchUserListings(user._id); // Fetch listings for the logged-in user
+    }
+});
+
+// Function to display user information
+function displayUserInfo(username, profilePicturePath) {
+    const userInfo = document.getElementById('userInfo');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    const profilePicture = document.getElementById('profilePicture');
+
+    welcomeMessage.textContent = `Welcome, ${username}`;
+    profilePicture.src = profilePicturePath;
+
+    userInfo.style.display = 'flex';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
     fetchForYouItems();
     fetchTrendingItems();
     fetchRecentReleaseItems();
