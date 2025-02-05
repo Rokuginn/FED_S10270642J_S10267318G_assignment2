@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
-const upload = multer({ storage: storage }).array('images', 4); // Allow up to 4 images
+const upload = multer({ storage: storage });
 
 // Connect to MongoDB Cluster
 const mongoURI = 'mongodb+srv://Rokuginn:ac,1300101@mokesellcluster.8luqw.mongodb.net/?retryWrites=true&w=majority&appName=MokeSellCluster';
@@ -105,7 +105,7 @@ app.post('/register', async (req, res) => {
 });
 
 // Handle listing submissions
-app.post('/listing', upload, async (req, res) => {
+app.post('/listing', upload.array('images', 4), async (req, res) => {
     const { partName, brand, category, condition, price, description, userId } = req.body; // Include brand
     const imagePaths = req.files.map(file => '/uploads/' + file.filename); // Ensure the correct relative path
     try {
