@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({
     username: String,
     email: String,
     password: String,
-    profilePicture: { type: String, default: '/uploads/default-profile-picture.jpg' }, // Set default profile picture
+    profilePicture: String, // Add profilePicture field
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // Add following field
 });
 
@@ -87,7 +87,7 @@ app.post('/login', async (req, res) => {
 // Handle registration requests
 app.post('/register', upload.single('profilePicture'), async (req, res) => {
     const { username, email, password } = req.body;
-    const profilePicturePath = req.file ? '/uploads/' + req.file.filename : '/uploads/default-profile-picture.jpg';
+    const profilePicturePath = req.file ? '/uploads/' + req.file.filename : 'path/to/default-profile-picture.jpg';
     console.log('Register request received:', { username, email, password, profilePicturePath });
 
     try {

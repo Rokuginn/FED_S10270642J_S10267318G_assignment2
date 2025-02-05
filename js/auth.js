@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!user && window.location.pathname !== '/login.html') {
         window.location.href = 'login.html';
     } else if (user) {
-        console.log('Profile Picture Path:', user.profilePicture); // Add this line to verify the path
         displayUserInfo(user);
         document.getElementById('logoutLink').style.display = 'block';
         document.getElementById('sellBtn').style.display = 'block';
@@ -17,14 +16,14 @@ function displayUserInfo(user) {
     const profilePicture = document.getElementById('profilePicture');
 
     welcomeMessage.textContent = `Welcome, ${user.username}`;
-    profilePicture.src = user.profilePicture || '/uploads/default-profile-picture.jpg';
+    profilePicture.src = user.profilePicture || 'path/to/default-profile-picture.jpg';
 
     userInfo.style.display = 'flex';
 }
 
 function displayNavbarProfilePicture(profilePicturePath) {
     const navbarProfilePicture = document.getElementById('profilePicture');
-    navbarProfilePicture.src = profilePicturePath || '/uploads/default-profile-picture.jpg';
+    navbarProfilePicture.src = profilePicturePath || 'path/to/default-profile-picture.jpg';
 }
 
 document.getElementById('logoutLink').addEventListener('click', (e) => {
