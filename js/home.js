@@ -93,6 +93,13 @@ async function unlikeListing(listingId) {
     }
 }
 
+function formatCondition(condition) {
+    return condition
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+
 async function addListedItem(container, listing) {
     console.log('Adding listing:', listing);
     const itemCard = document.createElement('div');
@@ -126,7 +133,7 @@ async function addListedItem(container, listing) {
                 </div>
                 <p class="price">$${listing.price}</p>
                 <p>Category: ${listing.category}</p>
-                <p>Condition: ${listing.condition}</p>
+                <p>Condition: ${formatCondition(listing.condition)}</p>
                 <p class="likes">${listing.likes} likes</p>
                 <button class="like-btn ${hasLiked ? 'liked' : ''}" onclick="toggleLike('${listing._id}', this)"><i class="fas fa-heart"></i></button>
             </div>

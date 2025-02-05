@@ -3,6 +3,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const itemId = params.get('id');
     console.log('Item ID:', itemId); // Log the item ID
 
+    // Function to format the condition string
+    function formatCondition(condition) {
+        return condition
+            .split('_')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    }
+
     if (itemId) {
         try {
             const response = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listing/${itemId}`);
@@ -29,8 +37,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="item-details">
                         <h1>${item.partName}</h1>
                         <p class="price">$${item.price}</p>
+                        <p class="brand">Brand: ${item.brand}</p> <!-- Display brand -->
                         <p class="category">Category: ${item.category}</p>
-                        <p class="condition">Condition: ${item.condition}</p>
+                        <p class="condition">Condition: ${formatCondition(item.condition)}</p>
                         <p class="listed-by">Listed by: ${user.username}</p>
                         <p class="likes">${item.likes} likes</p>
                     </div>

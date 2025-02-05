@@ -2,7 +2,7 @@ const listingForm = document.getElementById('listingForm');
 const listedItemsContainer = document.getElementById('listedItems');
 const conditionButtons = document.querySelectorAll('.condition-btn');
 const conditionInput = document.getElementById('condition');
-const imageInput = document.getElementById('image');
+const imageInput = document.getElementById('images');
 const imagePreview = document.getElementById('imagePreview');
 const imagePreviewImage = imagePreview.querySelector('.image-preview__image');
 const imagePreviewDefaultText = imagePreview.querySelector('.image-preview__default-text');
@@ -16,19 +16,22 @@ conditionButtons.forEach(button => {
 });
 
 imageInput.addEventListener('change', () => {
-    const file = imageInput.files[0];
+    const files = imageInput.files;
+    imagePreview.innerHTML = ''; // Clear previous previews
 
-    if (file) {
-        const reader = new FileReader();
+    if (files.length > 0) {
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
 
-        imagePreviewDefaultText.style.display = 'none';
-        imagePreviewImage.style.display = 'block';
+            reader.addEventListener('load', () => {
+                const img = document.createElement('img');
+                img.src = reader.result;
+                img.classList.add('image-preview__image');
+                imagePreview.appendChild(img);
+            });
 
-        reader.addEventListener('load', () => {
-            imagePreviewImage.setAttribute('src', reader.result);
+            reader.readAsDataURL(file);
         });
-
-        reader.readAsDataURL(file);
     } else {
         imagePreviewDefaultText.style.display = null;
         imagePreviewImage.style.display = null;
@@ -72,6 +75,13 @@ listingForm.addEventListener('submit', async (e) => {
     }
 });
 
+function formatCondition(condition) {
+    return condition
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+
 function addListedItem(listing) {
     console.log('Adding listing:', listing);
     const itemCard = document.createElement('div');
@@ -84,14 +94,17 @@ function addListedItem(listing) {
     const timeDiff = Math.abs(now - listingDate);
     const daysAgo = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 
+    const imageElements = listing.imagePaths.map(imagePath => `<img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${imagePath}" alt="${listing.partName}" class="item-image">`).join('');
+
     itemCard.innerHTML = `
         <div class="listing-time">${daysAgo} days ago</div>
-        <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${listing.imagePath}" alt="${listing.partName}" class="item-image">
+        <div class="item-images">${imageElements}</div>
         <div class="item-card-content">
             <h3>${listing.partName}</h3>
+            <p class="brand">Brand: ${listing.brand}</p> <!-- Display brand -->
             <p class="price">$${listing.price}</p>
             <p>Category: ${listing.category}</p>
-            <p>Condition: ${listing.condition}</p>
+            <p>Condition: ${formatCondition(listing.condition)}</p>
             <button class="delete-btn" onclick="deleteListing('${listing._id}')">Delete</button>
         </div>
     `;
