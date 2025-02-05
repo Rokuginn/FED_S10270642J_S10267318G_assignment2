@@ -253,9 +253,9 @@ app.delete('/listings/:id', async (req, res) => {
 });
 
 // Handle profile picture update
-app.post('/updateProfilePicture', upload.single('newProfilePicture'), async (req, res) => {
+app.post('/updateProfilePicture', upload.array('newProfilePicture', 1), async (req, res) => {
     const { userId } = req.body;
-    const newProfilePicturePath = '/uploads/' + req.file.filename;
+    const newProfilePicturePath = '/uploads/' + req.files[0].filename;
     try {
         const user = await User.findById(userId);
         if (user) {
