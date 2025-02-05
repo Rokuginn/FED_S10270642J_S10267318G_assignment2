@@ -105,13 +105,6 @@ html, body {
     background: #0056A4; /* Secondary Blue */
 }
 
-.user-info .profile-picture {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
 .icons {
     display: flex;
     align-items: center;
