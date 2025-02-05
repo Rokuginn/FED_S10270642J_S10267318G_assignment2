@@ -1,3 +1,18 @@
+// Define the category mapping
+const categoryMapping = {
+    gpu: 'Graphics Processing Unit',
+    cpu: 'Central Processing Unit',
+    motherboard: 'Motherboard',
+    ram: 'Random Access Memory',
+    storage: 'Storage',
+    psu: 'Power Supply Unit',
+    case: 'Case'
+};
+
+function getCategoryFullName(category) {
+    return categoryMapping[category] || category;
+}
+
 // Hero Slider functionality
 const slides = document.querySelectorAll('.hero-slide');
 const dots = document.querySelector('.slide-dots');
@@ -120,8 +135,14 @@ async function addListedItem(container, listing) {
     const currentUser = JSON.parse(localStorage.getItem('user'));
     const hasLiked = listing.likedBy.includes(currentUser._id);
 
+    // Use only the first image for the item card
+    const firstImagePath = listing.imagePaths[0];
+    const imageUrl = `https://fed-s10270642j-s10267318g-assignment2.onrender.com${firstImagePath}`;
+
+    // Get the full category name
+    const fullCategoryName = getCategoryFullName(listing.category);
+
     // Display Item Card
-    const imageUrl = `https://fed-s10270642j-s10267318g-assignment2.onrender.com${listing.imagePath}`;
     itemCard.innerHTML = `
         <a href="item.html?id=${listing._id}" class="item-card-link">
             <div class="listing-time">${daysAgo} days ago</div>
@@ -132,7 +153,7 @@ async function addListedItem(container, listing) {
                     <p class="user-name">Listed by: ${user.username}</p>
                 </div>
                 <p class="price">$${listing.price}</p>
-                <p>Category: ${listing.category}</p>
+                <p>Category: ${fullCategoryName}</p>
                 <p>Condition: ${formatCondition(listing.condition)}</p>
                 <p class="likes">${listing.likes} likes</p>
                 <button class="like-btn ${hasLiked ? 'liked' : ''}" onclick="toggleLike('${listing._id}', this)"><i class="fas fa-heart"></i></button>

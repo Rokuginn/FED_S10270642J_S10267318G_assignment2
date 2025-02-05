@@ -4,8 +4,19 @@ const conditionButtons = document.querySelectorAll('.condition-btn');
 const conditionInput = document.getElementById('condition');
 const imageInput = document.getElementById('images');
 const imagePreview = document.getElementById('imagePreview');
-const imagePreviewImage = imagePreview.querySelector('.image-preview__image');
 const imagePreviewDefaultText = imagePreview.querySelector('.image-preview__default-text');
+const uploadedFilesList = document.getElementById('uploadedFilesList');
+let uploadedFiles = [];
+
+const categoryMapping = {
+    gpu: 'Graphics Processing Unit',
+    cpu: 'Central Processing Unit',
+    motherboard: 'Motherboard',
+    ram: 'Random Access Memory',
+    storage: 'Storage',
+    psu: 'Power Supply Unit',
+    case: 'Case'
+};
 
 conditionButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -16,34 +27,45 @@ conditionButtons.forEach(button => {
 });
 
 imageInput.addEventListener('change', () => {
-    const files = imageInput.files;
-    imagePreview.innerHTML = ''; // Clear previous previews
+    const file = imageInput.files[0];
+    if (file && uploadedFiles.length < 4) {
+        uploadedFiles.push(file);
+        const reader = new FileReader();
 
-    if (files.length > 0) {
-        Array.from(files).forEach(file => {
-            const reader = new FileReader();
+        reader.addEventListener('load', () => {
+            const img = document.createElement('img');
+            img.src = reader.result;
+            img.classList.add('image-preview__image');
+            imagePreview.appendChild(img);
 
-            reader.addEventListener('load', () => {
-                const img = document.createElement('img');
-                img.src = reader.result;
-                img.classList.add('image-preview__image');
-                imagePreview.appendChild(img);
-            });
-
-            reader.readAsDataURL(file);
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `<img src="${reader.result}" alt="Uploaded Image"> ${file.name}`;
+            uploadedFilesList.appendChild(listItem);
         });
+
+        reader.readAsDataURL(file);
     } else {
-        imagePreviewDefaultText.style.display = null;
-        imagePreviewImage.style.display = null;
-        imagePreviewImage.setAttribute('src', '');
+        alert('You can only upload up to 4 images.');
     }
+
+    imageInput.value = ''; // Clear the input so the same file can be selected again if needed
 });
 
 listingForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    if (uploadedFiles.length === 0) {
+        alert('Please upload at least one image.');
+        return;
+    }
+
     const formData = new FormData(listingForm);
     const user = JSON.parse(localStorage.getItem('user')); // Get the logged-in user
     formData.append('userId', user._id); // Append userId to the form data
+
+    uploadedFiles.forEach(file => {
+        formData.append('images', file);
+    });
 
     try {
         console.log('Submitting listing:', formData);
@@ -61,10 +83,9 @@ listingForm.addEventListener('submit', async (e) => {
         if (result.success) {
             alert('Listing submitted successfully!');
             listingForm.reset();
-            addListedItem(result.listing);
+            uploadedFiles = [];
+            uploadedFilesList.innerHTML = '';
             imagePreviewDefaultText.style.display = null;
-            imagePreviewImage.style.display = null;
-            imagePreviewImage.setAttribute('src', '');
             conditionButtons.forEach(btn => btn.classList.remove('selected'));
         } else {
             alert('Failed to submit listing: ' + result.message);
@@ -94,16 +115,21 @@ function addListedItem(listing) {
     const timeDiff = Math.abs(now - listingDate);
     const daysAgo = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 
-    const imageElements = listing.imagePaths.map(imagePath => `<img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${imagePath}" alt="${listing.partName}" class="item-image">`).join('');
+    // Use only the first image for the item card
+    const firstImagePath = listing.imagePaths[0];
+    const imageElement = `<img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${firstImagePath}" alt="${listing.partName}" class="item-image">`;
+
+    // Get the full category name
+    const fullCategoryName = categoryMapping[listing.category] || listing.category;
 
     itemCard.innerHTML = `
         <div class="listing-time">${daysAgo} days ago</div>
-        <div class="item-images">${imageElements}</div>
+        <div class="item-images">${imageElement}</div>
         <div class="item-card-content">
             <h3>${listing.partName}</h3>
-            <p class="brand">Brand: ${listing.brand}</p> <!-- Display brand -->
             <p class="price">$${listing.price}</p>
-            <p>Category: ${listing.category}</p>
+            <p class="brand">Brand: ${listing.brand}</p> <!-- Display brand -->
+            <p>Category: ${fullCategoryName}</p>
             <p>Condition: ${formatCondition(listing.condition)}</p>
             <button class="delete-btn" onclick="deleteListing('${listing._id}')">Delete</button>
         </div>

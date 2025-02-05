@@ -134,7 +134,7 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
     margin: 10px;
-    height: 450px; /* Increase the height to fit the profile picture, name, and days listed ago */
+    height: 600px; /* Increase the height to fit the profile picture, name, and days listed ago */
 }
 
 .item-card img {
@@ -301,4 +301,25 @@ body {
 
 .profile-picture-popup-content button:hover {
     background-color: #0056b3;
+}
+
+#uploadedFilesList {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 10px;
+    color: #FFFFFF;
+}
+
+#uploadedFilesList li {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+#uploadedFilesList li img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 5px;
 }

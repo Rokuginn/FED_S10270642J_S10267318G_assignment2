@@ -1,3 +1,18 @@
+// Define the category mapping
+const categoryMapping = {
+    gpu: 'Graphics Processing Unit',
+    cpu: 'Central Processing Unit',
+    motherboard: 'Motherboard',
+    ram: 'Random Access Memory',
+    storage: 'Storage',
+    psu: 'Power Supply Unit',
+    case: 'Case'
+};
+
+function getCategoryFullName(category) {
+    return categoryMapping[category] || category;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const itemId = params.get('id');
@@ -27,18 +42,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.log('Fetched user:', user); // Log the fetched user
 
             // Check if the item has the expected properties
-            if (item && item.partName && item.imagePath && item.price && item.category && item.condition && item.description && item.userId && item.likes !== undefined) {
+            if (item && item.partName && item.imagePaths && item.price && item.category && item.condition && item.description && item.userId && item.likes !== undefined) {
                 const itemDetailsContainer = document.getElementById('itemDetailsContainer');
                 console.log('Updating HTML with item details'); // Log before updating HTML
+
+                // Create image elements for all images
+                const imageElements = item.imagePaths.map(imagePath => `
+                    <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${imagePath}" alt="${item.partName}">
+                `).join('');
+
+                // Get the full category name
+                const fullCategoryName = getCategoryFullName(item.category);
+
                 itemDetailsContainer.innerHTML = `
                     <div class="item-image-container">
-                        <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${item.imagePath}" alt="${item.partName}">
+                        ${imageElements}
                     </div>
                     <div class="item-details">
                         <h1>${item.partName}</h1>
                         <p class="price">$${item.price}</p>
                         <p class="brand">Brand: ${item.brand}</p> <!-- Display brand -->
-                        <p class="category">Category: ${item.category}</p>
+                        <p class="category">Category: ${fullCategoryName}</p>
                         <p class="condition">Condition: ${formatCondition(item.condition)}</p>
                         <p class="listed-by">Listed by: ${user.username}</p>
                         <p class="likes">${item.likes} likes</p>

@@ -75,11 +75,11 @@
                 <textarea id="description" name="description" required></textarea>
 
                 <label for="images">Upload Images (up to 4):</label>
-                <input type="file" id="images" name="images" accept="image/*" multiple required>
+                <input type="file" id="images" name="images" accept="image/*">
                 <div class="image-preview" id="imagePreview">
-                    <img src="" alt="Image Preview" class="image-preview__image">
                     <span class="image-preview__default-text">Image Preview</span>
                 </div>
+                <ul id="uploadedFilesList"></ul>
 
                 <button type="submit">Submit Listing</button>
             </form>

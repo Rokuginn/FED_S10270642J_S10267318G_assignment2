@@ -23,14 +23,13 @@ html, body {
     z-index: 999;
     overflow: hidden;
     padding: 10px 20px;
-    background-color: #FFFFFF; /* White */
-    border-bottom: 1px solid #CCCCCC; /* Light Gray */
+    background-color: #161B22; /* Dark background */
 }
 
 .logo {
     font-size: 30px;
     font-weight: bold;
-    color: #0071C5; /* Primary Blue */
+    color: #00ADEF; /* Light Blue */
     margin-left: 130px;
 }
 
@@ -55,7 +54,7 @@ html, body {
 }
 
 .nav-links a {
-    color: #1f1f1f; /* Primary Blue */
+    color: #FFFFFF; /* White text */
     text-decoration: none;
     font-size: 20px;
     font-weight: 500;
@@ -80,14 +79,14 @@ html, body {
     font-size: 20px;
     display: flex;
     align-items: center;
-    color: #000000; /* Primary Blue */
+    color: #FFFFFF; /* White text */
     font-weight: 300;
 }
 
 .user-info #sellBtn {
     padding: 10px 20px;
     background: #00ADEF; /* Light Blue */
-    color: #FFFFFF; /* White */
+    color: #FFFFFF; /* White text */
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -112,7 +111,7 @@ html, body {
 }
 
 .icons a, .icons button {
-    color: #0071C5; /* Primary Blue */
+    color: #00ADEF; /* Light Blue */
     font-size: 20px;
     transition: color 0.3s ease;
     background: none;
@@ -121,5 +120,5 @@ html, body {
 }
 
 .icons a:hover, .icons button:hover {
-    color: #00ADEF; /* Light Blue */
+    color: #0056A4; /* Secondary Blue */
 }

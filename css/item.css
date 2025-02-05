@@ -1,7 +1,7 @@
 body {
     font-family: 'Open Sans', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: #161B22; /* Dark background */
+    color: #FFFFFF; /* White text */
     margin: 0;
     padding: 0;
 }
@@ -19,17 +19,19 @@ body {
     grid-template-columns: 1fr 2fr 1fr;
     gap: 40px;
     width: 100%;
-    background-color: #f4f4f4; /* Blend with background color */
+    background-color: #1F1F1F; /* Darker background */
     padding: 40px;
 }
 
 .item-image-container {
-    flex: 1;
-    margin-right: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .item-image-container img {
-    width: 100%;
+    width: calc(50% - 10px); /* Adjust width to fit two images per row */
     height: auto;
     border-radius: 10px;
     object-fit: cover; /* Ensure the image covers the container */
@@ -44,7 +46,7 @@ body {
 .item-details h1 {
     font-size: 32px;
     margin-bottom: 10px;
-    color: #333;
+    color: #FFFFFF; /* White text */
 }
 
 .item-details .price {
@@ -58,14 +60,14 @@ body {
 .item-details .listed-by,
 .item-details .likes {
     font-size: 20px;
-    color: #555;
+    color: #CCCCCC; /* Light Gray */
     margin-bottom: 10px;
 }
 
 .item-description-container {
     margin-top: 40px;
     padding: 20px;
-    background-color: #fff;
+    background-color: #1F1F1F; /* Darker background */
     border-radius: 10px;
     width: 100%;
 }
@@ -73,19 +75,19 @@ body {
 .item-description-container h2 {
     font-size: 24px;
     margin-bottom: 10px;
-    color: #333;
+    color: #FFFFFF; /* White text */
 }
 
 .item-description-container p {
     font-size: 18px;
-    color: #555;
+    color: #CCCCCC; /* Light Gray */
 }
 
 .user-info-container {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background-color: #f4f4f4; /* Blend with background color */
+    background-color: #1F1F1F; /* Darker background */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -93,19 +95,19 @@ body {
 
 .user-info-container h2 {
     font-size: 24px;
-    color: #333;
+    color: #FFFFFF; /* White text */
 }
 
 .user-info-container p {
     font-size: 18px;
-    color: #555;
+    color: #CCCCCC; /* Light Gray */
 }
 
 .chat-button {
     display: inline-block;
     padding: 10px 20px;
     background-color: #007bff;
-    color: #fff;
+    color: #FFFFFF; /* White text */
     text-align: center;
     border-radius: 5px;
     text-decoration: none;
@@ -115,7 +117,7 @@ body {
 .make-offer {
     margin-top: 20px;
     padding: 20px;
-    background-color: #f4f4f4; /* Blend with background color */
+    background-color: #1F1F1F; /* Darker background */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
@@ -124,7 +126,7 @@ body {
 .make-offer h2 {
     font-size: 24px;
     margin-bottom: 10px;
-    color: #333;
+    color: #FFFFFF; /* White text */
 }
 
 .make-offer input {
@@ -139,7 +141,7 @@ body {
 .make-offer button {
     padding: 10px 20px;
     background-color: #28a745;
-    color: #fff;
+    color: #FFFFFF; /* White text */
     border: none;
     border-radius: 5px;
     cursor: pointer;

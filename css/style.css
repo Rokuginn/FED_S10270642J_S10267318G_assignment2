@@ -1,7 +1,7 @@
 body {
     font-family: 'Open Sans', sans-serif;
-    background: #F2F2F2; /* Gray */
-    color: #333333; /* Dark Gray */
+    background: #161B22; /* Dark background */
+    color: #FFFFFF; /* White text */
 }
 
 .item-card-link {
@@ -163,13 +163,13 @@ body {
 
 .for-you-section, .trending-section, .recent-release-section {
     padding: 20px;
-    background-color: #FFFFFF; /* White */
+    background-color: #1F1F1F; /* Darker background */
     border-radius: 10px;
     margin-bottom: 20px;
 }
 
 .for-you-section h2, .trending-section h2, .recent-release-section h2 {
-    color: #333333; /* Dark Gray */
+    color: #FFFFFF; /* White text */
     font-size: 28px;
     margin-bottom: 20px;
     font-family: 'Open Sans', sans-serif;
@@ -182,7 +182,7 @@ body {
 }
 
 .item-card {
-    background-color: #FFFFFF; /* White */
+    background-color: #1F1F1F; /* Darker background */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -191,7 +191,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    color: #333333; /* Dark Gray */
+    color: #FFFFFF; /* White text */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     text-align: left; /* Ensure text is aligned to the left */
@@ -215,7 +215,7 @@ body {
 .item-card h3 {
     margin-bottom: 5px; /* Reduce margin-bottom */
     font-size: 18px; /* Adjust font size */
-    color: #333333; /* Dark Gray */
+    color: #FFFFFF; /* White text */
     font-family: 'Open Sans', sans-serif;
     height: 40px; /* Set fixed height */
     overflow: hidden;
@@ -226,13 +226,13 @@ body {
 .item-card p {
     margin-bottom: 5px; /* Reduce margin-bottom */
     font-size: 14px; /* Adjust font size */
-    color: #666666; /* Medium Gray */
+    color: #CCCCCC; /* Light Gray */
     font-family: 'Open Sans', sans-serif;
 }
 
 .item-card .user-name {
     font-size: 12px; /* Adjust font size */
-    color: #666666; /* Medium Gray */
+    color: #CCCCCC; /* Light Gray */
     margin-top: 5px; /* Reduce margin-top */
     margin-bottom: 5px; /* Reduce margin-bottom */
     font-family: 'Open Sans', sans-serif;
@@ -240,9 +240,9 @@ body {
 
 .item-card .listing-time {
     font-size: 12px;
-    color: #f7f7f7; /* Medium Gray */
+    color: #FFFFFF; /* White */
     margin-bottom: 5px; /* Reduce margin-bottom */
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
 }
 
 .item-card:hover {
@@ -262,7 +262,7 @@ body {
 }
 
 .item-card .user-info span {
-    color: #333333; /* Dark Gray */
+    color: #FFFFFF; /* White text */
     font-size: 14px;
     font-family: 'Open Sans', sans-serif;
 }
