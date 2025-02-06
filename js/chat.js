@@ -79,22 +79,35 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(chatRoom => {
                 if (chatRoom) {
                     loadChat(chatRoom.receiver === userId ? chatRoom.sender : chatRoom.receiver);
-
-                    // Display item details
-                    const itemDetailsHTML = `
-                        <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${chatRoom.item.imagePath}" alt="${chatRoom.item.partName}">
-                        <div class="item-info">
-                            <h3>${chatRoom.item.partName}</h3>
-                            <p>$${chatRoom.item.price}</p>
-                        </div>
-                    `;
-                    itemDetailsBar.innerHTML = itemDetailsHTML;
                 } else {
                     console.error('Chat room not found');
                 }
             })
             .catch(error => {
                 console.error('Error fetching chat room:', error);
+            });
+    }
+
+    // Fetch and display item details if itemId is present in the URL
+    if (itemId) {
+        fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listing/${itemId}`)
+            .then(response => response.json())
+            .then(item => {
+                if (item) {
+                    const itemDetailsHTML = `
+                        <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${item.imagePaths[0]}" alt="${item.partName}">
+                        <div class="item-info">
+                            <h3>${item.partName}</h3>
+                            <p>$${item.price}</p>
+                        </div>
+                    `;
+                    itemDetailsBar.innerHTML = itemDetailsHTML;
+                } else {
+                    console.error('Item not found');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching item details:', error);
             });
     }
 
