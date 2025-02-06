@@ -5,6 +5,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
+    // Ensure the following field is defined
+    if (!currentUser.following) {
+        currentUser.following = [];
+    }
+
     const params = new URLSearchParams(window.location.search);
     const userId = params.get('id') || currentUser._id;
     console.log('Current User ID:', currentUser._id); // Debugging
@@ -57,6 +62,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         followBtn.style.display = 'none';
                         unfollowBtn.style.display = 'block';
                         document.getElementById('followersCount').textContent = parseInt(document.getElementById('followersCount').textContent) + 1;
+                        currentUser.following.push(userId); // Update local following list
+                        localStorage.setItem('user', JSON.stringify(currentUser)); // Update localStorage
                     } else {
                         alert(result.message);
                     }
@@ -79,6 +86,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         followBtn.style.display = 'block';
                         unfollowBtn.style.display = 'none';
                         document.getElementById('followersCount').textContent = parseInt(document.getElementById('followersCount').textContent) - 1;
+                        currentUser.following = currentUser.following.filter(id => id !== userId); // Update local following list
+                        localStorage.setItem('user', JSON.stringify(currentUser)); // Update localStorage
                     } else {
                         alert(result.message);
                     }
