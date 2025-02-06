@@ -37,23 +37,31 @@
 
     <!-- Account Page Container -->
     <div class="account-page-container">
-        <div class="account-info-container">
-            <img id="profilePicture" src="Images/avatar-default.svg" alt="Profile Picture" class="profile-picture">
-            <h1 id="username">Username</h1>
-            <p id="description">Description</p>
-            <textarea id="descriptionInput" placeholder="Update your description"></textarea>
-            <p id="dealMethod">Deal Method: <span>Online</span></p>
-            <select id="dealMethodInput">
-                <option value="Online">Online</option>
-                <option value="In-Person">In-Person</option>
-            </select>
-            <button id="saveBtn">Save</button>
-            <button id="followBtn" style="display: none;">Follow</button>
-            <button id="unfollowBtn" style="display: none;">Unfollow</button>
-            <div class="account-stats">
-                <p>Followers: <span id="followersCount">0</span></p>
-                <p>Following: <span id="followingCount">0</span></p>
-                <p>Total Likes: <span id="totalLikes">0</span></p>
+        <div class="account-header">
+            <div class="profile-picture-container">
+                <img id="profilePicture" src="Images/avatar-default.svg" alt="Profile Picture" class="profile-picture">
+            </div>
+            <div class="profile-info">
+                <h1 id="username">Username</h1>
+                <button id="followBtn" style="display: none;">Follow</button>
+                <button id="unfollowBtn" style="display: none;">Unfollow</button>
+                <button id="settingsBtn" style="display: none;"><i class="fas fa-cog"></i></button>
+                <div id="settingsContainer" style="display: none;">
+                    <textarea id="descriptionInput" placeholder="Update your description"></textarea>
+                    <select id="dealMethodInput">
+                        <option value="Online">Online</option>
+                        <option value="In-Person">In-Person</option>
+                    </select>
+                    <input type="text" id="locationInput" placeholder="Enter your location">
+                    <button id="saveBtn">Save</button>
+                </div>
+                <p id="description">Description</p>
+                <p id="dealMethod">Deal Method: <span>Online</span> <i class="fas fa-map-marker-alt"></i> <span id="location"></span></p>
+                <div class="account-stats">
+                    <p>Followers: <span id="followersCount">0</span></p>
+                    <p>Following: <span id="followingCount">0</span></p>
+                    <p>Total Likes: <span id="totalLikes">0</span></p>
+                </div>
             </div>
         </div>
         <div class="account-listings-container">

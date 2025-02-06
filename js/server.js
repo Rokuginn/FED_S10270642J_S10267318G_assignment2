@@ -45,7 +45,8 @@ const userSchema = new mongoose.Schema({
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     description: String, // Add description field
-    dealMethod: String // Add dealMethod field
+    dealMethod: String, // Add dealMethod field
+    location: String // Add location field
 });
 
 const User = mongoose.model('User', userSchema);
@@ -281,12 +282,13 @@ app.post('/updateProfilePicture', upload.array('newProfilePicture', 1), async (r
 
 // Handle profile update
 app.post('/updateProfile', async (req, res) => {
-    const { userId, description, dealMethod } = req.body;
+    const { userId, description, dealMethod, location } = req.body;
     try {
         const user = await User.findById(userId);
         if (user) {
             user.description = description;
             user.dealMethod = dealMethod;
+            user.location = location; // Update location
             await user.save();
             res.json({ success: true });
         } else {
