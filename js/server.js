@@ -400,6 +400,47 @@ app.post('/chats', async (req, res) => {
     }
 });
 
+// Check if a chat room exists or create a new one
+app.post('/chats/checkOrCreate', async (req, res) => {
+    const { userId, sellerId } = req.body;
+    try {
+        // Check if a chat room already exists
+        let chatRoom = await Chat.findOne({
+            $or: [
+                { sender: userId, receiver: sellerId },
+                { sender: sellerId, receiver: userId }
+            ]
+        });
+
+        // If no chat room exists, create a new one
+        if (!chatRoom) {
+            chatRoom = new Chat({ sender: userId, receiver: sellerId, text: '' });
+            await chatRoom.save();
+        }
+
+        res.json({ success: true, chatRoomId: chatRoom._id });
+    } catch (error) {
+        console.error('Error checking or creating chat room:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
+// Fetch chat room by ID
+app.get('/chats/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const chatRoom = await Chat.findById(id);
+        if (chatRoom) {
+            res.json(chatRoom);
+        } else {
+            res.status(404).json({ success: false, message: 'Chat room not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching chat room:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);

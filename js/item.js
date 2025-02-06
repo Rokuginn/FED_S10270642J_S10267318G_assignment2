@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="user-info-container">
                         <h2><a href="account.html?id=${user._id}">${user.username}</a></h2>
                         <p>Followers: ${user.followers.length}</p> <!-- Display follower count -->
-                        <a href="chat.html?sellerId=${user._id}" class="chat-button">Chat with Seller</a>
+                        <a href="#" class="chat-button" data-seller-id="${user._id}">Chat with Seller</a>
                         <div class="make-offer">
                             <h2>Make an Offer</h2>
                             <input type="number" placeholder="Enter your offer price">
@@ -84,6 +84,32 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <p>${item.description}</p>
                 `;
                 console.log('HTML updated successfully'); // Log after updating HTML
+
+                // Add event listener to the "Chat with Seller" button
+                document.querySelector('.chat-button').addEventListener('click', async (event) => {
+                    event.preventDefault();
+                    const sellerId = event.target.getAttribute('data-seller-id');
+                    const userId = JSON.parse(localStorage.getItem('user'))._id;
+
+                    try {
+                        const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/checkOrCreate', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ userId, sellerId })
+                        });
+                        const result = await response.json();
+                        if (result.success) {
+                            window.location.href = `chat.html?chatRoomId=${result.chatRoomId}`;
+                        } else {
+                            alert('Failed to create or find chat room: ' + result.message);
+                        }
+                    } catch (error) {
+                        console.error('Error creating or finding chat room:', error);
+                        alert('Failed to create or find chat room: ' + error.message);
+                    }
+                });
             } else {
                 console.error('Fetched item does not have the expected properties:', item);
                 const itemDetailsContainer = document.getElementById('itemDetailsContainer');

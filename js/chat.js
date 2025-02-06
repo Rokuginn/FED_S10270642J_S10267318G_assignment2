@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const chatRoomId = params.get('chatRoomId');
     const userId = JSON.parse(localStorage.getItem('user'))._id;
     const chatList = document.getElementById('chatList');
     const chatWith = document.getElementById('chatWith');
@@ -11,15 +13,22 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/list?userId=${userId}`)
         .then(response => response.json())
         .then(chats => {
-            chats.forEach(chat => {
-                const chatListItem = document.createElement('div');
-                chatListItem.classList.add('chat-list-item');
-                chatListItem.textContent = chat.username;
-                chatListItem.addEventListener('click', () => {
-                    loadChat(chat.userId);
+            if (Array.isArray(chats)) {
+                chats.forEach(chat => {
+                    const chatListItem = document.createElement('div');
+                    chatListItem.classList.add('chat-list-item');
+                    chatListItem.textContent = chat.username;
+                    chatListItem.addEventListener('click', () => {
+                        loadChat(chat.userId);
+                    });
+                    chatList.appendChild(chatListItem);
                 });
-                chatList.appendChild(chatListItem);
-            });
+            } else {
+                console.error('Unexpected response format:', chats);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching chat list:', error);
         });
 
     // Load chat messages
@@ -29,11 +38,18 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats?userId=${userId}&sellerId=${sellerId}`)
             .then(response => response.json())
             .then(messages => {
-                messages.forEach(message => {
-                    const messageElement = document.createElement('div');
-                    messageElement.textContent = `${message.sender === userId ? 'You' : message.sender}: ${message.text}`;
-                    chatMessages.appendChild(messageElement);
-                });
+                if (Array.isArray(messages)) {
+                    messages.forEach(message => {
+                        const messageElement = document.createElement('div');
+                        messageElement.textContent = `${message.sender === userId ? 'You' : message.sender}: ${message.text}`;
+                        chatMessages.appendChild(messageElement);
+                    });
+                } else {
+                    console.error('Unexpected response format:', messages);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching chat messages:', error);
             });
 
         // Fetch seller information
@@ -41,6 +57,25 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(user => {
                 chatWith.textContent = user.username;
+            })
+            .catch(error => {
+                console.error('Error fetching user information:', error);
+            });
+    }
+
+    // Load the chat room if chatRoomId is present in the URL
+    if (chatRoomId) {
+        fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/${chatRoomId}`)
+            .then(response => response.json())
+            .then(chatRoom => {
+                if (chatRoom) {
+                    loadChat(chatRoom.receiver === userId ? chatRoom.sender : chatRoom.receiver);
+                } else {
+                    console.error('Chat room not found');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching chat room:', error);
             });
     }
 
@@ -61,56 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     messageElement.textContent = `You: ${message}`;
                     chatMessages.appendChild(messageElement);
                     messageInput.value = '';
+                })
+                .catch(error => {
+                    console.error('Error sending message:', error);
                 });
         }
     });
-});
-
-// Fetch chat list for a user
-app.get('/chats/list', async (req, res) => {
-    const { userId } = req.query;
-    try {
-        const chats = await Chat.aggregate([
-            {
-                $match: {
-                    $or: [
-                        { sender: mongoose.Types.ObjectId(userId) },
-                        { receiver: mongoose.Types.ObjectId(userId) }
-                    ]
-                }
-            },
-            {
-                $group: {
-                    _id: {
-                        $cond: [
-                            { $eq: ['$sender', mongoose.Types.ObjectId(userId)] },
-                            '$receiver',
-                            '$sender'
-                        ]
-                    }
-                }
-            },
-            {
-                $lookup: {
-                    from: 'users',
-                    localField: '_id',
-                    foreignField: '_id',
-                    as: 'user'
-                }
-            },
-            {
-                $unwind: '$user'
-            },
-            {
-                $project: {
-                    userId: '$_id',
-                    username: '$user.username'
-                }
-            }
-        ]);
-        res.json(chats);
-    } catch (error) {
-        console.error('Error fetching chat list:', error);
-        res.status(500).json({ success: false, message: 'Internal server error' });
-    }
 });
