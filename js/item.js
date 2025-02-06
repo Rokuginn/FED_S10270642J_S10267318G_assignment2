@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({ userId, sellerId })
+                            body: JSON.stringify({ userId, sellerId, itemId })
                         });
                         const result = await response.json();
                         if (result.success) {

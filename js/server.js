@@ -73,7 +73,12 @@ const chatSchema = new mongoose.Schema({
     sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     text: String,
-    timestamp: { type: Date, default: Date.now }
+    timestamp: { type: Date, default: Date.now },
+    item: { // Add item details to the chat schema
+        partName: String,
+        price: Number,
+        imagePath: String
+    }
 });
 
 const Chat = mongoose.model('Chat', chatSchema);
@@ -459,8 +464,14 @@ app.post('/chats', async (req, res) => {
 
 // Check if a chat room exists or create a new one
 app.post('/chats/checkOrCreate', async (req, res) => {
-    const { userId, sellerId } = req.body;
+    const { userId, sellerId, itemId } = req.body;
     try {
+        // Fetch item details
+        const item = await Listing.findById(itemId);
+        if (!item) {
+            return res.status(404).json({ success: false, message: 'Item not found' });
+        }
+
         // Check if a chat room already exists
         let chatRoom = await Chat.findOne({
             $or: [
@@ -469,9 +480,18 @@ app.post('/chats/checkOrCreate', async (req, res) => {
             ]
         });
 
-        // If no chat room exists, create a new one
+        // If no chat room exists, create a new one with item details
         if (!chatRoom) {
-            chatRoom = new Chat({ sender: userId, receiver: sellerId, text: '' });
+            chatRoom = new Chat({
+                sender: userId,
+                receiver: sellerId,
+                text: '',
+                item: {
+                    partName: item.partName,
+                    price: item.price,
+                    imagePath: item.imagePaths[0]
+                }
+            });
             await chatRoom.save();
         }
 
