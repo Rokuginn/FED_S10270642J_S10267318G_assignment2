@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         chatListItem.classList.add('chat-list-item');
                         chatListItem.textContent = `${chatRoom.username}: ${chatRoom.lastMessage}`;
                         chatListItem.addEventListener('click', () => {
-                            window.location.href = `chat.html?chatRoomId=${chatRoom._id}`;
+                            loadChat(chatRoom._id);
                         });
                         chatList.appendChild(chatListItem);
                     });
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(chatRoom => {
                 if (chatRoom) {
-                    currentChatUserId = chatRoom.receiver._id === userId ? chatRoom.sender._id : chatRoom.receiver._id;
+                    currentChatUserId = chatRoom.receiver === userId ? chatRoom.sender : chatRoom.receiver;
                     chatMessages.innerHTML = '';
                     if (Array.isArray(chatRoom.messages)) {
                         chatRoom.messages.forEach(message => {
@@ -57,18 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     // Display item details
-                    if (chatRoom.item) {
-                        const itemDetailsHTML = `
-                            <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${chatRoom.item.imagePath}" alt="${chatRoom.item.partName}">
-                            <div class="item-info">
-                                <h3>${chatRoom.item.partName}</h3>
-                                <p>$${chatRoom.item.price}</p>
-                            </div>
-                        `;
-                        itemDetailsBar.innerHTML = itemDetailsHTML;
-                    } else {
-                        itemDetailsBar.innerHTML = '<p>No item details available.</p>';
-                    }
+                    const itemDetailsHTML = `
+                        <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${chatRoom.item.imagePath}" alt="${chatRoom.item.partName}">
+                        <div class="item-info">
+                            <h3>${chatRoom.item.partName}</h3>
+                            <p>$${chatRoom.item.price}</p>
+                        </div>
+                    `;
+                    itemDetailsBar.innerHTML = itemDetailsHTML;
 
                     // Fetch seller information
                     fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/users/${currentChatUserId}`)
@@ -122,6 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatIcon = document.getElementById('chatIcon');
     chatIcon.addEventListener('click', (event) => {
         event.preventDefault();
-        window.location.href = 'chat.html';
+        let chatUrl = 'chat.html';
+        if (itemId) {
+            chatUrl += `?itemId=${itemId}`;
+        }
+        window.location.href = chatUrl;
     });
 });
