@@ -78,7 +78,8 @@ const chatSchema = new mongoose.Schema({
         partName: String,
         price: Number,
         imagePath: String
-    }
+    },
+    messages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chat' }] // Add messages field
 });
 
 const Chat = mongoose.model('Chat', chatSchema);
@@ -506,9 +507,15 @@ app.post('/chats/checkOrCreate', async (req, res) => {
 app.get('/chats/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const chatRoom = await Chat.findById(id);
+        const chatRoom = await Chat.findById(id).populate('sender', 'username').populate('receiver', 'username');
         if (chatRoom) {
-            res.json(chatRoom);
+            const messages = await Chat.find({
+                $or: [
+                    { sender: chatRoom.sender._id, receiver: chatRoom.receiver._id },
+                    { sender: chatRoom.receiver._id, receiver: chatRoom.sender._id }
+                ]
+            }).sort('timestamp').populate('sender', 'username');
+            res.json({ ...chatRoom.toObject(), messages });
         } else {
             res.status(404).json({ success: false, message: 'Chat room not found' });
         }
