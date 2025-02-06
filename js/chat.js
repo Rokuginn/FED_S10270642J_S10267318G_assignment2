@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         chatListItem.classList.add('chat-list-item');
                         chatListItem.textContent = `${chatRoom.username}: ${chatRoom.lastMessage}`;
                         chatListItem.addEventListener('click', () => {
-                            loadChat(chatRoom._id);
+                            loadChat(chatRoom.userId);
                         });
                         chatList.appendChild(chatListItem);
                     });
@@ -38,23 +38,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchChatRooms(); // Initial fetch of chat rooms
 
-    // Load chat messages and item details
-    function loadChat(chatRoomId) {
+    // Load chat messages
+    function loadChat(sellerId) {
+        currentChatUserId = sellerId;
+        chatMessages.innerHTML = '';
+        fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats?userId=${userId}&sellerId=${sellerId}`)
+            .then(response => response.json())
+            .then(messages => {
+                if (Array.isArray(messages)) {
+                    messages.forEach(message => {
+                        const messageElement = document.createElement('div');
+                        messageElement.classList.add('chat-bubble');
+                        messageElement.classList.add(message.sender._id === userId ? 'sender' : 'receiver');
+                        messageElement.textContent = `${message.sender.username === userId ? 'You' : message.sender.username}: ${message.text}`;
+                        chatMessages.appendChild(messageElement);
+                    });
+                } else {
+                    console.error('Unexpected response format:', messages);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching chat messages:', error);
+            });
+
+        // Fetch seller information
+        fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/users/${sellerId}`)
+            .then(response => response.json())
+            .then(user => {
+                chatWith.textContent = user.username;
+            })
+            .catch(error => {
+                console.error('Error fetching user information:', error);
+            });
+    }
+
+    // Load the chat room if chatRoomId is present in the URL
+    if (chatRoomId) {
         fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/${chatRoomId}`)
             .then(response => response.json())
             .then(chatRoom => {
                 if (chatRoom) {
-                    currentChatUserId = chatRoom.receiver === userId ? chatRoom.sender : chatRoom.receiver;
-                    chatMessages.innerHTML = '';
-                    if (Array.isArray(chatRoom.messages)) {
-                        chatRoom.messages.forEach(message => {
-                            const messageElement = document.createElement('div');
-                            messageElement.classList.add('chat-bubble');
-                            messageElement.classList.add(message.sender._id === userId ? 'sender' : 'receiver');
-                            messageElement.textContent = `${message.sender.username === userId ? 'You' : message.sender.username}: ${message.text}`;
-                            chatMessages.appendChild(messageElement);
-                        });
-                    }
+                    loadChat(chatRoom.receiver === userId ? chatRoom.sender : chatRoom.receiver);
 
                     // Display item details
                     const itemDetailsHTML = `
@@ -65,16 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
                     itemDetailsBar.innerHTML = itemDetailsHTML;
-
-                    // Fetch seller information
-                    fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/users/${currentChatUserId}`)
-                        .then(response => response.json())
-                        .then(user => {
-                            chatWith.textContent = user.username;
-                        })
-                        .catch(error => {
-                            console.error('Error fetching user information:', error);
-                        });
                 } else {
                     console.error('Chat room not found');
                 }
@@ -82,11 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => {
                 console.error('Error fetching chat room:', error);
             });
-    }
-
-    // Load the chat room if chatRoomId is present in the URL
-    if (chatRoomId) {
-        loadChat(chatRoomId);
     }
 
     // Send message
@@ -112,16 +121,5 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error('Error sending message:', error);
                 });
         }
-    });
-
-    // Handle chat icon click in the navbar
-    const chatIcon = document.getElementById('chatIcon');
-    chatIcon.addEventListener('click', (event) => {
-        event.preventDefault();
-        let chatUrl = 'chat.html';
-        if (itemId) {
-            chatUrl += `?itemId=${itemId}`;
-        }
-        window.location.href = chatUrl;
     });
 });
