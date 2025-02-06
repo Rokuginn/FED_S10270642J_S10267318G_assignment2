@@ -346,8 +346,8 @@ app.get('/chats/list', async (req, res) => {
             {
                 $match: {
                     $or: [
-                        { sender: mongoose.Types.ObjectId(userId) },
-                        { receiver: mongoose.Types.ObjectId(userId) }
+                        { sender: new mongoose.Types.ObjectId(userId) },
+                        { receiver: new mongoose.Types.ObjectId(userId) }
                     ]
                 }
             },
@@ -355,7 +355,7 @@ app.get('/chats/list', async (req, res) => {
                 $group: {
                     _id: {
                         $cond: [
-                            { $eq: ['$sender', mongoose.Types.ObjectId(userId)] },
+                            { $eq: ['$sender', new mongoose.Types.ObjectId(userId)] },
                             '$receiver',
                             '$sender'
                         ]
@@ -395,8 +395,8 @@ app.get('/chats/rooms', async (req, res) => {
             {
                 $match: {
                     $or: [
-                        { sender: mongoose.Types.ObjectId(userId) },
-                        { receiver: mongoose.Types.ObjectId(userId) }
+                        { sender: new mongoose.Types.ObjectId(userId) },
+                        { receiver: new mongoose.Types.ObjectId(userId) }
                     ]
                 }
             },
@@ -404,7 +404,7 @@ app.get('/chats/rooms', async (req, res) => {
                 $group: {
                     _id: {
                         $cond: [
-                            { $eq: ['$sender', mongoose.Types.ObjectId(userId)] },
+                            { $eq: ['$sender', new mongoose.Types.ObjectId(userId)] },
                             '$receiver',
                             '$sender'
                         ]
