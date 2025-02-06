@@ -338,6 +338,55 @@ app.get('/chats', async (req, res) => {
     }
 });
 
+// Fetch chat list for a user
+app.get('/chats/list', async (req, res) => {
+    const { userId } = req.query;
+    try {
+        const chats = await Chat.aggregate([
+            {
+                $match: {
+                    $or: [
+                        { sender: mongoose.Types.ObjectId(userId) },
+                        { receiver: mongoose.Types.ObjectId(userId) }
+                    ]
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        $cond: [
+                            { $eq: ['$sender', mongoose.Types.ObjectId(userId)] },
+                            '$receiver',
+                            '$sender'
+                        ]
+                    }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'user'
+                }
+            },
+            {
+                $unwind: '$user'
+            },
+            {
+                $project: {
+                    userId: '$_id',
+                    username: '$user.username'
+                }
+            }
+        ]);
+        res.json(chats);
+    } catch (error) {
+        console.error('Error fetching chat list:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
 // Handle sending chat messages
 app.post('/chats', async (req, res) => {
     const { sender, receiver, text } = req.body;
