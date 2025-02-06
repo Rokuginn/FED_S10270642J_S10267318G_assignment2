@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     event.preventDefault();
                     const sellerId = event.target.getAttribute('data-seller-id');
                     const userId = JSON.parse(localStorage.getItem('user'))._id;
-                    const itemId = params.get('id'); // Get the item ID from the URL
+                    const itemId = params.get('id');
 
                     try {
                         const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/checkOrCreate', {
@@ -98,7 +98,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({ userId, sellerId })
+                            // Include itemId in the request body
+                            body: JSON.stringify({ 
+                                userId, 
+                                sellerId,
+                                itemId  // Add this line
+                            })
                         });
                         const result = await response.json();
                         if (result.success) {

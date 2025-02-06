@@ -468,7 +468,7 @@ app.post('/chats', async (req, res) => {
 
 // Check if a chat room exists or create a new one
 app.post('/chats/checkOrCreate', async (req, res) => {
-    const { userId, sellerId } = req.body;
+    const { userId, sellerId, itemId } = req.body;
     try {
         // Check if a chat room already exists
         let chatRoom = await Chat.findOne({
@@ -478,9 +478,14 @@ app.post('/chats/checkOrCreate', async (req, res) => {
             ]
         });
 
-        // If no chat room exists, create a new one
+        // If no chat room exists, create a new one with itemId
         if (!chatRoom) {
-            chatRoom = new Chat({ sender: userId, receiver: sellerId, text: '' });
+            chatRoom = new Chat({ 
+                sender: userId, 
+                receiver: sellerId, 
+                text: '',
+                itemId: itemId  // Add this line
+            });
             await chatRoom.save();
         }
 
