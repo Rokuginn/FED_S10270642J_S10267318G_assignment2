@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const params = new URLSearchParams(window.location.search);
     const userId = params.get('id') || currentUser._id;
+    console.log('Current User ID:', currentUser._id); // Debugging
+    console.log('Viewing User ID:', userId); // Debugging
 
     try {
         const userResponse = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/users/${userId}`);
@@ -32,6 +34,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const followBtn = document.getElementById('followBtn');
             const unfollowBtn = document.getElementById('unfollowBtn');
+
+            console.log('Current User Following:', currentUser.following); // Debugging
 
             if (currentUser.following.includes(userId)) {
                 unfollowBtn.style.display = 'block';

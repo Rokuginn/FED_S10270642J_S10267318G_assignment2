@@ -64,12 +64,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <p class="brand">Brand: ${item.brand}</p> <!-- Display brand -->
                         <p class="category">Category: ${fullCategoryName}</p>
                         <p class="condition">Condition: ${formatCondition(item.condition)}</p>
-                        <p class="listed-by">Listed by: ${user.username}</p>
+                        <p class="listed-by">Listed by: <a href="account.html?id=${user._id}">${user.username}</a></p>
                         <p class="likes">${item.likes} likes</p>
                     </div>
                     <div class="user-info-container">
-                        <h2>${user.username}</h2>
-                        <p>Followers: ${user.followers}</p>
+                        <h2><a href="account.html?id=${user._id}">${user.username}</a></h2>
+                        <p>Followers: ${user.followers.length}</p> <!-- Display follower count -->
                         <a href="#" class="chat-button">Chat with Seller</a>
                         <div class="make-offer">
                             <h2>Make an Offer</h2>

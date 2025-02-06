@@ -166,7 +166,7 @@ app.get('/listing/:id', async (req, res) => {
 app.get('/users/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const user = await User.findById(id);
+        const user = await User.findById(id).populate('followers').populate('following');
         if (user) {
             res.json(user);
         } else {
