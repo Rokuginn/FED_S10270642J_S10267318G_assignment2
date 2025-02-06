@@ -63,6 +63,8 @@ body.chat-page {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    height: calc(100% - 180px); /* Adjust when item details bar is present */
+    transition: height 0.3s ease;
 }
 
 .chat-bubble {
@@ -116,6 +118,11 @@ body.chat-page {
     padding: 10px;
     background-color: #2C2F33;
     border-bottom: 1px solid #333;
+    transition: all 0.3s ease;
+}
+
+.item-details-bar[style*="display: none"] + .chat-messages {
+    height: calc(100% - 120px); /* Adjust for missing item details bar */
 }
 
 .item-details-bar img {

@@ -403,6 +403,9 @@ app.get('/chats/rooms', async (req, res) => {
                 }
             },
             {
+                $sort: { timestamp: -1 }
+            },
+            {
                 $group: {
                     _id: {
                         $cond: [
@@ -411,7 +414,7 @@ app.get('/chats/rooms', async (req, res) => {
                             '$sender'
                         ]
                     },
-                    lastMessage: { $last: '$$ROOT' }
+                    lastMessage: { $first: '$$ROOT' }
                 }
             },
             {
@@ -430,12 +433,9 @@ app.get('/chats/rooms', async (req, res) => {
                     userId: '$_id',
                     username: '$user.username',
                     lastMessage: '$lastMessage.text',
-                    timestamp: '$lastMessage.timestamp',
-                    itemId: '$lastMessage.itemId' // Add itemId to the projection
+                    itemId: '$lastMessage.itemId',
+                    timestamp: '$lastMessage.timestamp'
                 }
-            },
-            {
-                $sort: { timestamp: -1 }
             }
         ]);
         res.json(chatRooms);
@@ -447,9 +447,15 @@ app.get('/chats/rooms', async (req, res) => {
 
 // Handle sending chat messages
 app.post('/chats', async (req, res) => {
-    const { sender, receiver, text } = req.body;
+    const { sender, receiver, text, itemId } = req.body;
     try {
-        const newMessage = new Chat({ sender, receiver, text });
+        const newMessage = new Chat({ 
+            sender, 
+            receiver, 
+            text,
+            itemId,
+            timestamp: new Date()
+        });
         await newMessage.save();
         res.json({ success: true, message: newMessage });
     } catch (error) {

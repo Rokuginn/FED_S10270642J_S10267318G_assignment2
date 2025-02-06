@@ -77,18 +77,22 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.innerHTML = '';
         
         // First fetch the chat room details to get associated itemId
-        fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/rooms?userId=${userId}&sellerId=${sellerId}`)
+        console.log('Fetching chat room details for seller:', sellerId);
+        fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/rooms?userId=${userId}`)
             .then(response => response.json())
             .then(chatRooms => {
+                console.log('Chat rooms received:', chatRooms);
                 const chatRoom = chatRooms.find(room => 
-                    room.userId === sellerId || room.receiver === sellerId
+                    room.userId === sellerId
                 );
-                
+                console.log('Found chat room:', chatRoom);
+
                 if (chatRoom && chatRoom.itemId) {
-                    // Update item details if there's an associated item
+                    console.log('Fetching item details for:', chatRoom.itemId);
                     fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listing/${chatRoom.itemId}`)
                         .then(response => response.json())
                         .then(item => {
+                            console.log('Item details received:', item);
                             if (item) {
                                 itemDetailsBar.style.display = 'flex';
                                 itemDetailsBar.innerHTML = `
@@ -107,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             itemDetailsBar.style.display = 'none';
                         });
                 } else {
+                    console.log('No item ID found in chat room');
                     itemDetailsBar.style.display = 'none';
                 }
             })
