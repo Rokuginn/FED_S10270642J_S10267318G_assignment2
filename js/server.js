@@ -387,6 +387,61 @@ app.get('/chats/list', async (req, res) => {
     }
 });
 
+// Fetch chat rooms for a user
+app.get('/chats/rooms', async (req, res) => {
+    const { userId } = req.query;
+    try {
+        const chatRooms = await Chat.aggregate([
+            {
+                $match: {
+                    $or: [
+                        { sender: mongoose.Types.ObjectId(userId) },
+                        { receiver: mongoose.Types.ObjectId(userId) }
+                    ]
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        $cond: [
+                            { $eq: ['$sender', mongoose.Types.ObjectId(userId)] },
+                            '$receiver',
+                            '$sender'
+                        ]
+                    },
+                    lastMessage: { $last: '$$ROOT' }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'user'
+                }
+            },
+            {
+                $unwind: '$user'
+            },
+            {
+                $project: {
+                    userId: '$_id',
+                    username: '$user.username',
+                    lastMessage: '$lastMessage.text',
+                    timestamp: '$lastMessage.timestamp'
+                }
+            },
+            {
+                $sort: { timestamp: -1 }
+            }
+        ]);
+        res.json(chatRooms);
+    } catch (error) {
+        console.error('Error fetching chat rooms:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
 // Handle sending chat messages
 app.post('/chats', async (req, res) => {
     const { sender, receiver, text } = req.body;

@@ -9,27 +9,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendMessageBtn = document.getElementById('sendMessageBtn');
     let currentChatUserId = null;
 
-    // Fetch chat list
-    fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/list?userId=${userId}`)
-        .then(response => response.json())
-        .then(chats => {
-            if (Array.isArray(chats)) {
-                chats.forEach(chat => {
-                    const chatListItem = document.createElement('div');
-                    chatListItem.classList.add('chat-list-item');
-                    chatListItem.textContent = chat.username;
-                    chatListItem.addEventListener('click', () => {
-                        loadChat(chat.userId);
+    // Fetch chat rooms
+    function fetchChatRooms() {
+        fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/rooms?userId=${userId}`)
+            .then(response => response.json())
+            .then(chatRooms => {
+                chatList.innerHTML = ''; // Clear existing chat list
+                if (Array.isArray(chatRooms)) {
+                    chatRooms.forEach(chatRoom => {
+                        const chatListItem = document.createElement('div');
+                        chatListItem.classList.add('chat-list-item');
+                        chatListItem.textContent = `${chatRoom.username}: ${chatRoom.lastMessage}`;
+                        chatListItem.addEventListener('click', () => {
+                            loadChat(chatRoom.userId);
+                        });
+                        chatList.appendChild(chatListItem);
                     });
-                    chatList.appendChild(chatListItem);
-                });
-            } else {
-                console.error('Unexpected response format:', chats);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching chat list:', error);
-        });
+                } else {
+                    console.error('Unexpected response format:', chatRooms);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching chat rooms:', error);
+            });
+    }
+
+    fetchChatRooms(); // Initial fetch of chat rooms
 
     // Load chat messages
     function loadChat(sellerId) {
