@@ -430,7 +430,8 @@ app.get('/chats/rooms', async (req, res) => {
                     userId: '$_id',
                     username: '$user.username',
                     lastMessage: '$lastMessage.text',
-                    timestamp: '$lastMessage.timestamp'
+                    timestamp: '$lastMessage.timestamp',
+                    itemId: '$lastMessage.itemId' // Add itemId to the projection
                 }
             },
             {
