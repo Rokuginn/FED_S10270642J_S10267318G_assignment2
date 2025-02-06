@@ -76,23 +76,20 @@ document.addEventListener('DOMContentLoaded', () => {
         currentChatUserId = sellerId;
         chatMessages.innerHTML = '';
         
-        // First fetch the chat room details to get associated itemId
-        console.log('Fetching chat room details for seller:', sellerId);
         fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/rooms?userId=${userId}`)
             .then(response => response.json())
             .then(chatRooms => {
                 console.log('Chat rooms received:', chatRooms);
                 const chatRoom = chatRooms.find(room => 
-                    room.userId === sellerId
+                    room.userId.toString() === sellerId.toString()
                 );
                 console.log('Found chat room:', chatRoom);
 
-                if (chatRoom && chatRoom.itemId) {
+                if (chatRoom?.itemId) {
                     console.log('Fetching item details for:', chatRoom.itemId);
                     fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listing/${chatRoom.itemId}`)
                         .then(response => response.json())
                         .then(item => {
-                            console.log('Item details received:', item);
                             if (item) {
                                 itemDetailsBar.style.display = 'flex';
                                 itemDetailsBar.innerHTML = `
@@ -102,22 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <p>$${item.price}</p>
                                     </div>
                                 `;
-                            } else {
-                                itemDetailsBar.style.display = 'none';
                             }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching item details:', error);
-                            itemDetailsBar.style.display = 'none';
                         });
-                } else {
-                    console.log('No item ID found in chat room');
-                    itemDetailsBar.style.display = 'none';
                 }
-            })
-            .catch(error => {
-                console.error('Error fetching chat room details:', error);
-                itemDetailsBar.style.display = 'none';
             });
 
         // Fetch and display chat messages
@@ -199,7 +183,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ sender: userId, receiver: currentChatUserId, text: message })
+                body: JSON.stringify({ 
+                    sender: userId, 
+                    receiver: currentChatUserId, 
+                    text: message,
+                    itemId: itemId // Include the itemId if present
+                })
             })
                 .then(response => response.json())
                 .then(data => {

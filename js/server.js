@@ -73,6 +73,7 @@ const chatSchema = new mongoose.Schema({
     sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     text: String,
+    itemId: { type: mongoose.Schema.Types.ObjectId, ref: 'Listing' }, // Add itemId field
     timestamp: { type: Date, default: Date.now }
 });
 
@@ -414,7 +415,8 @@ app.get('/chats/rooms', async (req, res) => {
                             '$sender'
                         ]
                     },
-                    lastMessage: { $first: '$$ROOT' }
+                    lastMessage: { $first: '$$ROOT' },
+                    itemId: { $first: '$itemId' } // Include itemId in group
                 }
             },
             {
@@ -433,7 +435,7 @@ app.get('/chats/rooms', async (req, res) => {
                     userId: '$_id',
                     username: '$user.username',
                     lastMessage: '$lastMessage.text',
-                    itemId: '$lastMessage.itemId',
+                    itemId: '$lastMessage.itemId', // Project the itemId
                     timestamp: '$lastMessage.timestamp'
                 }
             }
