@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="user-info-container">
                         <h2><a href="account.html?id=${user._id}">${user.username}</a></h2>
                         <p>Followers: ${user.followers.length}</p> <!-- Display follower count -->
-                        <a href="#" class="chat-button">Chat with Seller</a>
+                        <a href="chat.html?sellerId=${user._id}" class="chat-button">Chat with Seller</a>
                         <div class="make-offer">
                             <h2>Make an Offer</h2>
                             <input type="number" placeholder="Enter your offer price">

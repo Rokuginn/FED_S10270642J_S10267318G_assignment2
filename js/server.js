@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema({
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     description: String, // Add description field
     dealMethod: String, // Add dealMethod field
-    location: String // Add location field
+    location: String, // Add location field
 });
 
 const User = mongoose.model('User', userSchema);
@@ -67,6 +67,16 @@ const listingSchema = new mongoose.Schema({
 });
 
 const Listing = mongoose.model('Listing', listingSchema);
+
+// Define a schema and model for chat messages
+const chatSchema = new mongoose.Schema({
+    sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    text: String,
+    timestamp: { type: Date, default: Date.now }
+});
+
+const Chat = mongoose.model('Chat', chatSchema);
 
 // Handle login requests
 app.post('/login', async (req, res) => {
@@ -309,6 +319,36 @@ app.get('/images/:imageName', (req, res) => {
             res.status(404).send('Image not found');
         }
     });
+});
+
+// Fetch chat messages between two users
+app.get('/chats', async (req, res) => {
+    const { userId, sellerId } = req.query;
+    try {
+        const messages = await Chat.find({
+            $or: [
+                { sender: userId, receiver: sellerId },
+                { sender: sellerId, receiver: userId }
+            ]
+        }).sort('timestamp');
+        res.json(messages);
+    } catch (error) {
+        console.error('Error fetching chat messages:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
+// Handle sending chat messages
+app.post('/chats', async (req, res) => {
+    const { sender, receiver, text } = req.body;
+    try {
+        const newMessage = new Chat({ sender, receiver, text });
+        await newMessage.save();
+        res.json({ success: true, message: newMessage });
+    } catch (error) {
+        console.error('Error sending chat message:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
 });
 
 // Start the server

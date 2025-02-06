@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('username').textContent = userData.username;
         document.getElementById('description').textContent = userData.description || 'No description provided.';
         document.getElementById('dealMethod').querySelector('span').textContent = userData.dealMethod || 'Online';
-        document.getElementById('location').textContent = userData.location || '';
+        document.getElementById('location').querySelector('span').textContent = userData.location || ''; // Update location display
         document.getElementById('followersCount').textContent = userData.followers.length;
         document.getElementById('followingCount').textContent = userData.following.length;
 
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (result.success) {
                         document.getElementById('description').textContent = description;
                         document.getElementById('dealMethod').querySelector('span').textContent = dealMethod;
-                        document.getElementById('location').textContent = location;
+                        document.getElementById('location').querySelector('span').textContent = location; // Update location display
                         alert('Profile updated successfully!');
                     } else {
                         alert('Failed to update profile: ' + result.message);
