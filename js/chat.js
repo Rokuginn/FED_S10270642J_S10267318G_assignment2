@@ -46,7 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (Array.isArray(messages)) {
                     messages.forEach(message => {
                         const messageElement = document.createElement('div');
-                        messageElement.textContent = `${message.sender === userId ? 'You' : message.sender}: ${message.text}`;
+                        messageElement.classList.add('chat-bubble');
+                        messageElement.classList.add(message.sender._id === userId ? 'sender' : 'receiver');
+                        messageElement.textContent = `${message.sender.username === userId ? 'You' : message.sender.username}: ${message.text}`;
                         chatMessages.appendChild(messageElement);
                     });
                 } else {
@@ -98,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(response => response.json())
                 .then(data => {
                     const messageElement = document.createElement('div');
+                    messageElement.classList.add('chat-bubble', 'sender');
                     messageElement.textContent = `You: ${message}`;
                     chatMessages.appendChild(messageElement);
                     messageInput.value = '';

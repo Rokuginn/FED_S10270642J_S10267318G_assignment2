@@ -330,7 +330,9 @@ app.get('/chats', async (req, res) => {
                 { sender: userId, receiver: sellerId },
                 { sender: sellerId, receiver: userId }
             ]
-        }).sort('timestamp');
+        })
+        .sort('timestamp')
+        .populate('sender', 'username'); // Populate the sender's username
         res.json(messages);
     } catch (error) {
         console.error('Error fetching chat messages:', error);

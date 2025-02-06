@@ -59,6 +59,29 @@ body.chat-page {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-bubble {
+    max-width: 60%;
+    padding: 10px;
+    border-radius: 10px;
+    position: relative;
+    word-wrap: break-word;
+}
+
+.chat-bubble.sender {
+    background-color: #007bff;
+    color: #FFFFFF;
+    align-self: flex-start;
+}
+
+.chat-bubble.receiver {
+    background-color: #2C2F33;
+    color: #FFFFFF;
+    align-self: flex-end;
 }
 
 .chat-input {
