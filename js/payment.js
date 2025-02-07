@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Payment result:', result); // Debug log
 
             if (result.success) {
-                showSuccessAnimation();
+                showSuccessAnimation(result.sellerPoints);
             } else {
                 throw new Error(result.message || 'Payment failed');
             }
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    function showSuccessAnimation() {
+    function showSuccessAnimation(sellerPoints) {
         const overlay = document.createElement('div');
         overlay.className = 'overlay';
         
@@ -127,12 +127,19 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(overlay);
         document.body.appendChild(popup);
 
+        // Update the user's MokePoints in localStorage
+        const currentUser = JSON.parse(localStorage.getItem('user'));
+        if (currentUser) {
+            currentUser.mokePoints = sellerPoints;
+            localStorage.setItem('user', JSON.stringify(currentUser));
+        }
+
         lottie.loadAnimation({
             container: document.getElementById('successAnimation'),
             renderer: 'svg',
             loop: false,
             autoplay: true,
-            path: 'animations\Animation - 1738914521622.json'
+            path: 'animations/Animation - 1738914521622.json'
         });
 
         setTimeout(() => {
