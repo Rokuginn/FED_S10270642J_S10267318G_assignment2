@@ -512,7 +512,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: 'animations\Animation - 1738914521622.json' // Make sure to add this animation file
+            path: 'animations\Animation - 1738914521622.json'
         });
 
         // Auto close popup after 5 seconds for seller
@@ -532,7 +532,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 deals.forEach(deal => {
                     if (deal.status === 'pending') {
                         const isSeller = deal.seller._id === userId;
-                        showDealComplete(isSeller, deal.price);
+                        // Pass the deal._id as the dealId
+                        showDealComplete(isSeller, deal.price, deal._id);
                     }
                 });
             })
