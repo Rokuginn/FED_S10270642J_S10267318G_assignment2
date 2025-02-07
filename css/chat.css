@@ -244,3 +244,60 @@ body.chat-page {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+/* Add these styles */
+.deal-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(44, 47, 51, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    z-index: 1000;
+    text-align: center;
+    min-width: 300px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.deal-popup h2 {
+    color: #ffc107;
+    margin: 20px 0;
+}
+
+.payment-message {
+    background-color: #28a745 !important;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.payment-message:hover {
+    transform: scale(1.02);
+}
+
+.payment-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #00ADEF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.payment-button:hover {
+    background-color: #0089bc;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+}

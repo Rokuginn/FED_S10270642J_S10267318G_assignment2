@@ -412,7 +412,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         text: dealMessage,
                         itemId: itemId,
                         type: 'deal',
-                        dealId: dealData.deal._id
+                        dealId: dealData.deal._id,
+                        amount: offerAmount
                     })
                 });
             }
@@ -428,8 +429,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 rejectBtn.style.display = 'none';
                 chatMessages.scrollTop = chatMessages.scrollHeight;
 
-                // Show deal completion popup
-                showDealComplete(true, offerAmount);
+                // Show deal completion popup with dealId
+                showDealComplete(true, offerAmount, data.message.dealId);
             }
         })
         .catch(error => {
@@ -457,6 +458,14 @@ document.addEventListener('DOMContentLoaded', () => {
             rejectBtn.style.display = 'none';
             offerBtn.style.display = 'none';
             offerInput.style.display = 'none';
+
+            // Add payment button for buyer
+            if (!isUserSeller) {
+                messageElement.classList.add('payment-message');
+                messageElement.addEventListener('click', () => {
+                    window.location.href = `payment.html?dealId=${message.dealId}&amount=${message.amount}`;
+                });
+            }
         } else if (message.text === 'OFFER REJECTED!') {
             messageElement.classList.add('reject-message');
             dealBtn.style.display = 'none';
@@ -470,26 +479,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
         messageElement.textContent = `${message.sender.username === userId ? 'You' : message.sender.username}: ${message.text}`;
         chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
     // Update showDealComplete function
-    function showDealComplete(isSeller, amount) {
+    function showDealComplete(isSeller, amount, dealId) {
         const overlay = document.createElement('div');
         overlay.className = 'overlay';
         
         const popup = document.createElement('div');
         popup.className = 'deal-popup';
         
+        // Add Lottie animation container
+        const animationContainer = document.createElement('div');
+        animationContainer.id = 'dealAnimation';
+        
         popup.innerHTML = `
+            <div id="dealAnimation"></div>
             <h2>Deal Completed!</h2>
             <p>${isSeller ? 'You have accepted the offer!' : 'Your offer has been accepted!'}</p>
             <p>Amount: $${amount}</p>
-            ${!isSeller ? '<button onclick="proceedToPayment()">Proceed to Payment</button>' : 
-                         '<p>Waiting for buyer to complete payment...</p>'}
+            ${!isSeller ? 
+                `<button class="payment-button" onclick="window.location.href='payment.html?dealId=${dealId}&amount=${amount}'">
+                    Proceed to Payment
+                </button>` : 
+                '<p>Waiting for buyer to complete payment...</p>'
+            }
         `;
         
         document.body.appendChild(overlay);
         document.body.appendChild(popup);
+
+        // Load Lottie animation
+        lottie.loadAnimation({
+            container: document.getElementById('dealAnimation'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'animations\Animation - 1738914521622.json' // Make sure to add this animation file
+        });
+
+        // Auto close popup after 5 seconds for seller
+        if (isSeller) {
+            setTimeout(() => {
+                overlay.remove();
+                popup.remove();
+            }, 5000);
+        }
     }
 
     // Add a function to check pending deals

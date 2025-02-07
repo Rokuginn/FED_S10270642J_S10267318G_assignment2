@@ -625,6 +625,39 @@ app.get('/deals/pending/:userId', async (req, res) => {
     }
 });
 
+// Add this endpoint to handle payment completion
+app.post('/deals/complete', async (req, res) => {
+    const { dealId, status } = req.body;
+    try {
+        const deal = await Deal.findById(dealId);
+        if (!deal) {
+            return res.status(404).json({ success: false, message: 'Deal not found' });
+        }
+
+        // Update deal status
+        deal.status = status;
+        await deal.save();
+
+        // Delete the listing
+        await Listing.findByIdAndDelete(deal.item);
+
+        // Send completion message to chat
+        const completionMessage = new Chat({
+            sender: deal.buyer,
+            receiver: deal.seller,
+            text: 'TRANSACTION COMPLETED',
+            itemId: deal.item,
+            timestamp: new Date()
+        });
+        await completionMessage.save();
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error completing deal:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
