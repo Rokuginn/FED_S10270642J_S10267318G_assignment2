@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    dealId,
+                    dealId: dealId.toString(), // Ensure dealId is sent as a string
                     paymentDetails: {
                         cardNumber: cardNumber.slice(-4), // Only send last 4 digits
                         expiryDate,
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderer: 'svg',
             loop: false,
             autoplay: true,
-            path: 'animations/payment-success.json'
+            path: 'animations\Animation - 1738914521622.json'
         });
 
         setTimeout(() => {

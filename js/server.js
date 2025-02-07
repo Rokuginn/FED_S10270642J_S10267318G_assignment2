@@ -632,26 +632,28 @@ app.get('/deals/pending/:userId', async (req, res) => {
 
 // Update the deals/complete endpoint
 app.post('/deals/complete', async (req, res) => {
-    const { dealId, paymentDetails } = req.body;
-    console.log('Completing deal:', { dealId, paymentDetails }); // Debug log
-
-    if (!dealId) {
-        return res.status(400).json({ 
-            success: false, 
-            message: 'Deal ID is required' 
-        });
-    }
+    const { dealId } = req.body;
 
     try {
-        // Validate MongoDB ObjectId
-        if (!mongoose.Types.ObjectId.isValid(dealId)) {
+        // Check if dealId is provided
+        if (!dealId) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Deal ID is required' 
+            });
+        }
+
+        // Clean and validate the dealId
+        const cleanDealId = dealId.toString().trim();
+        
+        if (!mongoose.Types.ObjectId.isValid(cleanDealId)) {
             return res.status(400).json({ 
                 success: false, 
                 message: 'Invalid deal ID format' 
             });
         }
 
-        const deal = await Deal.findById(dealId);
+        const deal = await Deal.findById(cleanDealId);
         if (!deal) {
             return res.status(404).json({ 
                 success: false, 
@@ -666,7 +668,7 @@ app.post('/deals/complete', async (req, res) => {
         // Delete the listing
         await Listing.findByIdAndDelete(deal.item);
 
-        // Send completion message to chat
+        // Send completion message
         const completionMessage = new Chat({
             sender: deal.buyer,
             receiver: deal.seller,
@@ -676,10 +678,7 @@ app.post('/deals/complete', async (req, res) => {
         });
         await completionMessage.save();
 
-        res.json({ 
-            success: true, 
-            message: 'Payment processed successfully' 
-        });
+        res.json({ success: true, message: 'Payment processed successfully' });
     } catch (error) {
         console.error('Error completing deal:', error);
         res.status(500).json({ 
