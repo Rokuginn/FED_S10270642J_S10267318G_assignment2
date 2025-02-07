@@ -478,15 +478,15 @@ app.post('/chats/checkOrCreate', async (req, res) => {
             ]
         });
 
-        // If no chat room exists, create a new one with itemId
+        // If no chat room exists, create a new one without an empty message
         if (!chatRoom) {
-            chatRoom = new Chat({ 
-                sender: userId, 
-                receiver: sellerId, 
-                text: '',
-                itemId: itemId  // Add this line
-            });
-            await chatRoom.save();
+            // Create entry in the chat rooms collection without an empty message
+            chatRoom = {
+                _id: new mongoose.Types.ObjectId(),
+                sender: userId,
+                receiver: sellerId,
+                itemId: itemId
+            };
         }
 
         res.json({ success: true, chatRoomId: chatRoom._id });

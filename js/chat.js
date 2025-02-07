@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/rooms?userId=${userId}`)
             .then(response => response.json())
             .then(chatRooms => {
+                console.log('Chat rooms received:', chatRooms); // Debug log
                 chatList.innerHTML = '';
                 if (Array.isArray(chatRooms)) {
                     chatRooms.forEach(chatRoom => {
@@ -52,12 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         chatListItem.classList.add('chat-list-item');
                         
                         const chatInfo = document.createElement('div');
-                        chatInfo.textContent = `${chatRoom.username}: ${chatRoom.lastMessage}`;
+                        chatInfo.classList.add('chat-info');
+                        chatInfo.textContent = `${chatRoom.username}${chatRoom.lastMessage ? ': ' + chatRoom.lastMessage : ''}`;
                         chatInfo.addEventListener('click', () => {
-                            loadChat(chatRoom.userId);
-                            if (!itemId) {
-                                itemDetailsBar.style.display = 'none';
-                            }
+                            loadChat(chatRoom.userId, chatRoom.itemId); // Pass itemId to loadChat
                         });
                         
                         const deleteButton = document.createElement('button');
@@ -110,53 +109,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Load chat messages
-    function loadChat(sellerId) {
+    // Update the loadChat function to filter out empty messages
+    function loadChat(sellerId, chatItemId = null) {
         currentChatUserId = sellerId;
         chatMessages.innerHTML = '';
         
-        fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/rooms?userId=${userId}`)
-            .then(response => response.json())
-            .then(chatRooms => {
-                console.log('Chat rooms received:', chatRooms);
-                const chatRoom = chatRooms.find(room => 
-                    room.userId.toString() === sellerId.toString()
-                );
-                console.log('Found chat room:', chatRoom);
+        // If we have a chatItemId, use it, otherwise try to get it from the URL
+        const currentItemId = chatItemId || itemId;
+        
+        if (currentItemId) {
+            fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listing/${currentItemId}`)
+                .then(response => response.json())
+                .then(item => {
+                    if (item) {
+                        itemDetailsBar.style.display = 'flex';
+                        itemDetailsBar.innerHTML = `
+                            <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${item.imagePaths[0]}" alt="${item.partName}">
+                            <div class="item-info">
+                                <h3>${item.partName}</h3>
+                                <p>$${item.price}</p>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching item details:', error);
+                    itemDetailsBar.style.display = 'none';
+                });
+        } else {
+            itemDetailsBar.style.display = 'none';
+        }
 
-                if (chatRoom?.itemId) {
-                    console.log('Fetching item details for:', chatRoom.itemId);
-                    fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listing/${chatRoom.itemId}`)
-                        .then(response => response.json())
-                        .then(item => {
-                            if (item) {
-                                itemDetailsBar.style.display = 'flex';
-                                itemDetailsBar.innerHTML = `
-                                    <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${item.imagePaths[0]}" alt="${item.partName}">
-                                    <div class="item-info">
-                                        <h3>${item.partName}</h3>
-                                        <p>$${item.price}</p>
-                                    </div>
-                                `;
-                            }
-                        });
-                }
-            });
-
-        // Fetch and display chat messages
+        // Update the message fetching to filter empty messages
         fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats?userId=${userId}&sellerId=${sellerId}`)
             .then(response => response.json())
             .then(messages => {
                 if (Array.isArray(messages)) {
-                    messages.forEach(message => {
-                        const messageElement = document.createElement('div');
-                        messageElement.classList.add('chat-bubble');
-                        messageElement.classList.add(message.sender._id === userId ? 'sender' : 'receiver');
-                        messageElement.textContent = `${message.sender.username === userId ? 'You' : message.sender.username}: ${message.text}`;
-                        chatMessages.appendChild(messageElement);
-                    });
-                } else {
-                    console.error('Unexpected response format:', messages);
+                    messages
+                        .filter(message => message.text && message.text.trim() !== '') // Filter out empty messages
+                        .forEach(message => {
+                            const messageElement = document.createElement('div');
+                            messageElement.classList.add('chat-bubble');
+                            messageElement.classList.add(message.sender._id === userId ? 'sender' : 'receiver');
+                            messageElement.textContent = `${message.sender.username === userId ? 'You' : message.sender.username}: ${message.text}`;
+                            chatMessages.appendChild(messageElement);
+                        });
+                    // Scroll to bottom of messages
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
                 }
             })
             .catch(error => {
