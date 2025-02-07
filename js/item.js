@@ -88,9 +88,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Add event listener to the "Chat with Seller" button
                 document.querySelector('.chat-button').addEventListener('click', async (event) => {
                     event.preventDefault();
-                    const sellerId = event.target.getAttribute('data-seller-id');
+                    const sellerId = event.currentTarget.getAttribute('data-seller-id'); // Change target to currentTarget
                     const userId = JSON.parse(localStorage.getItem('user'))._id;
                     const itemId = params.get('id');
+
+                    console.log('Creating chat room with:', { userId, sellerId, itemId }); // Debug log
+
+                    if (!sellerId || !userId) {
+                        console.error('Missing required IDs:', { sellerId, userId });
+                        return;
+                    }
 
                     try {
                         const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/checkOrCreate', {
@@ -98,16 +105,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            // Include itemId in the request body
                             body: JSON.stringify({ 
                                 userId, 
                                 sellerId,
-                                itemId  // Add this line
+                                itemId
                             })
                         });
+
                         const result = await response.json();
+                        console.log('Chat room creation result:', result); // Debug log
+
                         if (result.success) {
-                            window.location.href = `chat.html?chatRoomId=${result.chatRoomId}&itemId=${itemId}`;
+                            window.location.href = `chat.html?chatRoomId=${result.chatRoomId}&itemId=${itemId}&sellerId=${sellerId}`;
                         } else {
                             alert('Failed to create or find chat room: ' + result.message);
                         }

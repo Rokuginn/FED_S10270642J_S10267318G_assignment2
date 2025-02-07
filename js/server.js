@@ -487,9 +487,26 @@ app.post('/chats', async (req, res) => {
     }
 });
 
-// Check if a chat room exists or create a new one
+// Update the checkOrCreate endpoint
 app.post('/chats/checkOrCreate', async (req, res) => {
     const { userId, sellerId, itemId } = req.body;
+
+    // Validate required fields
+    if (!userId || !sellerId) {
+        return res.status(400).json({
+            success: false,
+            message: 'Missing required user IDs'
+        });
+    }
+
+    // Validate MongoDB ObjectID format
+    if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(sellerId)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid user ID format'
+        });
+    }
+
     try {
         // Check if a chat room already exists
         let chatRoom = await Chat.findOne({
@@ -499,18 +516,24 @@ app.post('/chats/checkOrCreate', async (req, res) => {
             ]
         });
 
-        // If no chat room exists, create a new one without an empty message
+        // If no chat room exists, create a new one
         if (!chatRoom) {
-            // Create entry in the chat rooms collection without an empty message
-            chatRoom = {
-                _id: new mongoose.Types.ObjectId(),
+            chatRoom = new Chat({
                 sender: userId,
                 receiver: sellerId,
-                itemId: itemId
-            };
+                text: '', // Empty initial message
+                itemId: itemId,
+                timestamp: new Date()
+            });
+            await chatRoom.save(); // Save the new chat room to MongoDB
+            console.log('Created new chat room:', chatRoom); // Debug log
         }
 
-        res.json({ success: true, chatRoomId: chatRoom._id });
+        res.json({ 
+            success: true, 
+            chatRoomId: chatRoom._id,
+            message: 'Chat room found or created successfully'
+        });
     } catch (error) {
         console.error('Error checking or creating chat room:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });

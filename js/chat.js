@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const chatRoomId = params.get('chatRoomId');
     const itemId = params.get('itemId'); // Get the item ID from the URL
+    const sellerId = params.get('sellerId'); // Add this line
     
     // Check if user is logged in
     const userJson = localStorage.getItem('user');
@@ -196,13 +197,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Load the chat room if chatRoomId is present in the URL
-    if (chatRoomId) {
+    // Update how chat is loaded initially if sellerId is present
+    if (sellerId) {
+        loadChat(sellerId, itemId);
+    } else if (chatRoomId) {
         fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/${chatRoomId}`)
             .then(response => response.json())
             .then(chatRoom => {
                 if (chatRoom) {
-                    loadChat(chatRoom.receiver === userId ? chatRoom.sender : chatRoom.receiver);
+                    loadChat(chatRoom.receiver === userId ? chatRoom.sender : chatRoom.receiver, itemId);
                 } else {
                     console.error('Chat room not found');
                 }
