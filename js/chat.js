@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const chatRoomId = params.get('chatRoomId');
-    const itemId = params.get('itemId'); // Get the item ID from the URL
+    let itemId = params.get('itemId'); // Change from const to let
     const sellerId = params.get('sellerId'); // Add this line
     
     // Check if user is logged in
@@ -137,12 +137,12 @@ document.addEventListener('DOMContentLoaded', () => {
         currentChatUserId = sellerId;
         chatMessages.innerHTML = '';
         
-        // Use chatItemId if provided, otherwise fallback to URL itemId
-        const currentItemId = chatItemId || itemId;
-        console.log('Loading chat with itemId:', currentItemId); // Debug log
+        // Update the itemId
+        itemId = chatItemId || params.get('itemId');
+        console.log('Loading chat with itemId:', itemId);
         
-        if (currentItemId) {
-            fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listing/${currentItemId}`)
+        if (itemId) {
+            fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listing/${itemId}`)
                 .then(response => response.json())
                 .then(item => {
                     if (item) {
@@ -239,9 +239,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // Send message
+    // Update the send message event listener
     sendMessageBtn.addEventListener('click', () => {
         const message = messageInput.value;
+        // Use currentItemId to persist the item association
+        const currentItemId = itemId || params.get('itemId');
+        
         if (message.trim() !== '' && currentChatUserId) {
             fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats', {
                 method: 'POST',
@@ -252,20 +255,41 @@ document.addEventListener('DOMContentLoaded', () => {
                     sender: userId, 
                     receiver: currentChatUserId, 
                     text: message,
-                    itemId: itemId // Include the itemId if present
+                    itemId: currentItemId // Use the persisted itemId
                 })
             })
-                .then(response => response.json())
-                .then(data => {
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
                     const messageElement = document.createElement('div');
                     messageElement.classList.add('chat-bubble', 'sender');
                     messageElement.textContent = `You: ${message}`;
                     chatMessages.appendChild(messageElement);
                     messageInput.value = '';
-                })
-                .catch(error => {
-                    console.error('Error sending message:', error);
-                });
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    
+                    // Keep the item details bar visible
+                    if (currentItemId && itemDetailsBar.style.display === 'none') {
+                        fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listing/${currentItemId}`)
+                            .then(response => response.json())
+                            .then(item => {
+                                if (item) {
+                                    itemDetailsBar.style.display = 'flex';
+                                    itemDetailsBar.innerHTML = `
+                                        <img src="https://fed-s10270642j-s10267318g-assignment2.onrender.com${item.imagePaths[0]}" alt="${item.partName}">
+                                        <div class="item-info">
+                                            <h3>${item.partName}</h3>
+                                            <p>$${item.price}</p>
+                                        </div>
+                                    `;
+                                }
+                            });
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error sending message:', error);
+            });
         }
     });
 });
