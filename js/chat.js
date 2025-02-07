@@ -2,7 +2,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const chatRoomId = params.get('chatRoomId');
     const itemId = params.get('itemId'); // Get the item ID from the URL
-    const userId = JSON.parse(localStorage.getItem('user'))._id;
+    
+    // Check if user is logged in
+    const userJson = localStorage.getItem('user');
+    if (!userJson) {
+        console.error('No user found in localStorage');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    const user = JSON.parse(userJson);
+    const userId = user._id;
+
+    if (!userId) {
+        console.error('Invalid user ID');
+        window.location.href = 'login.html';
+        return;
+    }
+
     const chatList = document.getElementById('chatList');
     const chatWith = document.getElementById('chatWith');
     const chatMessages = document.getElementById('chatMessages');
@@ -109,8 +126,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Update the loadChat function to filter out empty messages
+    // Update the loadChat function with validation
     function loadChat(sellerId, chatItemId = null) {
+        if (!sellerId || !userId) {
+            console.error('Missing required IDs:', { sellerId, userId });
+            return;
+        }
+
         currentChatUserId = sellerId;
         chatMessages.innerHTML = '';
         
@@ -140,37 +162,38 @@ document.addEventListener('DOMContentLoaded', () => {
             itemDetailsBar.style.display = 'none';
         }
 
-        // Update the message fetching to filter empty messages
-        fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats?userId=${userId}&sellerId=${sellerId}`)
-            .then(response => response.json())
-            .then(messages => {
-                if (Array.isArray(messages)) {
-                    messages
-                        .filter(message => message.text && message.text.trim() !== '') // Filter out empty messages
-                        .forEach(message => {
-                            const messageElement = document.createElement('div');
-                            messageElement.classList.add('chat-bubble');
-                            messageElement.classList.add(message.sender._id === userId ? 'sender' : 'receiver');
-                            messageElement.textContent = `${message.sender.username === userId ? 'You' : message.sender.username}: ${message.text}`;
-                            chatMessages.appendChild(messageElement);
-                        });
-                    // Scroll to bottom of messages
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching chat messages:', error);
-            });
+        // Add validation before fetching messages
+        if (typeof userId === 'string' && typeof sellerId === 'string') {
+            fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats?userId=${userId}&sellerId=${sellerId}`)
+                .then(response => response.json())
+                .then(messages => {
+                    if (Array.isArray(messages)) {
+                        messages
+                            .filter(message => message.text && message.text.trim() !== '')
+                            .forEach(message => {
+                                const messageElement = document.createElement('div');
+                                messageElement.classList.add('chat-bubble');
+                                messageElement.classList.add(message.sender._id === userId ? 'sender' : 'receiver');
+                                messageElement.textContent = `${message.sender.username === userId ? 'You' : message.sender.username}: ${message.text}`;
+                                chatMessages.appendChild(messageElement);
+                            });
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching chat messages:', error);
+                });
 
-        // Fetch seller information
-        fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/users/${sellerId}`)
-            .then(response => response.json())
-            .then(user => {
-                chatWith.textContent = user.username;
-            })
-            .catch(error => {
-                console.error('Error fetching user information:', error);
-            });
+            // Fetch seller information
+            fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/users/${sellerId}`)
+                .then(response => response.json())
+                .then(user => {
+                    chatWith.textContent = user.username;
+                })
+                .catch(error => {
+                    console.error('Error fetching user information:', error);
+                });
+        }
     }
 
     // Load the chat room if chatRoomId is present in the URL

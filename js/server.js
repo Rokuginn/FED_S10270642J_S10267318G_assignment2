@@ -322,10 +322,27 @@ app.get('/images/:imageName', (req, res) => {
     });
 });
 
-// Fetch chat messages between two users
+// Update the chat messages endpoint with validation
 app.get('/chats', async (req, res) => {
     const { userId, sellerId } = req.query;
+
+    // Validate the IDs
+    if (!userId || !sellerId) {
+        return res.status(400).json({ 
+            success: false, 
+            message: 'Missing required user IDs' 
+        });
+    }
+
     try {
+        // Ensure valid ObjectIds
+        if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(sellerId)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Invalid user ID format' 
+            });
+        }
+
         const messages = await Chat.find({
             $or: [
                 { sender: userId, receiver: sellerId },
@@ -333,11 +350,15 @@ app.get('/chats', async (req, res) => {
             ]
         })
         .sort('timestamp')
-        .populate('sender', 'username'); // Populate the sender's username
+        .populate('sender', 'username');
+
         res.json(messages);
     } catch (error) {
         console.error('Error fetching chat messages:', error);
-        res.status(500).json({ success: false, message: 'Internal server error' });
+        res.status(500).json({ 
+            success: false, 
+            message: 'Internal server error' 
+        });
     }
 });
 
