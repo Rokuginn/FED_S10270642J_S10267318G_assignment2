@@ -4,7 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const amount = params.get('amount');
     const totalAmount = document.getElementById('totalAmount');
     
-    // Display amount
+    console.log('Payment page loaded with:', { dealId, amount }); // Debug log
+
+    if (!dealId) {
+        console.error('No deal ID provided');
+        alert('Invalid payment session. Please try again.');
+        window.location.href = 'chat.html';
+        return;
+    }
+    
     if (amount) {
         totalAmount.textContent = `$${amount}`;
     }
@@ -31,11 +39,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('paymentForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        if (!dealId) {
+            alert('Invalid payment session. Please try again.');
+            return;
+        }
+
         // Basic validation
         const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
         const expiryDate = document.getElementById('expiryDate').value;
         const cvv = document.getElementById('cvv').value;
         const cardholderName = document.getElementById('cardholderName').value;
+
+        if (!cardNumber || !expiryDate || !cvv || !cardholderName) {
+            alert('Please fill in all payment details');
+            return;
+        }
 
         if (cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
             alert('Please enter a valid card number');
@@ -43,52 +61,57 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            // Process payment and update deal status
+            console.log('Submitting payment for deal:', dealId); // Debug log
             const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/deals/complete', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    dealId,
+                    dealId: dealId,
                     status: 'completed'
                 })
             });
 
             const result = await response.json();
+            console.log('Payment result:', result); // Debug log
+
             if (result.success) {
-                // Show success animation
-                const overlay = document.createElement('div');
-                overlay.className = 'overlay';
-                
-                const popup = document.createElement('div');
-                popup.className = 'success-popup';
-                popup.innerHTML = `
-                    <div id="successAnimation"></div>
-                    <h2>Payment Successful!</h2>
-                    <p>Transaction completed</p>
-                `;
-                
-                document.body.appendChild(overlay);
-                document.body.appendChild(popup);
-
-                // Load success animation
-                lottie.loadAnimation({
-                    container: document.getElementById('successAnimation'),
-                    renderer: 'svg',
-                    loop: false,
-                    autoplay: true,
-                    path: 'animations/payment-success.json'
-                });
-
-                // Redirect after 3 seconds
-                setTimeout(() => {
-                    window.location.href = 'chat.html';
-                }, 3000);
+                showSuccessAnimation();
+            } else {
+                alert('Payment failed: ' + (result.message || 'Unknown error'));
             }
         } catch (error) {
             console.error('Payment error:', error);
             alert('Payment failed. Please try again.');
         }
     });
+
+    function showSuccessAnimation() {
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay';
+        
+        const popup = document.createElement('div');
+        popup.className = 'success-popup';
+        popup.innerHTML = `
+            <div id="successAnimation"></div>
+            <h2>Payment Successful!</h2>
+            <p>Transaction completed</p>
+        `;
+        
+        document.body.appendChild(overlay);
+        document.body.appendChild(popup);
+
+        lottie.loadAnimation({
+            container: document.getElementById('successAnimation'),
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: 'animations/payment-success.json'
+        });
+
+        setTimeout(() => {
+            window.location.href = 'chat.html';
+        }, 3000);
+    }
 });

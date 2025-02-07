@@ -384,7 +384,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // First create the deal in MongoDB
         fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/deals/create', {
             method: 'POST',
             headers: {
@@ -399,8 +398,8 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(dealData => {
+            console.log('Deal created:', dealData); // Debug log
             if (dealData.success) {
-                // Then send the deal acceptance message
                 return fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats', {
                     method: 'POST',
                     headers: {
@@ -412,7 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         text: dealMessage,
                         itemId: itemId,
                         type: 'deal',
-                        dealId: dealData.deal._id,
+                        dealId: dealData.deal._id, // Make sure this is correctly passed
                         amount: offerAmount
                     })
                 });
@@ -421,21 +420,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('chat-bubble', 'sender', 'deal-message');
-                messageElement.textContent = 'You accepted the offer!';
-                chatMessages.appendChild(messageElement);
-                dealBtn.style.display = 'none';
-                rejectBtn.style.display = 'none';
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                // Show deal completion popup with dealId
-                showDealComplete(true, offerAmount, data.message.dealId);
+                showDealComplete(true, offerAmount, data.dealId);
             }
-        })
-        .catch(error => {
-            console.error('Error handling deal:', error);
-            alert('Failed to process deal');
         });
     });
 

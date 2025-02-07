@@ -597,7 +597,12 @@ app.post('/deals/create', async (req, res) => {
             status: 'pending'
         });
         await newDeal.save();
-        res.json({ success: true, deal: newDeal });
+        console.log('New deal created:', newDeal); // Debug log
+        res.json({ 
+            success: true, 
+            deal: newDeal,
+            dealId: newDeal._id // Explicitly include dealId
+        });
     } catch (error) {
         console.error('Error creating deal:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
