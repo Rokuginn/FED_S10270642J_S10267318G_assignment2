@@ -47,6 +47,7 @@ const userSchema = new mongoose.Schema({
     description: String, // Add description field
     dealMethod: String, // Add dealMethod field
     location: String, // Add location field
+    mokePoints: { type: Number, default: 0 } // Add MokePoints field
 });
 
 const User = mongoose.model('User', userSchema);
@@ -94,14 +95,17 @@ const Deal = mongoose.model('Deal', dealSchema);
 // Handle login requests
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    console.log('Login request received:', { username, password });
     try {
         const user = await User.findOne({ username, password });
         if (user) {
-            console.log('Login successful:', user);
-            res.json({ success: true, userId: user._id, username: user.username, profilePicture: 'path/to/profile-picture.jpg' });
+            res.json({ 
+                success: true, 
+                userId: user._id, 
+                username: user.username,
+                mokePoints: user.mokePoints || 0,
+                profilePicture: 'path/to/profile-picture.jpg'
+            });
         } else {
-            console.log('Login failed: User not found');
             res.json({ success: false, message: 'Invalid username or password' });
         }
     } catch (error) {
@@ -633,19 +637,12 @@ app.get('/deals/pending/:userId', async (req, res) => {
 // Update the deals/complete endpoint
 app.post('/deals/complete', async (req, res) => {
     const { dealId, paymentDetails } = req.body;
-    console.log('Completing deal:', { dealId, paymentDetails }); // Debug log
+    console.log('Completing deal:', { dealId, paymentDetails });
 
     try {
-        // Validate dealId
-        if (!dealId) {
-            return res.status(400).json({
-                success: false,
-                message: 'Deal ID is required'
-            });
-        }
+        // ... existing validation code ...
 
-        // Find the deal first
-        const deal = await Deal.findById(dealId).populate('item');
+        const deal = await Deal.findById(dealId).populate('item').populate('seller');
         if (!deal) {
             return res.status(404).json({
                 success: false,
@@ -657,6 +654,11 @@ app.post('/deals/complete', async (req, res) => {
         deal.status = 'completed';
         await deal.save();
 
+        // Add MokePoints to seller
+        const seller = await User.findById(deal.seller._id);
+        seller.mokePoints = (seller.mokePoints || 0) + 60;
+        await seller.save();
+
         // Delete the listing
         if (deal.item) {
             await Listing.findByIdAndDelete(deal.item._id);
@@ -665,7 +667,7 @@ app.post('/deals/complete', async (req, res) => {
         // Send completion message
         const completionMessage = new Chat({
             sender: deal.buyer,
-            receiver: deal.seller,
+            receiver: deal.seller._id,
             text: 'TRANSACTION COMPLETED',
             itemId: deal.item?._id,
             timestamp: new Date()
@@ -674,7 +676,8 @@ app.post('/deals/complete', async (req, res) => {
 
         res.json({ 
             success: true, 
-            message: 'Payment processed successfully'
+            message: 'Payment processed successfully',
+            sellerPoints: seller.mokePoints
         });
     } catch (error) {
         console.error('Error completing deal:', error);

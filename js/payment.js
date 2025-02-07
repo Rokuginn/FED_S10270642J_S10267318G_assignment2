@@ -121,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div id="successAnimation"></div>
             <h2>Payment Successful!</h2>
             <p>Transaction completed</p>
+            <p class="points-earned">+60 MokePoints Earned!</p>
         `;
         
         document.body.appendChild(overlay);

@@ -122,3 +122,19 @@ html, body {
 .icons a:hover, .icons button:hover {
     color: #0056A4; /* Secondary Blue */
 }
+
+.moke-points {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-left: 10px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.moke-points i {
+    color: #ffd700;
+}

@@ -3,10 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!user && window.location.pathname !== '/login.html') {
         window.location.href = 'login.html';
     } else if (user) {
-        document.getElementById('userInfo').style.display = 'flex';
-        document.getElementById('welcomeMessage').textContent = `Welcome, ${user.username}`;
-        document.getElementById('logoutLink').style.display = 'block';
-        document.getElementById('sellBtn').style.display = 'block';
+        updateUserInterface(user);
     }
 });
 
@@ -25,3 +22,23 @@ window.addEventListener('beforeunload', (event) => {
         localStorage.removeItem('user');
     }
 });
+
+function updateUserInterface(userData) {
+    const userInfo = document.getElementById('userInfo');
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    const mokePoints = document.getElementById('mokePoints');
+    const sellBtn = document.getElementById('sellBtn');
+    const logoutLink = document.getElementById('logoutLink');
+
+    if (userData) {
+        welcomeMessage.textContent = `Welcome, ${userData.username}`;
+        mokePoints.textContent = userData.mokePoints || 0;
+        userInfo.style.display = 'flex';
+        sellBtn.style.display = 'block';
+        logoutLink.style.display = 'block';
+    } else {
+        userInfo.style.display = 'none';
+        sellBtn.style.display = 'none';
+        logoutLink.style.display = 'none';
+    }
+}
