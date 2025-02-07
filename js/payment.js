@@ -60,6 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Disable the submit button to prevent double submission
+        const submitButton = document.querySelector('.confirm-payment-btn');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Processing...';
+
         try {
             console.log('Submitting payment for deal:', dealId); // Debug log
             const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/deals/complete', {
@@ -68,8 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    dealId: dealId,
-                    status: 'completed'
+                    dealId: dealId
                 })
             });
 
@@ -79,11 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.success) {
                 showSuccessAnimation();
             } else {
-                alert('Payment failed: ' + (result.message || 'Unknown error'));
+                throw new Error(result.message || 'Payment failed');
             }
         } catch (error) {
             console.error('Payment error:', error);
-            alert('Payment failed. Please try again.');
+            alert('Payment failed: ' + error.message);
+            // Re-enable the submit button
+            submitButton.disabled = false;
+            submitButton.textContent = 'Confirm Payment';
         }
     });
 

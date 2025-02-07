@@ -630,21 +630,27 @@ app.get('/deals/pending/:userId', async (req, res) => {
     }
 });
 
-// Add this endpoint to handle payment completion
+// Update the deals/complete endpoint
 app.post('/deals/complete', async (req, res) => {
-    const { dealId, status } = req.body;
+    const { dealId } = req.body;
+    console.log('Completing deal:', dealId); // Debug log
+
     try {
+        // Find the deal
         const deal = await Deal.findById(dealId);
         if (!deal) {
+            console.log('Deal not found:', dealId);
             return res.status(404).json({ success: false, message: 'Deal not found' });
         }
 
         // Update deal status
-        deal.status = status;
+        deal.status = 'completed';
         await deal.save();
+        console.log('Deal status updated:', deal);
 
         // Delete the listing
         await Listing.findByIdAndDelete(deal.item);
+        console.log('Listing deleted:', deal.item);
 
         // Send completion message to chat
         const completionMessage = new Chat({
@@ -655,11 +661,16 @@ app.post('/deals/complete', async (req, res) => {
             timestamp: new Date()
         });
         await completionMessage.save();
+        console.log('Completion message sent');
 
-        res.json({ success: true });
+        res.json({ success: true, message: 'Payment processed successfully' });
     } catch (error) {
         console.error('Error completing deal:', error);
-        res.status(500).json({ success: false, message: 'Internal server error' });
+        res.status(500).json({ 
+            success: false, 
+            message: 'Internal server error',
+            error: error.message 
+        });
     }
 });
 
