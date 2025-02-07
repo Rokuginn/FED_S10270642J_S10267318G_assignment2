@@ -79,6 +79,18 @@ const chatSchema = new mongoose.Schema({
 
 const Chat = mongoose.model('Chat', chatSchema);
 
+// Add this after your existing schemas
+const dealSchema = new mongoose.Schema({
+    seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    buyer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    item: { type: mongoose.Schema.Types.ObjectId, ref: 'Listing' },
+    price: Number,
+    status: { type: String, enum: ['pending', 'completed', 'cancelled'], default: 'pending' },
+    timestamp: { type: Date, default: Date.now }
+});
+
+const Deal = mongoose.model('Deal', dealSchema);
+
 // Handle login requests
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
@@ -569,6 +581,46 @@ app.delete('/chats/room/:userId/:otherId', async (req, res) => {
         res.json({ success: true });
     } catch (error) {
         console.error('Error deleting chat room:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
+// Add these new endpoints
+app.post('/deals/create', async (req, res) => {
+    const { seller, buyer, item, price } = req.body;
+    try {
+        const newDeal = new Deal({
+            seller,
+            buyer,
+            item,
+            price,
+            status: 'pending'
+        });
+        await newDeal.save();
+        res.json({ success: true, deal: newDeal });
+    } catch (error) {
+        console.error('Error creating deal:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
+// Get pending deals for a user
+app.get('/deals/pending/:userId', async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const deals = await Deal.find({
+            $or: [
+                { seller: userId },
+                { buyer: userId }
+            ],
+            status: 'pending'
+        })
+        .populate('seller', 'username')
+        .populate('buyer', 'username')
+        .populate('item');
+        res.json(deals);
+    } catch (error) {
+        console.error('Error fetching pending deals:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });

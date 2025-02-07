@@ -373,22 +373,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Add deal button click handler
+    // Update the deal button click handler
     dealBtn.addEventListener('click', () => {
         const dealMessage = 'DEAL ACCEPTED!';
+        const lastOfferMessage = Array.from(chatMessages.getElementsByClassName('offer-message')).pop();
+        const offerAmount = lastOfferMessage ? parseFloat(lastOfferMessage.textContent.match(/\$(\d+)/)[1]) : null;
         
-        fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats', {
+        if (!offerAmount) {
+            alert('No valid offer found');
+            return;
+        }
+
+        // First create the deal in MongoDB
+        fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/deals/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                sender: userId,
-                receiver: currentChatUserId,
-                text: dealMessage,
-                itemId: itemId,
-                type: 'deal'
+                seller: userId,
+                buyer: currentChatUserId,
+                item: itemId,
+                price: offerAmount
             })
+        })
+        .then(response => response.json())
+        .then(dealData => {
+            if (dealData.success) {
+                // Then send the deal acceptance message
+                return fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sender: userId,
+                        receiver: currentChatUserId,
+                        text: dealMessage,
+                        itemId: itemId,
+                        type: 'deal',
+                        dealId: dealData.deal._id
+                    })
+                });
+            }
         })
         .then(response => response.json())
         .then(data => {
@@ -398,8 +425,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageElement.textContent = 'You accepted the offer!';
                 chatMessages.appendChild(messageElement);
                 dealBtn.style.display = 'none';
+                rejectBtn.style.display = 'none';
                 chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Show deal completion popup
+                showDealComplete(true, offerAmount);
             }
+        })
+        .catch(error => {
+            console.error('Error handling deal:', error);
+            alert('Failed to process deal');
         });
     });
 
@@ -436,4 +471,44 @@ document.addEventListener('DOMContentLoaded', () => {
         messageElement.textContent = `${message.sender.username === userId ? 'You' : message.sender.username}: ${message.text}`;
         chatMessages.appendChild(messageElement);
     }
+
+    // Update showDealComplete function
+    function showDealComplete(isSeller, amount) {
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay';
+        
+        const popup = document.createElement('div');
+        popup.className = 'deal-popup';
+        
+        popup.innerHTML = `
+            <h2>Deal Completed!</h2>
+            <p>${isSeller ? 'You have accepted the offer!' : 'Your offer has been accepted!'}</p>
+            <p>Amount: $${amount}</p>
+            ${!isSeller ? '<button onclick="proceedToPayment()">Proceed to Payment</button>' : 
+                         '<p>Waiting for buyer to complete payment...</p>'}
+        `;
+        
+        document.body.appendChild(overlay);
+        document.body.appendChild(popup);
+    }
+
+    // Add a function to check pending deals
+    function checkPendingDeals() {
+        fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/deals/pending/${userId}`)
+            .then(response => response.json())
+            .then(deals => {
+                deals.forEach(deal => {
+                    if (deal.status === 'pending') {
+                        const isSeller = deal.seller._id === userId;
+                        showDealComplete(isSeller, deal.price);
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error checking pending deals:', error);
+            });
+    }
+
+    // Call checkPendingDeals when page loads
+    checkPendingDeals();
 });
