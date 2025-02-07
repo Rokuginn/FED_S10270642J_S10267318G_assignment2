@@ -512,6 +512,24 @@ app.get('/chats/:id', async (req, res) => {
     }
 });
 
+// Add this new endpoint
+app.delete('/chats/room/:userId/:otherId', async (req, res) => {
+    const { userId, otherId } = req.params;
+    try {
+        // Delete all messages between these users
+        await Chat.deleteMany({
+            $or: [
+                { sender: userId, receiver: otherId },
+                { sender: otherId, receiver: userId }
+            ]
+        });
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error deleting chat room:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);

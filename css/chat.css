@@ -35,6 +35,9 @@ body.chat-page {
 }
 
 .chat-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 15px;
     border-bottom: 1px solid #333;
     cursor: pointer;
@@ -148,4 +151,18 @@ body.chat-page {
     margin: 0;
     font-size: 14px;
     color: #CCCCCC;
+}
+
+.delete-chat-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.delete-chat-btn:hover {
+    background-color: #c82333;
 }

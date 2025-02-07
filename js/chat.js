@@ -40,28 +40,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // Call updateItemDetailsBar after DOM loads
     updateItemDetailsBar();
 
-    // Fetch chat rooms
+    // Update the fetchChatRooms function
     function fetchChatRooms() {
         fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/rooms?userId=${userId}`)
             .then(response => response.json())
             .then(chatRooms => {
-                chatList.innerHTML = ''; // Clear existing chat list
+                chatList.innerHTML = '';
                 if (Array.isArray(chatRooms)) {
                     chatRooms.forEach(chatRoom => {
                         const chatListItem = document.createElement('div');
                         chatListItem.classList.add('chat-list-item');
-                        chatListItem.textContent = `${chatRoom.username}: ${chatRoom.lastMessage}`;
-                        chatListItem.addEventListener('click', () => {
+                        
+                        const chatInfo = document.createElement('div');
+                        chatInfo.textContent = `${chatRoom.username}: ${chatRoom.lastMessage}`;
+                        chatInfo.addEventListener('click', () => {
                             loadChat(chatRoom.userId);
-                            // Clear item details when switching chats from the list
                             if (!itemId) {
                                 itemDetailsBar.style.display = 'none';
                             }
                         });
+                        
+                        const deleteButton = document.createElement('button');
+                        deleteButton.classList.add('delete-chat-btn');
+                        deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+                        deleteButton.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            if (confirm('Are you sure you want to delete this chat?')) {
+                                deleteChatRoom(chatRoom.userId);
+                            }
+                        });
+                        
+                        chatListItem.appendChild(chatInfo);
+                        chatListItem.appendChild(deleteButton);
                         chatList.appendChild(chatListItem);
                     });
-                } else {
-                    console.error('Unexpected response format:', chatRooms);
                 }
             })
             .catch(error => {
@@ -70,6 +82,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     fetchChatRooms(); // Initial fetch of chat rooms
+
+    // Add this new function to handle chat room deletion
+    async function deleteChatRoom(otherUserId) {
+        try {
+            const response = await fetch(
+                `https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/room/${userId}/${otherUserId}`,
+                { method: 'DELETE' }
+            );
+            const result = await response.json();
+            if (result.success) {
+                // Refresh chat list
+                fetchChatRooms();
+                // Clear chat window if the deleted chat was open
+                if (currentChatUserId === otherUserId) {
+                    chatMessages.innerHTML = '';
+                    chatWith.textContent = '';
+                    itemDetailsBar.style.display = 'none';
+                    currentChatUserId = null;
+                }
+            } else {
+                alert('Failed to delete chat room');
+            }
+        } catch (error) {
+            console.error('Error deleting chat room:', error);
+            alert('Failed to delete chat room');
+        }
+    }
 
     // Load chat messages
     function loadChat(sellerId) {
