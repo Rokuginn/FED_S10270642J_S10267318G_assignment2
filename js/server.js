@@ -632,17 +632,25 @@ app.get('/deals/pending/:userId', async (req, res) => {
 
 // Update the deals/complete endpoint
 app.post('/deals/complete', async (req, res) => {
-    const { dealId } = req.body;
-    console.log('Completing deal with ID:', dealId); // Debug log
+    const { dealId, paymentDetails } = req.body;
+    console.log('Completing deal:', { dealId, paymentDetails }); // Debug log
 
-    if (!dealId || !mongoose.Types.ObjectId.isValid(dealId)) {
+    if (!dealId) {
         return res.status(400).json({ 
             success: false, 
-            message: 'Invalid deal ID provided' 
+            message: 'Deal ID is required' 
         });
     }
 
     try {
+        // Validate MongoDB ObjectId
+        if (!mongoose.Types.ObjectId.isValid(dealId)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Invalid deal ID format' 
+            });
+        }
+
         const deal = await Deal.findById(dealId);
         if (!deal) {
             return res.status(404).json({ 
@@ -658,7 +666,7 @@ app.post('/deals/complete', async (req, res) => {
         // Delete the listing
         await Listing.findByIdAndDelete(deal.item);
 
-        // Send completion message
+        // Send completion message to chat
         const completionMessage = new Chat({
             sender: deal.buyer,
             receiver: deal.seller,
@@ -668,7 +676,10 @@ app.post('/deals/complete', async (req, res) => {
         });
         await completionMessage.save();
 
-        res.json({ success: true, message: 'Payment processed successfully' });
+        res.json({ 
+            success: true, 
+            message: 'Payment processed successfully' 
+        });
     } catch (error) {
         console.error('Error completing deal:', error);
         res.status(500).json({ 

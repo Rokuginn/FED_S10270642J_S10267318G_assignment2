@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.target.value = value;
     });
 
-    // Handle form submission
+    // Update the form submission handler
     document.getElementById('paymentForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -50,7 +50,24 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Disable the submit button to prevent double submission
+        // Validate card number format
+        if (cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
+            alert('Please enter a valid 16-digit card number');
+            return;
+        }
+
+        // Validate expiry date format (MM/YY)
+        if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+            alert('Please enter a valid expiry date (MM/YY)');
+            return;
+        }
+
+        // Validate CVV
+        if (!/^\d{3}$/.test(cvv)) {
+            alert('Please enter a valid 3-digit CVV');
+            return;
+        }
+
         const submitButton = document.querySelector('.confirm-payment-btn');
         submitButton.disabled = true;
         submitButton.textContent = 'Processing...';
@@ -63,16 +80,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    dealId: dealId.toString() // Ensure dealId is a string
+                    dealId,
+                    paymentDetails: {
+                        cardNumber: cardNumber.slice(-4), // Only send last 4 digits
+                        expiryDate,
+                        cardholderName
+                    }
                 })
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
             const result = await response.json();
-            console.log('Payment result:', result);
+            console.log('Payment response:', result); // Debug log
+
+            if (!response.ok) {
+                throw new Error(result.message || `Payment failed with status ${response.status}`);
+            }
 
             if (result.success) {
                 showSuccessAnimation();
@@ -82,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Payment error:', error);
             alert('Payment failed: ' + error.message);
+        } finally {
             submitButton.disabled = false;
             submitButton.textContent = 'Confirm Payment';
         }
