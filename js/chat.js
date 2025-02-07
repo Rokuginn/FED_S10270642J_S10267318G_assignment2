@@ -27,7 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageInput = document.getElementById('messageInput');
     const sendMessageBtn = document.getElementById('sendMessageBtn');
     const itemDetailsBar = document.getElementById('itemDetailsBar');
+    const offerInput = document.getElementById('offerInput');
+    const offerBtn = document.getElementById('offerBtn');
+    const dealBtn = document.getElementById('dealBtn');
     let currentChatUserId = null;
+    let isUserSeller = false;
 
     // Update the item details bar visibility based on context
     function updateItemDetailsBar() {
@@ -154,6 +158,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <p>$${item.price}</p>
                             </div>
                         `;
+                        isUserSeller = item.userId === userId;
+                        // Hide offer input and button for sellers
+                        offerInput.style.display = isUserSeller ? 'none' : 'block';
+                        offerBtn.style.display = isUserSeller ? 'none' : 'block';
+                        dealBtn.style.display = 'none';
                     }
                 })
                 .catch(error => {
@@ -173,11 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         messages
                             .filter(message => message.text && message.text.trim() !== '')
                             .forEach(message => {
-                                const messageElement = document.createElement('div');
-                                messageElement.classList.add('chat-bubble');
-                                messageElement.classList.add(message.sender._id === userId ? 'sender' : 'receiver');
-                                messageElement.textContent = `${message.sender.username === userId ? 'You' : message.sender.username}: ${message.text}`;
-                                chatMessages.appendChild(messageElement);
+                                displayMessage(message);
                             });
                         chatMessages.scrollTop = chatMessages.scrollHeight;
                     }
@@ -197,6 +202,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         }
     }
+
+    // Add reject button initialization
+    const rejectBtn = document.createElement('button');
+    rejectBtn.id = 'rejectBtn';
+    rejectBtn.className = 'reject-btn';
+    rejectBtn.textContent = 'Reject Offer';
+    rejectBtn.style.display = 'none';
+
+    // Insert reject button after deal button
+    dealBtn.parentNode.insertBefore(rejectBtn, dealBtn.nextSibling);
+
+    // Add reject button click handler
+    rejectBtn.addEventListener('click', () => {
+        const rejectMessage = 'OFFER REJECTED!';
+        
+        fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                sender: userId,
+                receiver: currentChatUserId,
+                text: rejectMessage,
+                itemId: itemId,
+                type: 'reject'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('chat-bubble', 'sender', 'reject-message');
+                messageElement.textContent = 'You rejected the offer!';
+                chatMessages.appendChild(messageElement);
+                dealBtn.style.display = 'none';
+                rejectBtn.style.display = 'none';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+    });
 
     // Update how chat is loaded initially if sellerId is present
     if (sellerId) {
@@ -292,4 +338,102 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+
+    // Add offer button click handler
+    offerBtn.addEventListener('click', () => {
+        const offerAmount = offerInput.value;
+        if (offerAmount && offerAmount > 0) {
+            const offerMessage = `OFFER: $${offerAmount}`;
+            
+            fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sender: userId,
+                    receiver: currentChatUserId,
+                    text: offerMessage,
+                    itemId: itemId,
+                    type: 'offer',
+                    amount: offerAmount
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const messageElement = document.createElement('div');
+                    messageElement.classList.add('chat-bubble', 'sender', 'offer-message');
+                    messageElement.textContent = `You made an offer: $${offerAmount}`;
+                    chatMessages.appendChild(messageElement);
+                    offerInput.value = '';
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+            });
+        }
+    });
+
+    // Add deal button click handler
+    dealBtn.addEventListener('click', () => {
+        const dealMessage = 'DEAL ACCEPTED!';
+        
+        fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                sender: userId,
+                receiver: currentChatUserId,
+                text: dealMessage,
+                itemId: itemId,
+                type: 'deal'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('chat-bubble', 'sender', 'deal-message');
+                messageElement.textContent = 'You accepted the offer!';
+                chatMessages.appendChild(messageElement);
+                dealBtn.style.display = 'none';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+    });
+
+    // Update the message display to handle offers and deals
+    function displayMessage(message) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('chat-bubble');
+        messageElement.classList.add(message.sender._id === userId ? 'sender' : 'receiver');
+
+        if (message.text.startsWith('OFFER:')) {
+            messageElement.classList.add('offer-message');
+            // Show deal and reject buttons to seller when offer is received
+            if (isUserSeller && message.sender._id !== userId) {
+                dealBtn.style.display = 'block';
+                rejectBtn.style.display = 'block';
+            }
+        } else if (message.text === 'DEAL ACCEPTED!') {
+            messageElement.classList.add('deal-message');
+            dealBtn.style.display = 'none';
+            rejectBtn.style.display = 'none';
+            offerBtn.style.display = 'none';
+            offerInput.style.display = 'none';
+        } else if (message.text === 'OFFER REJECTED!') {
+            messageElement.classList.add('reject-message');
+            dealBtn.style.display = 'none';
+            rejectBtn.style.display = 'none';
+            // Allow buyer to make new offer after rejection
+            if (!isUserSeller) {
+                offerBtn.style.display = 'block';
+                offerInput.style.display = 'block';
+            }
+        }
+
+        messageElement.textContent = `${message.sender.username === userId ? 'You' : message.sender.username}: ${message.text}`;
+        chatMessages.appendChild(messageElement);
+    }
 });

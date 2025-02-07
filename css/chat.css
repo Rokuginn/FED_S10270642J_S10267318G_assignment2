@@ -94,6 +94,7 @@ body.chat-page {
     display: flex;
     padding: 20px;
     background-color: #2C2F33;
+    gap: 10px;
 }
 
 .chat-input input {
@@ -113,6 +114,75 @@ body.chat-page {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+}
+
+.offer-input {
+    width: 100px;
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #1F1F1F;
+    color: #FFFFFF;
+}
+
+.offer-btn, .deal-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.offer-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.deal-btn {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.offer-btn:hover {
+    background-color: #218838;
+}
+
+.deal-btn:hover {
+    background-color: #e0a800;
+}
+
+.offer-message {
+    background-color: #28a745 !important;
+    color: white;
+    font-style: italic;
+}
+
+.deal-message {
+    background-color: #ffc107 !important;
+    color: #000;
+    font-weight: bold;
+}
+
+.reject-btn {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.reject-btn:hover {
+    background-color: #c82333;
+}
+
+.reject-message {
+    background-color: #dc3545 !important;
+    color: white;
+    font-weight: bold;
 }
 
 .item-details-bar {
