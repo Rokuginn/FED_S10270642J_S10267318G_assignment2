@@ -632,32 +632,24 @@ app.get('/deals/pending/:userId', async (req, res) => {
 
 // Update the deals/complete endpoint
 app.post('/deals/complete', async (req, res) => {
-    const { dealId } = req.body;
+    const { dealId, paymentDetails } = req.body;
+    console.log('Completing deal:', { dealId, paymentDetails }); // Debug log
 
     try {
-        // Check if dealId is provided
+        // Validate dealId
         if (!dealId) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Deal ID is required' 
+            return res.status(400).json({
+                success: false,
+                message: 'Deal ID is required'
             });
         }
 
-        // Clean and validate the dealId
-        const cleanDealId = dealId.toString().trim();
-        
-        if (!mongoose.Types.ObjectId.isValid(cleanDealId)) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Invalid deal ID format' 
-            });
-        }
-
-        const deal = await Deal.findById(cleanDealId);
+        // Find the deal first
+        const deal = await Deal.findById(dealId).populate('item');
         if (!deal) {
-            return res.status(404).json({ 
-                success: false, 
-                message: 'Deal not found' 
+            return res.status(404).json({
+                success: false,
+                message: 'Deal not found'
             });
         }
 
@@ -666,25 +658,29 @@ app.post('/deals/complete', async (req, res) => {
         await deal.save();
 
         // Delete the listing
-        await Listing.findByIdAndDelete(deal.item);
+        if (deal.item) {
+            await Listing.findByIdAndDelete(deal.item._id);
+        }
 
         // Send completion message
         const completionMessage = new Chat({
             sender: deal.buyer,
             receiver: deal.seller,
             text: 'TRANSACTION COMPLETED',
-            itemId: deal.item,
+            itemId: deal.item?._id,
             timestamp: new Date()
         });
         await completionMessage.save();
 
-        res.json({ success: true, message: 'Payment processed successfully' });
+        res.json({ 
+            success: true, 
+            message: 'Payment processed successfully'
+        });
     } catch (error) {
         console.error('Error completing deal:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Internal server error',
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Internal server error'
         });
     }
 });

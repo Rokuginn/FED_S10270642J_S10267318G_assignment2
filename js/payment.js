@@ -80,21 +80,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    dealId: dealId.toString(), // Ensure dealId is sent as a string
+                    dealId: dealId,
                     paymentDetails: {
-                        cardNumber: cardNumber.slice(-4), // Only send last 4 digits
+                        cardNumber: cardNumber.slice(-4),
                         expiryDate,
                         cardholderName
                     }
                 })
             });
 
-            const result = await response.json();
-            console.log('Payment response:', result); // Debug log
-
             if (!response.ok) {
+                const result = await response.json();
                 throw new Error(result.message || `Payment failed with status ${response.status}`);
             }
+
+            const result = await response.json();
+            console.log('Payment result:', result); // Debug log
 
             if (result.success) {
                 showSuccessAnimation();

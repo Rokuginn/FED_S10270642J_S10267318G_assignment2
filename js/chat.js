@@ -482,15 +482,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update showDealComplete function
     function showDealComplete(isSeller, amount, dealId) {
+        console.log('Showing deal complete with:', { isSeller, amount, dealId }); // Debug log
+        
         const overlay = document.createElement('div');
         overlay.className = 'overlay';
         
         const popup = document.createElement('div');
         popup.className = 'deal-popup';
-        
-        // Add Lottie animation container
-        const animationContainer = document.createElement('div');
-        animationContainer.id = 'dealAnimation';
         
         popup.innerHTML = `
             <div id="dealAnimation"></div>
@@ -498,7 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <p>${isSeller ? 'You have accepted the offer!' : 'Your offer has been accepted!'}</p>
             <p>Amount: $${amount}</p>
             ${!isSeller ? 
-                `<button class="payment-button" onclick="window.location.href='payment.html?dealId=${dealId}&amount=${amount}'">
+                `<button class="payment-button" onclick="window.location.href='payment.html?dealId=${dealId._id || dealId}&amount=${amount}'">
                     Proceed to Payment
                 </button>` : 
                 '<p>Waiting for buyer to complete payment...</p>'
