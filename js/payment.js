@@ -39,11 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('paymentForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        if (!dealId) {
-            alert('Invalid payment session. Please try again.');
-            return;
-        }
-
         // Basic validation
         const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
         const expiryDate = document.getElementById('expiryDate').value;
@@ -52,11 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!cardNumber || !expiryDate || !cvv || !cardholderName) {
             alert('Please fill in all payment details');
-            return;
-        }
-
-        if (cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
-            alert('Please enter a valid card number');
             return;
         }
 
@@ -73,12 +63,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    dealId: dealId
+                    dealId: dealId.toString() // Ensure dealId is a string
                 })
             });
 
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
             const result = await response.json();
-            console.log('Payment result:', result); // Debug log
+            console.log('Payment result:', result);
 
             if (result.success) {
                 showSuccessAnimation();
@@ -88,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Payment error:', error);
             alert('Payment failed: ' + error.message);
-            // Re-enable the submit button
             submitButton.disabled = false;
             submitButton.textContent = 'Confirm Payment';
         }

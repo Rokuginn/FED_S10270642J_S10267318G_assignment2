@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(dealData => {
             console.log('Deal created:', dealData); // Debug log
-            if (dealData.success) {
+            if (dealData.success && dealData.deal && dealData.deal._id) {
                 return fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats', {
                     method: 'POST',
                     headers: {
@@ -411,17 +411,29 @@ document.addEventListener('DOMContentLoaded', () => {
                         text: dealMessage,
                         itemId: itemId,
                         type: 'deal',
-                        dealId: dealData.deal._id, // Make sure this is correctly passed
+                        dealId: dealData.deal._id,
                         amount: offerAmount
                     })
                 });
+            } else {
+                throw new Error('Invalid deal data received');
             }
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('chat-bubble', 'sender', 'deal-message');
+                messageElement.textContent = 'You accepted the offer!';
+                chatMessages.appendChild(messageElement);
+                dealBtn.style.display = 'none';
+                rejectBtn.style.display = 'none';
                 showDealComplete(true, offerAmount, data.dealId);
             }
+        })
+        .catch(error => {
+            console.error('Error handling deal:', error);
+            alert('Failed to process deal: ' + error.message);
         });
     });
 
