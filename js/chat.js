@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         chatInfo.classList.add('chat-info');
                         chatInfo.textContent = `${chatRoom.username}${chatRoom.lastMessage ? ': ' + chatRoom.lastMessage : ''}`;
                         chatInfo.addEventListener('click', () => {
-                            loadChat(chatRoom.userId, chatRoom.itemId); // Pass itemId to loadChat
+                            loadChat(chatRoom.userId, chatRoom.itemId); // Pass itemId from chat room
                         });
                         
                         const deleteButton = document.createElement('button');
@@ -137,8 +137,9 @@ document.addEventListener('DOMContentLoaded', () => {
         currentChatUserId = sellerId;
         chatMessages.innerHTML = '';
         
-        // If we have a chatItemId, use it, otherwise try to get it from the URL
+        // Use chatItemId if provided, otherwise fallback to URL itemId
         const currentItemId = chatItemId || itemId;
+        console.log('Loading chat with itemId:', currentItemId); // Debug log
         
         if (currentItemId) {
             fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listing/${currentItemId}`)

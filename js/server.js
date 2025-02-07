@@ -436,8 +436,7 @@ app.get('/chats/rooms', async (req, res) => {
                             '$sender'
                         ]
                     },
-                    lastMessage: { $first: '$$ROOT' },
-                    itemId: { $first: '$itemId' } // Include itemId in group
+                    lastMessage: { $first: '$$ROOT' }
                 }
             },
             {
@@ -456,7 +455,7 @@ app.get('/chats/rooms', async (req, res) => {
                     userId: '$_id',
                     username: '$user.username',
                     lastMessage: '$lastMessage.text',
-                    itemId: '$lastMessage.itemId', // Project the itemId
+                    itemId: '$lastMessage.itemId', // Include itemId in projection
                     timestamp: '$lastMessage.timestamp'
                 }
             }
