@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Parts - MokeSell</title>
+    <link rel="stylesheet" href="css/parts.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Include your navbar here -->
+      <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">MokeSell</div>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="parts.html">PC Parts</a></li>
+                <li><a href="account.html">Account</a></li>
+                <li><a href="#" id="logoutLink" style="display: none;">Log out</a></li>
+            </ul>
+            <div class="user-info" id="userInfo" style="display: none;">
+                <span id="welcomeMessage"></span>
+                <a href="listing.html" id="sellBtn" style="display: none;">Sell</a>
+                <div class="moke-points">
+                    <i class="fas fa-coins"></i>
+                    <span id="mokePoints">0</span>
+                </div>
+            </div>
+            <div class="icons">
+                <a href="#"><i class="fas fa-heart"></i></a>
+                <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                <a href="chat.html"><i class="fas fa-comment-dots"></i></a>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar End-->
+
+    
+    <section class="pc-parts">
+        <div class="parts__wrapper">  
+            <div class="parts__header">
+                <h1>PC Parts Categories</h1>
+                <div class="search-filter">
+                    <input 
+                        type="text" 
+                        id="parts-search" 
+                        placeholder="Search parts..."
+                        class="search-input"
+                    >
+                </div>
+            </div>
+            <div class="category-cards-container">
+                <!-- All category on top -->
+                <div class="top-category">
+                    <div class="category-card" data-category="all">
+                        <img src="Images\top-view-computer-parts-with-harddisk-ram-cpu-graphics-card-motherboard-blue-table-background_160097-333.avif" alt="All Parts">
+                        <div class="category-info">
+                            <h3>All Parts</h3>
+                            <span class="category-count">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Other categories in a line -->
+                <div class="category-cards">
+                    <div class="category-card" data-category="gpu">
+                        <img src="Images\geforce-ada-4090-web-og-1200x630.jpg" alt="GPU">
+                        <div class="category-info">
+                            <h3>Graphics Cards</h3>
+                            <span class="category-count">0</span>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="cpu">
+                        <img src="Images\core-ultra-series2-k-hero-chip-video-thumbnail_1920-1080.avif" alt="CPU">
+                        <div class="category-info">
+                            <h3>Processors</h3>
+                            <span class="category-count">0</span>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="motherboard">
+                        <img src="Images\z790-aorus-master-4-1668711794230.jpg" alt="Motherboard">
+                        <div class="category-info">
+                            <h3>Motherboards</h3>
+                            <span class="category-count">0</span>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="ram">
+                        <img src="Images\corsair-vengeance-rgb-pro-32gb-ddr4-ram-beauty-1200x630-1.jpg" alt="RAM">
+                        <div class="category-info">
+                            <h3>RAM</h3>
+                            <span class="category-count">0</span>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="storage">
+                        <img src="Images\ssd.jpg" alt="Storage">
+                        <div class="category-info">
+                            <h3>Storage</h3>
+                            <span class="category-count">0</span>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="case">
+                        <img src="Images\case image.jpg" alt="Case">
+                        <div class="category-info">
+                            <h3>Cases</h3>
+                            <span class="category-count">0</span>
+                        </div>
+                    </div>
+                    <div class="category-card" data-category="psu">
+                        <img src="Images\psu cases.jpg" alt="Power Supply">
+                        <div class="category-info">
+                            <h3>Power Supply</h3>
+                            <span class="category-count">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="parts-grid" class="grid-container">
+                <!-- Parts will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>About MokeSell</h3>
+                <p>MokeSell is your go-to platform for buying and selling computer parts. We offer a wide range of products from top brands to meet all your computing needs.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">PC Parts</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p>Email: support@mokesell.com</p>
+                <p>Phone: +1 234 567 890</p>
+                <p>Address: 123 Tech Street, Silicon Valley, CA</p>
+            </div>
+            <div class="footer-social">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 MokeSell. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/parts.js"></script>
+    <script src="js/auth.js"></script>
+    <script type="module" src="js/geminiConfig.js"></script>
+    <script type="module" src="js/chatbot.js"></script>
+
+    <div class="chatbot-widget" id="chatbotWidget">
+        <button class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-robot"></i>
+        </button>
+        <div class="chatbot-container" id="chatbotContainer">
+            <div class="chatbot-header">
+                <h3>PC Parts Advisor</h3>
+                <button class="close-btn" id="chatbotClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    Hi! I'm your AI PC building assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Ask about PC builds...">
+                <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
