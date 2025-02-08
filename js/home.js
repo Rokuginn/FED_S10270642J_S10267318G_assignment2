@@ -13,6 +13,32 @@ function getCategoryFullName(category) {
     return categoryMapping[category] || category;
 }
 
+function getTimeAgo(dateString) {
+    if (!dateString) return '0 hours';
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+        console.error('Invalid date:', dateString);
+        return '0 hours';
+    }
+
+    const now = new Date();
+    const diffTime = now - date; // Remove Math.abs() to get correct time difference
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+
+    if (diffDays > 0) {
+        return `${diffDays} ${diffDays === 1 ? 'day' : 'days'}`;
+    } else if (diffHours > 0) {
+        return `${diffHours} ${diffHours === 1 ? 'hour' : 'hours'}`;
+    } else if (diffMinutes > 0) {
+        return `${diffMinutes} ${diffMinutes === 1 ? 'minute' : 'minutes'}`;
+    } else {
+        return 'Just now';
+    }
+}
+
 // Hero Slider functionality
 const slides = document.querySelectorAll('.hero-slide');
 const dots = document.querySelector('.slide-dots');
@@ -171,7 +197,7 @@ async function addListedItem(container, listing) {
     // Display Item Card
     itemCard.innerHTML = `
         <a href="item.html?id=${listing._id}" class="item-card-link">
-            <div class="listing-time">${daysAgo} days ago</div>
+            <div class="listing-time">${getTimeAgo(listing.createdAt)} ago</div>
             <img src="${imageUrl}" alt="${listing.partName}" class="item-image">
             <div class="item-card-content">
                 <h3>${listing.partName}</h3>

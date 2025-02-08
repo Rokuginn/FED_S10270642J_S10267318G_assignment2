@@ -118,8 +118,8 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #0D1117;
-    font-family: 'Poppins', sans-serif;
+    background-color: #FFFFFF;
+    font-family: 'Open Sans', sans-serif;
     margin: 0;
 }
 
@@ -129,21 +129,32 @@ body {
     align-items: center;
     width: 100%;
     max-width: 400px;
-    background-color: #161B22;
+    background-color: #FFFFFF;
     padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
 }
 
 .login-form {
     width: 100%;
 }
 
-.login-form h2 {
-    color: #FFFFFF;
+.logo-container {
     text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-logo {
+    height: 60px;
+    width: auto;
     margin-bottom: 20px;
 }
+
+/* Remove or comment out the existing h2 styles since we're replacing it */
+/* .login-form h2 {
+    ...
+} */
 
 .input-group {
     margin-bottom: 20px;
@@ -151,44 +162,55 @@ body {
 
 .input-group label {
     display: block;
-    color: #8B949E;
-    margin-bottom: 5px;
+    color: #4A4A4A;
+    margin-bottom: 8px;
+    font-size: 14px;
 }
 
 .input-group input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #30363D;
-    border-radius: 5px;
-    background-color: #0D1117;
-    color: #FFFFFF;
+    padding: 12px;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    color: #1A1A1A;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #3B82F6;
 }
 
 button {
     width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
+    padding: 12px;
+    background-color: #3B82F6;
+    color: #FFFFFF;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #2563EB;
 }
 
 .signup-link {
     text-align: center;
     margin-top: 20px;
-    color: #8B949E;
+    color: #4A4A4A;
+    font-size: 14px;
 }
 
 .signup-link a {
-    color: #00FF9D;
+    color: #3B82F6;
     text-decoration: none;
+    font-weight: 500;
 }
 
 .signup-link a:hover {

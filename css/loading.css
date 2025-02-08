@@ -5,8 +5,8 @@ body.loading-page {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #30363D; /* Match the background color of your website */
-    font-family: 'Poppins', sans-serif; /* Use the same font as your website */
+    background-color: #FFFFFF;
+    font-family: 'Open Sans', sans-serif;
 }
 
 /* Style the loading container */
@@ -27,9 +27,7 @@ body.loading-page {
 
 /* Center and style the loading message */
 .loading-message {
-    font-size: 1.2em;
-    background: linear-gradient(to right, #0066FF, #00FF9D);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-align: center;
+    font-size: 18px;
+    color: #1A1A1A;
+    font-weight: 500;
 }
