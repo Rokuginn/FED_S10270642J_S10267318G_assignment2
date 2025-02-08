@@ -53,7 +53,7 @@ body.chat-page {
     flex: 1;
     display: flex;
     flex-direction: column;
-    background-color: #F3F4F6;
+    background-color: #ffffff;
 }
 
 .chat-header {
@@ -344,4 +344,163 @@ body.chat-page {
     bottom: 0;
     background: rgba(0, 0, 0, 0.7);
     z-index: 999;
+}
+
+/* Add these styles at the end of the file */
+.no-chats-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    color: #6B7280;
+}
+
+.no-chats-message i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: #9CA3AF;
+}
+
+.no-chats-message p {
+    font-size: 16px;
+    margin: 0;
+}
+
+/* Large Mobile Devices (481px - 767px) */
+@media screen and (max-width: 767px) {
+    .chat-box {
+        flex-direction: column;
+        margin: 10px;
+    }
+
+    .chat-list {
+        width: 100%;
+        max-height: 200px;
+        border-right: none;
+        border-bottom: 1px solid #E5E7EB;
+    }
+
+    .chat-window {
+        height: calc(100vh - 300px);
+    }
+
+    .chat-input {
+        flex-wrap: wrap;
+        gap: 8px;
+        flex-direction: column; /* Stack elements vertically */
+    }
+
+    .offer-input {
+        width: 100%; /* Make input full width */
+        padding: 12px;
+        font-size: 16px; /* Increase font size */
+        margin-bottom: 8px; /* Add space between elements */
+    }
+
+    .offer-btn, .deal-btn, .reject-btn {
+        flex: 1;
+        min-width: 120px;
+        width: 100%; /* Make buttons full width */
+        padding: 12px;
+        margin: 4px 0;
+        font-size: 16px;
+    }
+
+    .chat-bubble {
+        max-width: 80%;
+    }
+
+    .item-details-bar {
+        padding: 8px;
+    }
+
+    .item-details-bar img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Medium Mobile Devices (320px - 480px) */
+@media screen and (max-width: 480px) {
+    .chat-container {
+        padding: 10px;
+    }
+
+    .chat-box {
+        margin: 5px;
+    }
+
+    .chat-list {
+        max-height: 150px;
+    }
+
+    .chat-header h2 {
+        font-size: 18px;
+    }
+
+    .chat-input input {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .chat-input button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .chat-bubble {
+        max-width: 90%;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .deal-popup {
+        min-width: 280px;
+        padding: 20px;
+    }
+
+    .payment-button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .offer-input {
+        padding: 10px;
+        font-size: 15px;
+    }
+}
+
+/* Extra Small Mobile Devices (below 320px) */
+@media screen and (max-width: 320px) {
+    .chat-list-item {
+        padding: 10px;
+    }
+
+    .chat-info .chat-name {
+        font-size: 14px;
+    }
+
+    .chat-info .last-message {
+        font-size: 12px;
+    }
+
+    .item-details-bar .item-info h3 {
+        font-size: 14px;
+    }
+
+    .item-details-bar .item-info p {
+        font-size: 12px;
+    }
+
+    .offer-btn, .deal-btn, .reject-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .offer-input {
+        padding: 8px;
+        font-size: 14px;
+    }
 }

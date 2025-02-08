@@ -361,3 +361,200 @@ body {
     margin-right: 10px;
     border-radius: 5px;
 }
+
+/* Large Desktop Screens (1920px and above) */
+@media screen and (min-width: 1920px) {
+    .listing-form-container {
+        max-width: 1000px;
+    }
+
+    .listed-items-container {
+        max-width: 1600px;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* Standard Desktop/Laptop Screens (1366px - 1919px) */
+@media screen and (max-width: 1919px) and (min-width: 1366px) {
+    .grid-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Small Laptop Screens (1024px - 1365px) */
+@media screen and (max-width: 1365px) {
+    .listing-form-container {
+        max-width: 700px;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .listing-form-container form .condition-btn {
+        font-size: 13px;
+        padding: 8px;
+    }
+}
+
+/* Tablet Screens (768px - 1023px) */
+@media screen and (max-width: 1023px) {
+    .listing-page-container {
+        padding: 15px;
+    }
+
+    .listing-form-container {
+        padding: 15px;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .listing-form-container form {
+        gap: 15px;
+    }
+
+    .condition-buttons {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .condition-btn {
+        flex: 1 1 calc(50% - 10px);
+        margin: 0;
+    }
+}
+
+/* Large Mobile Screens (481px - 767px) */
+@media screen and (max-width: 767px) {
+    .listing-page-container {
+        padding: 10px;
+    }
+
+    .listing-form-container {
+        padding: 15px;
+        margin-bottom: 30px;
+    }
+
+    .listing-form-container form {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .listing-form-container form input,
+    .listing-form-container form select,
+    .listing-form-container form textarea {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .item-card {
+        margin: 5px;
+        padding: 10px;
+    }
+
+    .item-card img {
+        height: 150px;
+        width: 150px;
+    }
+
+    .item-card h3 {
+        font-size: 14px;
+        height: 32px;
+    }
+
+    .item-card p {
+        font-size: 12px;
+    }
+
+    .delete-btn {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+}
+
+/* Medium Mobile Screens (320px - 480px) */
+@media screen and (max-width: 480px) {
+    .listing-form-container {
+        padding: 10px;
+    }
+
+    .listing-form-container h2 {
+        font-size: 20px;
+    }
+
+    .listing-form-container form input,
+    .listing-form-container form select,
+    .listing-form-container form textarea {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .listing-form-container form .condition-btn {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .item-card {
+        padding: 8px;
+    }
+
+    .item-card img {
+        height: 120px;
+        width: 120px;
+    }
+
+    .item-card h3 {
+        font-size: 13px;
+        height: 28px;
+    }
+
+    .delete-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+/* Extra Small Mobile Screens (below 320px) */
+@media screen and (max-width: 320px) {
+    .listing-form-container {
+        padding: 8px;
+    }
+
+    .listing-form-container h2 {
+        font-size: 18px;
+    }
+
+    .item-card {
+        padding: 5px;
+    }
+
+    .item-card img {
+        height: 100px;
+        width: 100px;
+    }
+
+    .item-card h3 {
+        font-size: 12px;
+        height: 24px;
+    }
+
+    .item-card p {
+        font-size: 11px;
+    }
+
+    .delete-btn {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+
+    .listing-form-container form .condition-btn {
+        font-size: 11px;
+        padding: 5px;
+    }
+}

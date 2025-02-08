@@ -388,3 +388,208 @@ body {
         top: 0;
     }
 }
+
+/* Large Desktop Screens (1920px and above) */
+@media screen and (min-width: 1920px) {
+    .account-page-container {
+        grid-template-columns: 450px 1fr;
+        max-width: 2200px;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Standard Desktop/Laptop Screens (1366px - 1919px) */
+@media screen and (max-width: 1919px) and (min-width: 1366px) {
+    .account-page-container {
+        grid-template-columns: 400px 1fr;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Small Laptop Screens (1024px - 1365px) */
+@media screen and (max-width: 1365px) {
+    .account-page-container {
+        grid-template-columns: 350px 1fr;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+    }
+
+    .username-container h1 {
+        font-size: 2rem;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+/* Tablet Screens (768px - 1023px) */
+@media screen and (max-width: 1023px) {
+    .account-page-container {
+        grid-template-columns: 1fr;
+        padding: 15px;
+    }
+
+    .account-header {
+        position: static;
+        margin-bottom: 20px;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .profile-info h1 {
+        font-size: 24px;
+    }
+
+    .user-stats {
+        gap: 20px;
+    }
+}
+
+/* Large Mobile Screens (481px - 767px) */
+@media screen and (max-width: 767px) {
+    .account-page-container {
+        padding: 10px;
+    }
+
+    .account-header {
+        padding: 15px;
+    }
+
+    .profile-picture {
+        width: 120px;
+        height: 120px;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .item-card {
+        margin-bottom: 0;
+        padding: 8px;
+    }
+
+    .item-card img {
+        height: 120px;
+    }
+
+    .item-card h3 {
+        font-size: 14px;
+        height: 32px;
+    }
+
+    .user-stats {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .stat-item {
+        flex: 0 0 calc(50% - 10px);
+    }
+}
+
+/* Medium Mobile Screens (320px - 480px) */
+@media screen and (max-width: 480px) {
+    .account-page-container {
+        padding: 5px;
+    }
+
+    .profile-picture {
+        width: 100px;
+        height: 100px;
+    }
+
+    .username-container h1 {
+        font-size: 1.5rem;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .item-card {
+        padding: 6px;
+    }
+
+    .item-card img {
+        height: 100px;
+    }
+
+    .item-card h3 {
+        font-size: 12px;
+        height: 28px;
+    }
+
+    .item-card p {
+        font-size: 11px;
+    }
+
+    .delete-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .user-meta {
+        gap: 10px;
+    }
+
+    .meta-item {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Extra Small Mobile Screens (below 320px) */
+@media screen and (max-width: 320px) {
+    .grid-container {
+        gap: 6px;
+    }
+
+    .item-card {
+        padding: 5px;
+    }
+
+    .item-card img {
+        height: 90px;
+    }
+
+    .item-card h3 {
+        font-size: 11px;
+        height: 24px;
+    }
+
+    .profile-info p {
+        font-size: 14px;
+    }
+
+    .stat-number {
+        font-size: 1.2rem;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+    }
+
+    .meta-item {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+}

@@ -1,5 +1,5 @@
 # FED_S10270642J_S10267318G_assignment2
-# FED_S10270642J_S10267318G_assignment2  
+
 # MokeSell 🌟  
 
 ## Introduction  
@@ -95,7 +95,7 @@ MokeSell aims to foster a community of tech enthusiasts, offering them a robust 
 - **Reusable Classes**: Modular classes in HTML and CSS make the code easy to maintain and scale.  
 
 ### API and Database  
-- **ChatBot Integration**: OpenAI API powers the chatbot for product recommendations and assistance.  
+- **ChatBot Integration**: Gemini API powers the chatbot for product recommendations and assistance.  
 - **MongoDB**: Robust database management for storing user data, images, and transactions.  
 
 ---

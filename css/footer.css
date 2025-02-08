@@ -77,3 +77,116 @@
     border-top: 1px solid #34495E; /* Medium Dark Blue */
     padding-top: 20px;
 }
+
+/* Add these media queries at the end of the file */
+
+/* Large Mobile Devices (481px - 767px) */
+@media screen and (max-width: 767px) {
+    .footer {
+        padding: 20px 15px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .footer-about,
+    .footer-links,
+    .footer-contact,
+    .footer-social {
+        margin: 10px 0;
+        text-align: center;
+    }
+
+    .footer-about h3,
+    .footer-links h3,
+    .footer-contact h3,
+    .footer-social h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .footer-about p,
+    .footer-contact p {
+        font-size: 14px;
+    }
+
+    .footer-social .social-icons {
+        justify-content: center;
+    }
+}
+
+/* Medium Mobile Devices (320px - 480px) */
+@media screen and (max-width: 480px) {
+    .footer {
+        padding: 15px 10px;
+    }
+
+    .footer-container {
+        gap: 15px;
+    }
+
+    .footer-about,
+    .footer-links,
+    .footer-contact,
+    .footer-social {
+        min-width: unset;
+        margin: 5px 0;
+    }
+
+    .footer-about h3,
+    .footer-links h3,
+    .footer-contact h3,
+    .footer-social h3 {
+        font-size: 16px;
+    }
+
+    .footer-about p,
+    .footer-contact p {
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    .footer-links ul li {
+        margin-bottom: 8px;
+    }
+
+    .footer-links ul li a {
+        font-size: 13px;
+    }
+
+    .footer-bottom {
+        margin-top: 15px;
+        font-size: 12px;
+    }
+}
+
+/* Extra Small Mobile Devices (below 320px) */
+@media screen and (max-width: 320px) {
+    .footer {
+        padding: 10px 5px;
+    }
+
+    .footer-about h3,
+    .footer-links h3,
+    .footer-contact h3,
+    .footer-social h3 {
+        font-size: 15px;
+    }
+
+    .footer-about p,
+    .footer-contact p,
+    .footer-links ul li a {
+        font-size: 12px;
+    }
+
+    .footer-social .social-icons a {
+        font-size: 16px;
+    }
+
+    .footer-bottom {
+        padding-top: 10px;
+        font-size: 11px;
+    }
+}

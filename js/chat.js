@@ -69,7 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(chatRooms => {
                 console.log('Chat rooms received:', chatRooms); // Debug log
                 chatList.innerHTML = '';
-                if (Array.isArray(chatRooms)) {
+                
+                if (Array.isArray(chatRooms) && chatRooms.length > 0) {
                     chatRooms.forEach(chatRoom => {
                         const chatListItem = document.createElement('div');
                         chatListItem.classList.add('chat-list-item');
@@ -78,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         chatInfo.classList.add('chat-info');
                         chatInfo.textContent = `${chatRoom.username}${chatRoom.lastMessage ? ': ' + chatRoom.lastMessage : ''}`;
                         chatInfo.addEventListener('click', () => {
-                            loadChat(chatRoom.userId, chatRoom.itemId); // Pass itemId from chat room
+                            loadChat(chatRoom.userId, chatRoom.itemId);
                         });
                         
                         const deleteButton = document.createElement('button');
@@ -95,10 +96,33 @@ document.addEventListener('DOMContentLoaded', () => {
                         chatListItem.appendChild(deleteButton);
                         chatList.appendChild(chatListItem);
                     });
+                } else {
+                    // Add empty state message
+                    const noChatsMessage = document.createElement('div');
+                    noChatsMessage.className = 'no-chats-message';
+                    noChatsMessage.innerHTML = `
+                        <i class="far fa-comments"></i>
+                        <p>No chats yet</p>
+                        <p>Start a conversation by clicking on "Chat with Seller" on any item</p>
+                    `;
+                    chatList.appendChild(noChatsMessage);
+                    
+                    // Also clear the chat window
+                    chatMessages.innerHTML = '';
+                    chatWith.textContent = '';
+                    itemDetailsBar.style.display = 'none';
                 }
             })
             .catch(error => {
                 console.error('Error fetching chat rooms:', error);
+                // Show error state
+                chatList.innerHTML = `
+                    <div class="no-chats-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Could not load chats</p>
+                        <p>Please try again later</p>
+                    </div>
+                `;
             });
     }
 

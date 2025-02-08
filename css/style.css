@@ -312,3 +312,229 @@ body {
 .price {
     color: #10B981;
 }
+
+/* Large Desktop Screens (1920px and above) */
+@media screen and (min-width: 1920px) {
+    .grid-container {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .hero-content {
+        max-width: 800px;
+    }
+}
+
+/* Standard Desktop/Laptop Screens (1366px - 1919px) */
+@media screen and (max-width: 1919px) and (min-width: 1366px) {
+    .grid-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Small Laptop Screens (1024px - 1365px) */
+@media screen and (max-width: 1365px) {
+    .hero-content h2 {
+        font-size: 3rem;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Tablet Screens (768px - 1023px) */
+@media screen and (max-width: 1023px) {
+    .upcoming-pc-parts-hero {
+        height: 600px;
+    }
+
+    .hero-content {
+        margin-left: 5%;
+    }
+
+    .hero-content h2 {
+        font-size: 2.5rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .item-card h3 {
+        font-size: 16px;
+    }
+}
+
+/* Large Mobile Screens (481px - 767px) */
+@media screen and (max-width: 767px) {
+    .upcoming-pc-parts-hero {
+        height: 500px;
+    }
+
+    .hero-content {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .hero-content h2 {
+        font-size: 2rem;
+    }
+
+    .release-date {
+        font-size: 0.9rem;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr); /* Show 2 items per row */
+        gap: 10px; /* Reduce gap */
+        padding: 10px; /* Add padding around grid */
+    }
+
+    .item-card {
+        margin-bottom: 0; /* Remove bottom margin */
+        padding: 8px; /* Reduce padding */
+    }
+
+    .item-card img {
+        height: 120px; /* Reduce image height */
+    }
+
+    .item-card h3 {
+        font-size: 14px;
+        height: 32px; /* Reduce height */
+    }
+
+    .item-card p {
+        font-size: 12px;
+        margin-bottom: 3px;
+    }
+
+    .item-card .user-name {
+        font-size: 11px;
+    }
+
+    .listing-time {
+        font-size: 10px;
+        padding: 3px 6px;
+    }
+
+    .prev-slide, .next-slide {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+}
+
+/* Medium Mobile Screens (320px - 480px) */
+@media screen and (max-width: 480px) {
+    .upcoming-pc-parts-hero {
+        height: 400px;
+    }
+
+    .hero-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .hero-content p {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-cta {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .for-you-section h2, 
+    .trending-section h2, 
+    .recent-release-section h2 {
+        font-size: 20px;
+    }
+
+    .item-card {
+        padding: 6px;
+    }
+
+    .item-card img {
+        height: 100px; /* Further reduce image height */
+    }
+
+    .item-card h3 {
+        font-size: 12px;
+        height: 28px;
+        margin-bottom: 3px;
+    }
+
+    .item-card p {
+        font-size: 11px;
+        margin-bottom: 2px;
+    }
+
+    .item-card .price {
+        font-size: 13px;
+    }
+
+    .like-btn {
+        font-size: 16px;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr); /* Maintain 2 columns */
+        gap: 8px; /* Further reduce gap */
+    }
+}
+
+/* Extra Small Mobile Screens (below 320px) */
+@media screen and (max-width: 320px) {
+    .upcoming-pc-parts-hero {
+        height: 350px;
+    }
+
+    .hero-content h2 {
+        font-size: 1.2rem;
+    }
+
+    .hero-content p {
+        font-size: 0.8rem;
+    }
+
+    .hero-cta {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.8rem;
+    }
+
+    .item-card h3 {
+        font-size: 11px;
+        height: 24px;
+    }
+
+    .item-card p {
+        font-size: 10px;
+    }
+
+    .item-card .price {
+        font-size: 12px;
+    }
+
+    .listing-time {
+        font-size: 9px;
+        padding: 2px 4px;
+    }
+
+    .grid-container {
+        gap: 6px; /* Minimal gap */
+    }
+
+    .item-card {
+        padding: 5px;
+    }
+
+    .item-card img {
+        height: 90px; /* Smallest image height */
+    }
+}
