@@ -23,14 +23,31 @@ html, body {
     z-index: 999;
     overflow: hidden;
     padding: 10px 20px;
-    background-color: #161B22; /* Dark background */
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E5E7EB;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .logo {
     font-size: 30px;
     font-weight: bold;
-    color: #00ADEF; /* Light Blue */
+    color: #3B82F6;
     margin-left: 130px;
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    height: 40px; /* Adjust height as needed */
+    width: auto;
+    max-width: 200px;
+    object-fit: contain;
+}
+
+.logo a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
 }
 
 .nav-container {
@@ -54,7 +71,7 @@ html, body {
 }
 
 .nav-links a {
-    color: #FFFFFF; /* White text */
+    color: #1A1A1A;
     text-decoration: none;
     font-size: 20px;
     font-weight: 500;
@@ -62,7 +79,7 @@ html, body {
 }
 
 .nav-links a:hover {
-    color: #00ADEF; /* Light Blue */
+    color: #3B82F6;
 }
 
 #logoutLink {
@@ -79,7 +96,7 @@ html, body {
     font-size: 20px;
     display: flex;
     align-items: center;
-    color: #FFFFFF; /* White text */
+    color: #272727; /* White text */
     font-weight: 300;
 }
 
@@ -124,8 +141,8 @@ html, body {
 }
 
 .moke-points {
-    background-color: #28a745;
-    color: white;
+    background-color: #10B981;
+    color: #FFFFFF;
     padding: 5px 10px;
     border-radius: 15px;
     margin-left: 10px;

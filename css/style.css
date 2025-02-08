@@ -1,7 +1,7 @@
 body {
     font-family: 'Open Sans', sans-serif;
-    background: #161B22; /* Dark background */
-    color: #FFFFFF; /* White text */
+    background: #FFFFFF;
+    color: #1A1A1A;
 }
 
 .item-card-link {
@@ -100,7 +100,7 @@ body {
 .hero-cta {
     display: inline-block;
     padding: 1rem 2rem;
-    background: #00ADEF; /* Light Blue */
+    background: #3B82F6;
     color: #FFFFFF; /* White */
     text-decoration: none;
     border-radius: 4px;
@@ -109,7 +109,7 @@ body {
 }
 
 .hero-cta:hover {
-    background: #0056A4; /* Secondary Blue */
+    background: #2563EB;
 }
 
 .prev-slide,
@@ -163,16 +163,17 @@ body {
 
 .for-you-section, .trending-section, .recent-release-section {
     padding: 20px;
-    background-color: #1F1F1F; /* Darker background */
+    background-color: #ffffff; /* Darker background */
     border-radius: 10px;
     margin-bottom: 20px;
 }
 
 .for-you-section h2, .trending-section h2, .recent-release-section h2 {
-    color: #FFFFFF; /* White text */
+    color: #000000; /* White text */
     font-size: 28px;
     margin-bottom: 20px;
     font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
 }
 
 .grid-container {
@@ -182,9 +183,9 @@ body {
 }
 
 .item-card {
-    background-color: #1F1F1F; /* Darker background */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     overflow: hidden;
     margin-bottom: 20px;
     padding: 15px;
@@ -195,6 +196,7 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     text-align: left; /* Ensure text is aligned to the left */
+    border-radius: 10px;
 }
 
 .item-card img {
@@ -215,7 +217,7 @@ body {
 .item-card h3 {
     margin-bottom: 5px; /* Reduce margin-bottom */
     font-size: 18px; /* Adjust font size */
-    color: #FFFFFF; /* White text */
+    color: #1A1A1A;
     font-family: 'Open Sans', sans-serif;
     height: 40px; /* Set fixed height */
     overflow: hidden;
@@ -226,7 +228,7 @@ body {
 .item-card p {
     margin-bottom: 5px; /* Reduce margin-bottom */
     font-size: 14px; /* Adjust font size */
-    color: #CCCCCC; /* Light Gray */
+    color: #4A4A4A;
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -283,7 +285,7 @@ body {
 .like-btn {
     background: none;
     border: none;
-    color: #CCCCCC; /* Light Gray */
+    color: #9CA3AF;
     cursor: pointer;
     font-size: 20px;
     transition: color 0.3s ease;
@@ -291,9 +293,22 @@ body {
 }
 
 .like-btn.liked {
-    color: #0071C5; /* Primary Blue */
+    color: #3B82F6;
 }
 
 .like-btn:hover {
     color: #0056A4; /* Secondary Blue */
+}
+
+.hero-cta, .user-info #sellBtn {
+    background: #3B82F6;
+    color: #FFFFFF;
+}
+
+.hero-cta:hover, .user-info #sellBtn:hover {
+    background: #2563EB;
+}
+
+.price {
+    color: #10B981;
 }

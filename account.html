@@ -15,11 +15,15 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar">
-        <div class="logo">MokeSell</div>
+        <div class="logo">
+            <a href="index.html">
+                <img src="Logo\mokesell-high-resolution-logo-transparent.svg" alt="MokeSell Logo" class="logo-img">
+            </a>
+        </div>
         <div class="nav-container">
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="#">PC Parts</a></li>
+                <li><a href="parts.html">PC Parts</a></li>
                 <li><a href="account.html">Account</a></li>
                 <li><a href="#" id="logoutLink" style="display: none;">Log out</a></li>
             </ul>
@@ -45,12 +49,44 @@
         <div class="account-header">
             <div class="profile-picture-container">
                 <img id="profilePicture" src="Images/avatar-default.svg" alt="Profile Picture" class="profile-picture">
-            </div>
-            <div class="profile-info">
-                <h1 id="username">Username</h1>
                 <button id="followBtn" style="display: none;">Follow</button>
                 <button id="unfollowBtn" style="display: none;">Unfollow</button>
-                <button id="settingsBtn" style="display: none;"><i class="fas fa-cog"></i></button>
+            </div>
+            
+            <div class="profile-info">
+                <div class="username-container">
+                    <h1 id="username">Username</h1>
+                    <button id="settingsBtn" style="display: none;"><i class="fas fa-cog"></i></button>
+                </div>
+                
+                <div class="user-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="followersCount">0</span>
+                        <span class="stat-label">Followers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="followingCount">0</span>
+                        <span class="stat-label">Following</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalLikes">0</span>
+                        <span class="stat-label">Total Likes</span>
+                    </div>
+                </div>
+
+                <p id="description">Description</p>
+                
+                <div class="user-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-handshake"></i>
+                        <span id="dealMethod">Online</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span id="location">Location</span>
+                    </div>
+                </div>
+
                 <div id="settingsContainer" style="display: none;">
                     <textarea id="descriptionInput" placeholder="Update your description"></textarea>
                     <select id="dealMethodInput">
@@ -58,15 +94,7 @@
                         <option value="In-Person">In-Person</option>
                     </select>
                     <input type="text" id="locationInput" placeholder="Enter your location">
-                    <button id="saveBtn">Save</button>
-                </div>
-                <p id="description">Description</p>
-                <p id="dealMethod">Deal Method: <span>Online</span> <i class="fas fa-map-marker-alt"></i></p>
-                <p id="location"><i class="fas fa-map-marker-alt"></i> <span></span></p> <!-- Move location here -->
-                <div class="account-stats">
-                    <p>Followers: <span id="followersCount">0</span></p>
-                    <p>Following: <span id="followingCount">0</span></p>
-                    <p>Total Likes: <span id="totalLikes">0</span></p>
+                    <button id="saveBtn">Save Changes</button>
                 </div>
             </div>
         </div>
