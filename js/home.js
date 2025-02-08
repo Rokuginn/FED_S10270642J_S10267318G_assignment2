@@ -64,17 +64,43 @@ async function fetchForYouItems() {
 }
 
 async function fetchTrendingItems() {
-    const listings = await fetchAllListings();
-    const trendingItemsContainer = document.getElementById('trendingItems');
-    const trendingItems = listings.sort((a, b) => b.likes - a.likes).slice(0, 5); // Assuming 'likes' is a property of listing
-    trendingItems.forEach(listing => addListedItem(trendingItemsContainer, listing));
+    try {
+        const listings = await fetchAllListings();
+        const trendingItemsContainer = document.getElementById('trendingItems');
+        
+        // Sort by likes in descending order and take top 6
+        const trendingItems = listings
+            .sort((a, b) => (b.likes || 0) - (a.likes || 0))
+            .slice(0, 6);
+        
+        console.log('Trending items:', trendingItems); // Debug log
+        trendingItemsContainer.innerHTML = ''; // Clear container
+        for (const listing of trendingItems) {
+            await addListedItem(trendingItemsContainer, listing);
+        }
+    } catch (error) {
+        console.error('Error fetching trending items:', error);
+    }
 }
 
 async function fetchRecentReleaseItems() {
-    const listings = await fetchAllListings();
-    const recentReleaseItemsContainer = document.getElementById('recentReleaseItems');
-    const recentReleaseItems = listings.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5); // Assuming 'date' is a property of listing
-    recentReleaseItems.forEach(listing => addListedItem(recentReleaseItemsContainer, listing));
+    try {
+        const listings = await fetchAllListings();
+        const recentReleaseItemsContainer = document.getElementById('recentReleaseItems');
+        
+        // Sort by date in descending order and take top 6
+        const recentReleaseItems = listings
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 6);
+        
+        console.log('Recent items:', recentReleaseItems); // Debug log
+        recentReleaseItemsContainer.innerHTML = ''; // Clear container
+        for (const listing of recentReleaseItems) {
+            await addListedItem(recentReleaseItemsContainer, listing);
+        }
+    } catch (error) {
+        console.error('Error fetching recent items:', error);
+    }
 }
 
 async function likeListing(listingId) {
