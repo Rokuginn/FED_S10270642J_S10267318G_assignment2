@@ -12,6 +12,7 @@ html, body {
     position: relative;
 }
 
+/* Base navbar styles */
 .navbar {
     height: 80px;
     display: flex;
@@ -21,11 +22,16 @@ html, body {
     position: sticky;
     top: 0;
     z-index: 999;
-    overflow: hidden;
     padding: 10px 20px;
     background-color: #FFFFFF;
     border-bottom: 1px solid #E5E7EB;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Base toggle button styles */
+.nav-toggle {
+    display: none; /* Hidden by default */
+
 }
 
 .logo {
@@ -154,4 +160,325 @@ html, body {
 
 .moke-points i {
     color: #ffd700;
+}
+
+/* Add/update these styles in your navbar.css */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #1A1A1A;
+    padding: 0;
+    position: absolute;
+    right: 20px;
+    top: 30%;
+    transform: translateY(-50%);
+    z-index: 1200;
+}
+
+/* Add these keyframes at the top of navbar.css */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Large Desktop Screens (1920px and above) */
+@media screen and (min-width: 1920px) {
+    .nav-container {
+        max-width: 1800px;
+        padding: 0 100px;
+    }
+}
+
+/* Standard Desktop/Laptop Screens (1366px - 1919px) */
+@media screen and (max-width: 1919px) and (min-width: 1366px) {
+    .nav-container {
+        max-width: 1300px;
+        padding: 0 50px;
+    }
+
+    .logo {
+        margin-left: 50px;
+    }
+}
+
+/* Small Laptop Screens (1024px - 1365px) */
+@media screen and (max-width: 1365px) and (min-width: 1024px) {
+    .navbar {
+        padding: 10px;
+    }
+
+    .logo {
+        margin-left: 20px;
+    }
+
+    .nav-container {
+        padding: 0 30px;
+    }
+
+    .nav-links {
+        gap: 15px;
+    }
+
+    .nav-links a {
+        font-size: 16px;
+    }
+}
+
+/* Tablets and Small Laptops (768px - 1023px) */
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+    .navbar {
+        padding: 10px;
+    }
+
+    .logo-img {
+        height: 35px;
+    }
+
+    .nav-links a {
+        font-size: 15px;
+    }
+
+    .user-info #sellBtn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+/* Large Mobile Devices (481px - 767px) */
+@media screen and (max-width: 767px) and (min-width: 481px) {
+    .navbar {
+        height: auto;
+        padding: 15px;
+    }
+
+    .logo-img {
+        height: 30px;
+    }
+
+    .nav-container {
+        display: none;
+        top: 65px;
+    }
+
+    .nav-toggle {
+        display: block;
+    }
+}
+
+/* Small Mobile Devices (320px - 480px) */
+@media screen and (max-width: 480px) {
+    .navbar {
+        padding: 10px;
+    }
+
+    .logo-img {
+        height: 25px;
+    }
+
+    .nav-container {
+        top: 60px;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+    }
+
+    .user-info #welcomeMessage {
+        font-size: 14px;
+    }
+
+    .moke-points {
+        font-size: 12px;
+    }
+}
+
+/* Extra Small Mobile Devices (below 320px) */
+@media screen and (max-width: 320px) {
+    .logo-img {
+        height: 20px;
+    }
+
+    .nav-links a,
+    .user-info #welcomeMessage {
+        font-size: 13px;
+    }
+
+    .icons a, 
+    .icons button {
+        font-size: 16px;
+    }
+}
+
+/* Laptop/Smaller Desktop Screens */
+@media screen and (max-width: 1024px) {
+    .navbar {
+        padding: 10px;
+    }
+
+    .logo {
+        margin-left: 20px;
+    }
+
+    .nav-container {
+        padding: 10px 20px;
+    }
+
+    .nav-links {
+        gap: 15px;
+    }
+
+    .nav-links a {
+        font-size: 16px;
+    }
+
+    .user-info #welcomeMessage {
+        font-size: 16px;
+    }
+
+    .user-info #sellBtn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+/* Mobile Screens */
+@media screen and (max-width: 768px) {
+    .navbar {
+        height: auto;
+        flex-direction: column;
+        padding: 15px;
+        position: relative;
+    }
+
+    .logo {
+        margin-left: 0;
+    }
+
+    .logo-img {
+        height: 30px;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 0;
+        display: none;
+        width: 100%;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        background-color: #FFFFFF;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+        transform-origin: top;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .nav-container.active {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        animation: slideDown 0.3s ease forwards;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 15px;
+    }
+
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .user-info {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .user-info #sellBtn {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin: 0;
+        padding: 12px 20px;
+        background: #00ADEF;
+        color: #FFFFFF;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .user-info #sellBtn:hover {
+        background: #0056A4;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .icons {
+        width: 100%;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 15px;
+    }
+
+    .moke-points {
+        margin: 0;
+    }
+
+    /* Add hamburger menu functionality */
+    .nav-toggle {
+        display: block;
+        position: absolute;
+        top: 25px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #1A1A1A;
+        z-index: 1000;
+    }
+}
+
+/* Extra Small Devices */
+@media screen and (max-width: 480px) {
+    .logo-img {
+        height: 25px;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+    }
+
+    .user-info #welcomeMessage {
+        font-size: 14px;
+    }
+
+    .moke-points {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+
+    .icons a, .icons button {
+        font-size: 18px;
+    }
 }

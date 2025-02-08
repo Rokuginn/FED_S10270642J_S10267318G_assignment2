@@ -6,7 +6,6 @@
     <title>MokeSell - Home</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/chatbot.css">
-    <link rel="stylesheet" href="css/search.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/footer.css">
@@ -30,10 +29,13 @@
     <nav class="navbar">
         <div class="logo">
             <a href="index.html">
-                <img src="Logo\mokesell-high-resolution-logo-transparent(1).png" alt="MokeSell Logo" class="logo-img">
+                <img src="Logo/mokesell-high-resolution-logo-transparent(1).png" alt="MokeSell Logo" class="logo-img">
             </a>
         </div>
-        <div class="nav-container">
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-container" id="navContainer">
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="parts.html">PC Parts</a></li>
@@ -171,7 +173,6 @@
     <script src="js/home.js"></script>
     <script src="js/login.js"></script>
     <script src="js/follow.js"></script>
-    <script src="js/search.js"></script>
     <script src="js/auth.js"></script>
     <script type="module" src="js/geminiConfig.js"></script>
     <script type="module" src="js/chatbot.js"></script>
@@ -198,5 +199,6 @@
             </div>
         </div>
     </div>
+    <script src="js/navbarmenu.js"></script>
 </body>
 </html>

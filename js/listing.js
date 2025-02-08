@@ -189,7 +189,7 @@ async function fetchUserListings(userId) {
 document.addEventListener('DOMContentLoaded', () => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
-        displayUserInfo(user.username, user.profilePicture);
+        displayUserInfo(user.username); // Remove profilePicture parameter
         document.getElementById('logoutLink').textContent = 'Log out';
         document.getElementById('sellBtn').style.display = 'inline-block';
         fetchUserListings(user._id); // Fetch listings for the logged-in user
@@ -197,13 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Function to display user information
-function displayUserInfo(username, profilePicturePath) {
+function displayUserInfo(username) {
     const userInfo = document.getElementById('userInfo');
     const welcomeMessage = document.getElementById('welcomeMessage');
-    const profilePicture = document.getElementById('profilePicture');
 
     welcomeMessage.textContent = `Welcome, ${username}`;
-    profilePicture.src = profilePicturePath;
-
     userInfo.style.display = 'flex';
 }
