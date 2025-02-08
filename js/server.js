@@ -5,6 +5,7 @@ const cors = require('cors'); // Import the cors package
 const multer = require('multer'); // Import multer for file uploads
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 const app = express();
 const port = 3000;
@@ -686,6 +687,11 @@ app.post('/deals/complete', async (req, res) => {
             message: error.message || 'Internal server error'
         });
     }
+});
+
+// Add this endpoint to your server
+app.get('/api/gemini-key', (req, res) => {
+    res.json({ apiKey: process.env.GEMINI_API_KEY });
 });
 
 // Start the server
