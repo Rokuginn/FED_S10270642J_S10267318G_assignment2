@@ -103,17 +103,40 @@ function formatCondition(condition) {
         .join(' ');
 }
 
+function getTimeAgo(dateString) {
+    if (!dateString) return '0 hours';
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+        console.error('Invalid date:', dateString);
+        return '0 hours';
+    }
+
+    const now = new Date();
+    const diffTime = now - date;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+
+    if (diffDays > 0) {
+        return `${diffDays} ${diffDays === 1 ? 'day' : 'days'}`;
+    } else if (diffHours > 0) {
+        return `${diffHours} ${diffHours === 1 ? 'hour' : 'hours'}`;
+    } else if (diffMinutes > 0) {
+        return `${diffMinutes} ${diffMinutes === 1 ? 'minute' : 'minutes'}`;
+    } else {
+        return 'Just now';
+    }
+}
+
 function addListedItem(listing) {
     console.log('Adding listing:', listing);
     const itemCard = document.createElement('div');
     itemCard.classList.add('item-card');
     itemCard.setAttribute('data-id', listing._id); // Set the data-id attribute
 
-    // Calculate how long ago the listing was created
-    const listingDate = new Date(listing.date);
-    const now = new Date();
-    const timeDiff = Math.abs(now - listingDate);
-    const daysAgo = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    // Use the new getTimeAgo function
+    const timeAgo = getTimeAgo(listing.date);
 
     // Use only the first image for the item card
     const firstImagePath = listing.imagePaths[0];
@@ -123,7 +146,7 @@ function addListedItem(listing) {
     const fullCategoryName = categoryMapping[listing.category] || listing.category;
 
     itemCard.innerHTML = `
-        <div class="listing-time">${daysAgo} days ago</div>
+        <div class="listing-time">${timeAgo} ago</div>
         <div class="item-images">${imageElement}</div>
         <div class="item-card-content">
             <h3>${listing.partName}</h3>

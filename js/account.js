@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             itemCard.innerHTML = `
                 <a href="item.html?id=${listing._id}" class="item-card-link">
-                    <div class="listing-time">${getTimeAgo(listing.createdAt)} ago</div>
+                    <div class="listing-time">${getTimeAgo(listing.date)} ago</div>
                     <img src="${imageUrl}" alt="${listing.partName}" class="item-image">
                     <div class="item-card-content">
                         <h3>${listing.partName}</h3>
@@ -215,28 +215,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Helper functions
 function getTimeAgo(dateString) {
-    if (!dateString) return 'Recently';
+    if (!dateString) return '0 hours';
 
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
         console.error('Invalid date:', dateString);
-        return 'Recently';
+        return '0 hours';
     }
 
     const now = new Date();
-    const diffTime = Math.abs(now - date);
+    const diffTime = now - date;
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-    const diffMinutes = Math.floor(diffTime / (1000 * 60));
+    const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+    // Add debug logging
+    console.log('Date comparison:', {
+        now: now.toISOString(),
+        listingDate: date.toISOString(),
+        diffTime,
+        diffDays,
+        diffHours
+    });
 
     if (diffDays > 0) {
-        return diffDays === 1 ? '1 day' : `${diffDays} days`;
-    } else if (diffHours > 0) {
-        return diffHours === 1 ? '1 hour' : `${diffHours} hours`;
-    } else if (diffMinutes > 0) {
-        return diffMinutes === 1 ? '1 minute' : `${diffMinutes} minutes`;
+        return `${diffDays} ${diffDays === 1 ? 'day' : 'days'}`;
     } else {
-        return 'Just now';
+        return `${diffHours} ${diffHours === 1 ? 'hour' : 'hours'}`;
     }
 }
 

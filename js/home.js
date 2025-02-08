@@ -23,10 +23,20 @@ function getTimeAgo(dateString) {
     }
 
     const now = new Date();
-    const diffTime = now - date; // Remove Math.abs() to get correct time difference
+    const diffTime = now - date;
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+
+    // Add debug logging
+    console.log('Date comparison:', {
+        now: now.toISOString(),
+        listingDate: date.toISOString(),
+        diffTime,
+        diffDays,
+        diffHours,
+        diffMinutes
+    });
 
     if (diffDays > 0) {
         return `${diffDays} ${diffDays === 1 ? 'day' : 'days'}`;
@@ -116,7 +126,7 @@ async function fetchRecentReleaseItems() {
         
         // Sort by date in descending order and take top 6
         const recentReleaseItems = listings
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .sort((a, b) => new Date(b.date) - new Date(a.date))
             .slice(0, 6);
         
         console.log('Recent items:', recentReleaseItems); // Debug log
@@ -197,7 +207,7 @@ async function addListedItem(container, listing) {
     // Display Item Card
     itemCard.innerHTML = `
         <a href="item.html?id=${listing._id}" class="item-card-link">
-            <div class="listing-time">${getTimeAgo(listing.createdAt)} ago</div>
+            <div class="listing-time">${getTimeAgo(listing.date)} ago</div>
             <img src="${imageUrl}" alt="${listing.partName}" class="item-image">
             <div class="item-card-content">
                 <h3>${listing.partName}</h3>

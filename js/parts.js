@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return `
                 <div class="item-card">
                     <a href="item.html?id=${part._id}" class="item-card-link">
-                        <div class="listing-time">${getTimeAgo(part.createdAt)} ago</div>
+                        <div class="listing-time">${getTimeAgo(part.date)} ago</div>
                         <img src="${part.imagePaths[0].startsWith('http') ? part.imagePaths[0] : 'https://fed-s10270642j-s10267318g-assignment2.onrender.com' + part.imagePaths[0]}" 
                              alt="${part.partName}" 
                              onerror="this.src='Images/placeholder.jpg'">
@@ -149,28 +149,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update the getTimeAgo function
     function getTimeAgo(dateString) {
-        if (!dateString) return 'Just now';
+        if (!dateString) return '0 hours';
 
         const date = new Date(dateString);
         if (isNaN(date.getTime())) {
             console.error('Invalid date:', dateString);
-            return 'Recently';
+            return '0 hours';
         }
 
         const now = new Date();
-        const diffTime = Math.abs(now - date);
+        const diffTime = now - date;
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-        const diffMinutes = Math.floor(diffTime / (1000 * 60));
+        const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+        // Add debug logging
+        console.log('Date comparison:', {
+            now: now.toISOString(),
+            listingDate: date.toISOString(),
+            diffTime,
+            diffDays,
+            diffHours
+        });
 
         if (diffDays > 0) {
-            return diffDays === 1 ? '1 day' : `${diffDays} days`;
-        } else if (diffHours > 0) {
-            return diffHours === 1 ? '1 hour' : `${diffHours} hours`;
-        } else if (diffMinutes > 0) {
-            return diffMinutes === 1 ? '1 minute' : `${diffMinutes} minutes`;
+            return `${diffDays} ${diffDays === 1 ? 'day' : 'days'}`;
         } else {
-            return 'Just now';
+            return `${diffHours} ${diffHours === 1 ? 'hour' : 'hours'}`;
         }
     }
 
