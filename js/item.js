@@ -101,94 +101,92 @@ document.addEventListener('DOMContentLoaded', async () => {
                 `;
                 console.log('HTML updated successfully'); // Log after updating HTML
 
-                // Add event listener to the "Chat with Seller" button
-                document.querySelector('.chat-button').addEventListener('click', async (event) => {
-                    event.preventDefault();
-                    const sellerId = event.currentTarget.getAttribute('data-seller-id'); // Change target to currentTarget
-                    const userId = JSON.parse(localStorage.getItem('user'))._id;
-                    const itemId = params.get('id');
+                // Move event listeners here, after the elements are created
+                if (currentUser && currentUser._id !== user._id) {
+                    const chatButton = document.querySelector('.chat-button');
+                    const likeIcon = document.querySelector('.like-icon');
 
-                    console.log('Creating chat room with:', { userId, sellerId, itemId }); // Debug log
+                    // Add chat button event listener
+                    if (chatButton) {
+                        chatButton.addEventListener('click', async (event) => {
+                            event.preventDefault();
+                            const sellerId = event.currentTarget.getAttribute('data-seller-id'); // Change target to currentTarget
+                            const userId = JSON.parse(localStorage.getItem('user'))._id;
+                            const itemId = params.get('id');
 
-                    if (!sellerId || !userId) {
-                        console.error('Missing required IDs:', { sellerId, userId });
-                        return;
-                    }
+                            console.log('Creating chat room with:', { userId, sellerId, itemId }); // Debug log
 
-                    try {
-                        const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/checkOrCreate', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ 
-                                userId, 
-                                sellerId,
-                                itemId
-                            })
-                        });
-
-                        const result = await response.json();
-                        console.log('Chat room creation result:', result); // Debug log
-
-                        if (result.success) {
-                            window.location.href = `chat.html?chatRoomId=${result.chatRoomId}&itemId=${itemId}&sellerId=${sellerId}`;
-                        } else {
-                            alert('Failed to create or find chat room: ' + result.message);
-                        }
-                    } catch (error) {
-                        console.error('Error creating or finding chat room:', error);
-                        alert('Failed to create or find chat room: ' + error.message);
-                    }
-                });
-
-                // Add event listeners for like and follow buttons
-                const likeIcon = document.querySelector('.like-icon');
-                const followButton = document.querySelector('.follow-button');
-
-                // Update the like event listener
-                likeIcon.addEventListener('click', async () => {
-                    const currentUser = JSON.parse(localStorage.getItem('user'));
-                    if (!currentUser) {
-                        alert('Please log in to like items');
-                        return;
-                    }
-
-                    try {
-                        const response = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listings/${itemId}/like`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ userId: currentUser._id })
-                        });
-
-                        const result = await response.json();
-                        if (result.success) {
-                            likeIcon.classList.toggle('liked');
-                            // Update the likes count in the item info
-                            const likesText = document.querySelector('.item-info p:last-child');
-                            likesText.innerHTML = `<i class="fas fa-heart"></i> ${result.likes} likes`;
-                            
-                            // Update liked state
-                            if (result.likedBy?.includes(currentUser._id)) {
-                                likeIcon.classList.add('liked');
-                            } else {
-                                likeIcon.classList.remove('liked');
+                            if (!sellerId || !userId) {
+                                console.error('Missing required IDs:', { sellerId, userId });
+                                return;
                             }
-                        }
-                    } catch (error) {
-                        console.error('Error toggling like:', error);
-                    }
-                });
 
-                // Remove the entire follow button event listener section
-                // Delete or comment out this block:
-                /*
-                followButton.addEventListener('click', async () => {
-                    // ... entire follow button click handler code ...
-                });
-                */
+                            try {
+                                const response = await fetch('https://fed-s10270642j-s10267318g-assignment2.onrender.com/chats/checkOrCreate', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ 
+                                        userId, 
+                                        sellerId,
+                                        itemId
+                                    })
+                                });
+
+                                const result = await response.json();
+                                console.log('Chat room creation result:', result); // Debug log
+
+                                if (result.success) {
+                                    window.location.href = `chat.html?chatRoomId=${result.chatRoomId}&itemId=${itemId}&sellerId=${sellerId}`;
+                                } else {
+                                    alert('Failed to create or find chat room: ' + result.message);
+                                }
+                            } catch (error) {
+                                console.error('Error creating or finding chat room:', error);
+                                alert('Failed to create or find chat room: ' + error.message);
+                            }
+                        });
+                    }
+
+                    // Add like icon event listener
+                    if (likeIcon) {
+                        likeIcon.addEventListener('click', async () => {
+                            const currentUser = JSON.parse(localStorage.getItem('user'));
+                            if (!currentUser) {
+                                alert('Please log in to like items');
+                                return;
+                            }
+
+                            try {
+                                const response = await fetch(`https://fed-s10270642j-s10267318g-assignment2.onrender.com/listings/${itemId}/like`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ userId: currentUser._id })
+                                });
+
+                                const result = await response.json();
+                                if (result.success) {
+                                    likeIcon.classList.toggle('liked');
+                                    // Update the likes count in the item info
+                                    const likesText = document.querySelector('.item-info p:last-child');
+                                    likesText.innerHTML = `<i class="fas fa-heart"></i> ${result.likes} likes`;
+                                    
+                                    // Update liked state
+                                    if (result.likedBy?.includes(currentUser._id)) {
+                                        likeIcon.classList.add('liked');
+                                    } else {
+                                        likeIcon.classList.remove('liked');
+                                    }
+                                }
+                            } catch (error) {
+                                console.error('Error toggling like:', error);
+                            }
+                        });
+                    }
+                }
             } else {
                 console.error('Fetched item does not have the expected properties:', item);
                 const itemDetailsContainer = document.getElementById('itemDetailsContainer');
