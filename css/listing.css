@@ -1,7 +1,7 @@
 body {
-    font-family: 'Poppins', sans-serif;
-    background: #0D1117;
-    color: #FFFFFF;
+    font-family: 'Open Sans', sans-serif;
+    background: #FFFFFF;
+    color: #1A1A1A;
 }
 
 .listing-page-container {
@@ -16,15 +16,16 @@ body {
     max-width: 800px;
     margin-bottom: 50px;
     padding: 20px;
-    background-color: #161B22;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .listing-form-container h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #FFFFFF;
+    color: #1A1A1A;
 }
 
 .listing-form-container form {
@@ -43,12 +44,20 @@ body {
 .listing-form-container form button {
     grid-column: span 2;
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 15px;
-    border: 1px solid #30363D;
-    border-radius: 5px;
-    background-color: #0D1117;
-    color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    color: #1A1A1A;
+    font-size: 16px;
+}
+
+.listing-form-container form input:focus,
+.listing-form-container form select:focus,
+.listing-form-container form textarea:focus {
+    outline: none;
+    border-color: #3B82F6;
 }
 
 .listing-form-container form .condition-buttons {
@@ -61,18 +70,19 @@ body {
     flex: 1;
     padding: 10px;
     margin: 0 5px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    background-color: #FFFFFF;
+    color: #3B82F6;
+    border: 1px solid #3B82F6;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
 }
 
 .listing-form-container form .condition-btn:hover,
 .listing-form-container form .condition-btn.selected {
-    background-color: #0056b3;
+    background-color: #3B82F6;
+    color: #FFFFFF;
 }
 
 .listing-form-container form .image-preview {
@@ -82,11 +92,11 @@ body {
     align-items: center;
     width: 100%;
     height: 200px;
-    border: 2px dashed #30363D;
-    border-radius: 5px;
+    border: 2px dashed #E5E7EB;
+    border-radius: 8px;
     margin-top: 15px;
-    background-color: #0D1117;
-    color: #FFFFFF;
+    background-color: #FFFFFF;
+    color: #1A1A1A;
 }
 
 .listing-form-container form .image-preview__image {
@@ -98,22 +108,38 @@ body {
 
 .listing-form-container form .image-preview__default-text {
     font-size: 16px;
-    color: #8B949E;
+    color: #4A4A4A;
+}
+
+.listing-form-container form button[type="submit"] {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.listing-form-container form button[type="submit"]:hover {
+    background-color: #2563EB;
 }
 
 .listed-items-container {
     width: 100%;
     max-width: 1200px;
     padding: 20px;
-    background-color: #161B22;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .listed-items-container h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #FFFFFF;
+    color: #1A1A1A;
 }
 
 .grid-container {
@@ -128,9 +154,10 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 15px;
-    background-color: #161B22; /* Match the website's background color */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF; /* Match the website's background color */
+    border-radius: 12px;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
     margin: 10px;
@@ -154,7 +181,7 @@ body {
 
 .item-card h3 {
     margin: 10px 0;
-    color: #FFFFFF; /* Match the website's text color */
+    color: #1A1A1A; /* Match the website's text color */
     font-family: "Open Sans", sans-serif;
     font-weight: 600;
     font-size: 18px;
@@ -162,13 +189,13 @@ body {
 
 .item-card p {
     font-size: 14px;
-    color: #8B949E; /* Match the website's secondary text color */
+    color: #4A4A4A; /* Match the website's secondary text color */
     margin: 5px 0;
 }
 
 .item-card .price {
     font-size: 18px;
-    color: #00FF9D; /* Highlight the price with a different color */
+    color: #3B82F6; /* Highlight the price with a different color */
     font-weight: bold;
     margin: 10px 0;
 }
@@ -211,7 +238,7 @@ body {
 }
 
 .delete-btn {
-    background-color: #FF4500;
+    background-color: #DC2626;
     color: #FFFFFF;
     border: none;
     border-radius: 5px;
@@ -222,7 +249,7 @@ body {
 }
 
 .delete-btn:hover {
-    background-color: #FF6347;
+    background-color: #B91C1C;
 }
 
 .listing-time {
@@ -240,18 +267,18 @@ body {
 .like-btn {
     background: none;
     border: none;
-    color: #FF4500;
+    color: #4A4A4A;
     cursor: pointer;
     font-size: 20px;
     transition: color 0.3s ease;
 }
 
 .like-btn.liked {
-    color: #FF6347;
+    color: #3B82F6;
 }
 
 .like-btn:hover {
-    color: #FF6347;
+    color: #2563EB;
 }
 
 .profile-picture-popup {
