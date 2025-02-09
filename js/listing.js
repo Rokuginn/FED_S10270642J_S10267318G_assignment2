@@ -27,29 +27,95 @@ conditionButtons.forEach(button => {
 });
 
 imageInput.addEventListener('change', () => {
-    const file = imageInput.files[0];
-    if (file && uploadedFiles.length < 4) {
+    const files = imageInput.files;
+    if (files.length > 0 && uploadedFiles.length < 4) {
+        // Clear default text when showing images
+        imagePreviewDefaultText.style.display = 'none';
+        
+        // Add the new file
+        const file = files[0];
         uploadedFiles.push(file);
+        
         const reader = new FileReader();
-
         reader.addEventListener('load', () => {
+            // Create and show preview image
             const img = document.createElement('img');
             img.src = reader.result;
             img.classList.add('image-preview__image');
+            img.style.display = 'block'; // Make sure the image is visible
+            
+            // Clear previous images in preview
+            const previousImages = imagePreview.querySelectorAll('.image-preview__image');
+            previousImages.forEach(prevImg => prevImg.remove());
+            
+            // Add new image to preview
             imagePreview.appendChild(img);
 
+            // Add to uploaded files list
             const listItem = document.createElement('li');
-            listItem.innerHTML = `<img src="${reader.result}" alt="Uploaded Image"> ${file.name}`;
+            listItem.innerHTML = `
+                <img src="${reader.result}" alt="Uploaded Image">
+                <span>${file.name}</span>
+                <button type="button" class="remove-image" onclick="removeImage(${uploadedFiles.length - 1})">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
             uploadedFilesList.appendChild(listItem);
         });
 
         reader.readAsDataURL(file);
-    } else {
+    } else if (uploadedFiles.length >= 4) {
         alert('You can only upload up to 4 images.');
     }
 
-    imageInput.value = ''; // Clear the input so the same file can be selected again if needed
+    // Clear the input so the same file can be selected again if needed
+    imageInput.value = '';
 });
+
+// Add function to remove images
+function removeImage(index) {
+    uploadedFiles.splice(index, 1);
+    uploadedFilesList.innerHTML = '';
+    
+    // Rebuild the uploaded files list
+    uploadedFiles.forEach((file, i) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <img src="${reader.result}" alt="Uploaded Image">
+                <span>${file.name}</span>
+                <button type="button" class="remove-image" onclick="removeImage(${i})">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            uploadedFilesList.appendChild(listItem);
+        });
+        reader.readAsDataURL(file);
+    });
+
+    // Update preview image
+    if (uploadedFiles.length > 0) {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => {
+            const img = imagePreview.querySelector('.image-preview__image') || document.createElement('img');
+            img.src = reader.result;
+            img.classList.add('image-preview__image');
+            img.style.display = 'block';
+            if (!imagePreview.contains(img)) {
+                imagePreview.appendChild(img);
+            }
+        });
+        reader.readAsDataURL(uploadedFiles[0]);
+    } else {
+        // Show default text if no images
+        imagePreview.querySelector('.image-preview__image')?.remove();
+        imagePreviewDefaultText.style.display = 'block';
+    }
+}
+
+// Make removeImage function globally available
+window.removeImage = removeImage;
 
 listingForm.addEventListener('submit', async (e) => {
     e.preventDefault();

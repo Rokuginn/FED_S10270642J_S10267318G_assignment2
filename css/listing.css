@@ -97,6 +97,7 @@ body {
     margin-top: 15px;
     background-color: #FFFFFF;
     color: #1A1A1A;
+    overflow: hidden;
 }
 
 .listing-form-container form .image-preview__image {
@@ -346,12 +347,22 @@ body {
     padding: 0;
     margin-top: 10px;
     color: #000000;
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 #uploadedFilesList li {
     margin-bottom: 5px;
     display: flex;
     align-items: center;
+    gap: 8px;
+    background: #F3F4F6;
+    padding: 8px;
+    border-radius: 6px;
 }
 
 #uploadedFilesList li img {
@@ -360,6 +371,23 @@ body {
     object-fit: cover;
     margin-right: 10px;
     border-radius: 5px;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.remove-image {
+    background: none;
+    border: none;
+    color: #DC2626;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+}
+
+.remove-image:hover {
+    background-color: #FEE2E2;
 }
 
 /* Large Desktop Screens (1920px and above) */
