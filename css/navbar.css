@@ -224,6 +224,7 @@ html, body {
         padding: 0 30px;
     }
 
+
     .nav-links {
         gap: 15px;
     }
@@ -231,6 +232,17 @@ html, body {
     .nav-links a {
         font-size: 16px;
     }
+
+    #logoutLink {
+        padding: 4px 0;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 30px; /* Fixed height for all nav links */
+    }
+    
 }
 
 /* Tablets and Small Laptops (768px - 1023px) */
