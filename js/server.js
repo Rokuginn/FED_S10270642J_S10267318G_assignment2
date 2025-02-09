@@ -689,6 +689,32 @@ app.post('/deals/complete', async (req, res) => {
     }
 });
 
+// Add this endpoint to handle completed deals
+app.get('/deals/completed/:userId', async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const deals = await Deal.find({
+            $or: [
+                { seller: userId },
+                { buyer: userId }
+            ],
+            status: 'completed'
+        })
+        .populate('seller', 'username')
+        .populate('buyer', 'username')
+        .populate('item')
+        .sort({ timestamp: -1 }); // Sort by most recent first
+
+        res.json(deals);
+    } catch (error) {
+        console.error('Error fetching completed deals:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Internal server error' 
+        });
+    }
+});
+
 // Add this endpoint to your server
 app.get('/api/gemini-key', (req, res) => {
     res.json({ apiKey: process.env.GEMINI_API_KEY });
