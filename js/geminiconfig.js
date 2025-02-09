@@ -22,7 +22,9 @@ async function getPCRecommendation(userInput) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
             },
+            mode: 'cors', // Add CORS mode
             body: JSON.stringify({
                 contents: [{
                     parts: [{
@@ -37,11 +39,18 @@ async function getPCRecommendation(userInput) {
             })
         });
 
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
+        if (!data.candidates || !data.candidates[0]) {
+            throw new Error('Invalid response format');
+        }
         return data.candidates[0].content.parts[0].text;
     } catch (error) {
         console.error('Error:', error);
-        return 'Sorry, I encountered an error while processing your request.';
+        return `Sorry, I encountered an error: ${error.message}`;
     }
 }
 

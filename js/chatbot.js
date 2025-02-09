@@ -1,4 +1,4 @@
-import { getPCRecommendation } from './geminiConfig.js';
+import { getPCRecommendation } from './geminiconfig.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const chatbotToggle = document.getElementById('chatbotToggle');
