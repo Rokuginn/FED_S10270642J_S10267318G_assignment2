@@ -1,5 +1,11 @@
 # FED_S10270642J_S10267318G_assignment2
 
+# Collborator Names and ID
+Ahmad Danial Bin Azman : S10270642J
+
+Lim Zong Yi Lucas : S10267318G
+
+
 # MokeSell 🌟  
 
 ## Introduction  
@@ -99,9 +105,24 @@ MokeSell aims to foster a community of tech enthusiasts, offering them a robust 
 - **MongoDB**: Robust database management for storing user data, images, and transactions.  
 
 ---
+## 💻💻 References/Credits/Tutorials
+- **Gradient CSS Colors**: https://uigradients.com
+- **Animated Color Gradient Background**: https://www.sliderrevolution.com/resources/css-animated-background/
+- **Image Slider Inspiration**:https://www.youtube.com/watch?v=McPdzhLRzCg
+- **Home Page Inspiration**: https://www.youtube.com/watch?v=FazgJVnrVuI&t=430s
+- **Hamburger Menu and navbar**: https://www.youtube.com/watch?v=FazgJVnrVuI&t=430s
+- **Parts Images and Devices**: https://www.carousell.sg/
+- **MokeSell Logo**: https://www.logoai.com/make
+- **Transaction History**:https://www.youtube.com/watch?v=gXWohFYrI0M
+- **Sign Up/Log In**: https://www.youtube.com/watch?v=bVl5_UdcAy0
+- **Chat function inspiration**:https://www.youtube.com/watch?v=Fzv-rgwcFKk
 
 ## 📌 How to Use  
 
 1. Clone the repository:  
    ```bash
    git clone <https://github.com/Rokuginn/FED_S10270642J_S10267318G_assignment2.git>
+
+2. GitHub Pages
+   
+   https://rokuginn.github.io/FED_S10270642J_S10267318G_assignment2/
